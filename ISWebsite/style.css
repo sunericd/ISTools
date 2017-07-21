@@ -1,0 +1,101 @@
+html{
+  background-color: #223399;
+  color: #000000;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', Arial, sans-serif
+}
+
+nav{
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  margin: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+nav a{
+  text-align: left;
+  margin: 1em;
+}
+
+header{
+  background-color: #ffffff;
+  overflow: auto;
+  border: 2px solid #000000;
+  padding: 1em;
+  margin: 1em;
+}
+
+#main_logo{
+  float:left;
+  width: 25%;
+}
+
+header h1{
+  padding-top: 0em;
+  font-variant: small-caps;
+  font-size: 64px;
+  float: right;
+  clear:right;
+  text-align: right;
+  padding-right: 6%;
+  letter-spacing: 0.1em;
+}
+
+header img{
+  padding-left: 2%;
+}
+
+h2{
+  font-weight: normal;
+  font-size: 24px;
+  text-align: right;
+  float: right;
+  clear: right;
+  padding-right: 6%;
+}
+
+main{
+  overflow: auto;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  margin: 1em;
+  padding: 2em;
+  padding-top: 1em;
+  line-height: 1.5;
+  margin-top:0em;
+}
+
+form{
+  line-height: 4;
+}
+
+.tool_logo{
+  float:left;
+  clear:left;
+  margin-top: 1em;
+  margin-bottom: 1em; 
+  margin-right:1em;
+}
+
+a:link, a:visited{
+  font-size:24px;
+  color: #223399;
+  text-decoration: none;
+}
+
+a:hover, a:active{
+  text-decoration: underline;
+}
+
+.dl a{
+  color: #bb2233;
+}
+
+p, article{
+  font-size:1.25em;
+}
+
+h3{
+  margin-bottom:0.5em;
+  font-size: 30px;
+}
