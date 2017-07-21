@@ -64,15 +64,23 @@ def gel_visualize(plasmid_seqs, re_list,restriction_sites):
             seq_index = 0
             for cut_site in restriction_seqs[re_index]:
                 site_idx = plasmid_seq.find(restriction_seqs[re_index][seq_index])
+                if site_idx != -1:
+                    cut_idxs.append(site_idx)
+                    while site_idx < len(plasmid_seq):
+                        site_idx = plasmid_seq.find(restriction_seqs[re_index][seq_index], site_idx)
+                        if site_idx == -1:
+                            break
+                        cut_idxs.append(site_idx)
+                        site_idx += len(restriction_seqs[re_index][seq_index])
                 seq_index += 1
-                cut_idxs.append(site_idx)
     
         cut_idxs.sort()
-        start_idx = 0
+ #       print(cut_idxs)
 
         cut_idxs.append(len(plasmid_seq))
 
         lengths = []
+        start_idx = 0
         
         # Collecting fragment lengths
         for idx in cut_idxs:
@@ -80,10 +88,20 @@ def gel_visualize(plasmid_seqs, re_list,restriction_sites):
             lengths.append(len(frag))
             start_idx = idx
 
+        # Since plasmids are circular
+        if len(lengths) >= 2:
+            connected_length = lengths[0] + lengths[-1]
+            del lengths [0]
+            del lengths [-1]
+            lengths.append(connected_length)
+
         # Cleaning lengths
         lengths = [x for x in lengths if str(x) != '0']
         lengths_list.append(lengths)
         max_lengths.append(max(lengths))
+
+        print ('Fragment Lengths:')
+        print (lengths)
 
     # Selecting appropriate ladder
     #big_ladder = []
