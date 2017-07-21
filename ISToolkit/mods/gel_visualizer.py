@@ -171,8 +171,6 @@ def smallDraw (lengths):
 #        PNG_Title = "Gel.png"
 #        img.save(PNG_Title, "png")
         
-    win.getMouse()
-    win.close()
 
 #Large Ladder
 def bigDraw (lengths):
@@ -239,5 +237,3 @@ def bigDraw (lengths):
 
             l.draw(win)
   
-    win.getMouse()
-    win.close()
