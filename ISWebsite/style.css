@@ -1,21 +1,74 @@
+/* Use javascript to direct people to a tutorial page after download completes? */
 html{
   background-color: #223399;
   color: #000000;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', Arial, sans-serif
 }
 
-nav{
+.nav{
   background-color: #ffffff;
   border: 2px solid #000000;
+  list-style: none;
   margin: 1em;
+  margin-top:0;
   padding: 1em;
-  text-align: center;
+  clear: none;
+  float:left;
+  width:15%;
 }
 
-nav a{
-  text-align: left;
-  margin: 1em;
+.nav li{
+  padding-top:5%;
+  padding-bottom:5%;
+  float:right;
+  clear:right;
+  text-align: right;
 }
+
+ul.person li{
+  list-style: none;
+  padding-left:0;
+  float: right;
+  clear:right;
+  margin-top: 0;
+  margin-bottom: 4%;
+}
+
+ul.person{
+  float: right;
+  clear:right;
+  padding-left:2%;
+}
+
+ul .selfie{
+  border-radius: 50%;
+  width: 20%;
+  float: left;
+  clear: left;
+  padding-right: 2%;
+}
+
+/*.nav li ul.tools{
+  list-style:none;
+  display: none;
+  position:absolute;
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  border-left:none;
+  padding-left:1%;
+  padding-right:1%;
+  margin-top:-2.75%;
+  margin-left:5%;
+}
+
+.nav li ul.tools li{
+  float:left;
+  clear:left;
+}
+
+.nav li:hover ul.tools{
+  display: block;
+}*/
 
 header{
   background-color: #ffffff;
@@ -27,7 +80,8 @@ header{
 
 #main_logo{
   float:left;
-  width: 25%;
+  width: 15%;
+  padding-left: 5%;
 }
 
 header h1{
@@ -36,13 +90,11 @@ header h1{
   font-size: 64px;
   float: right;
   clear:right;
+  width: 74%;
   text-align: right;
   padding-right: 6%;
   letter-spacing: 0.1em;
-}
-
-header img{
-  padding-left: 2%;
+  margin-bottom:0;
 }
 
 h2{
@@ -59,22 +111,16 @@ main{
   background-color: #ffffff;
   border: 2px solid #000000;
   margin: 1em;
-  padding: 2em;
-  padding-top: 1em;
+  padding: 1em;
   line-height: 1.5;
-  margin-top:0em;
-}
-
-form{
-  line-height: 4;
 }
 
 .tool_logo{
   float:left;
-  clear:left;
-  margin-top: 1em;
-  margin-bottom: 1em; 
-  margin-right:1em;
+  clear:none;
+  width:28%;
+  margin:auto 0;
+  padding-right: 2%;
 }
 
 a:link, a:visited{
@@ -87,15 +133,45 @@ a:hover, a:active{
   text-decoration: underline;
 }
 
-.dl a{
+a.dl{
   color: #bb2233;
 }
 
+a#email{
+  font-size: 18px;
+  text-decoration: underline;
+}
+
 p, article{
-  font-size:1.25em;
+  font-size:18px;
+  margin-top: 0;
+}
+
+article.desc{
+  width: 70%;
+  float:right;
+  clear: right;
 }
 
 h3{
   margin-bottom:0.5em;
-  font-size: 30px;
+  margin-top:0;
+  font-size: 28px;
 }
+
+/*header{
+  overflow: auto;
+}
+
+header div, #main_logo{
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  overflow: auto;
+  padding: 1em;
+  margin: 1em;
+}
+
+#main_logo{
+  float:left;
+  width: 15%;
+}*/
