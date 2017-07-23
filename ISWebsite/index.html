@@ -9,15 +9,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
 
     <script>
-      var data_url = "nav.json"
+      var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
+
+      var tools_url = 
 
       $(document).ready(function(){
-        $.getJSON(data_url,
+        $.getJSON(nav_url,
           function(data){
-            var mysource = $('#nav').html();
+            var mysource = $('.nav').html();
             var mytemplate = Handlebars.compile(mysource);
             var myresult = mytemplate(data);
-            $('#nav').html(myresult);
+            $('.nav').html(myresult);
           })
       })
     </script>
@@ -31,12 +33,11 @@
       </h1>
       <h2>an open-source, multi-tool suite for scientific research</h2>
     </header>
-    <div class="handlebars" id="nav">
-      <ul>
+      <ul class="nav">
         {{#nav}}
           <li><a href="{{url}}">{{title}}</a></li>
         {{/nav}}
-    </div>
+      </ul>
     
     <main>
       <article>

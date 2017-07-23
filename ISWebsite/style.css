@@ -1,9 +1,5 @@
 /* Use javascript to direct people to a tutorial page after download completes? */
 
-.handlebars {
-    display: none;
-}
-
 html{
   background-color: #223399;
   color: #000000;
