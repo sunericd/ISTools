@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Integrated Sciences: Home</title>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js" > </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
+
+    <script>
+      var data_url = "nav.json"
+
+      $(document).ready(function(){
+        $.getJSON(data_url,
+          function(data){
+            var mysource = $('#nav').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('#nav').html(myresult);
+          })
+      })
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <a href="index.html"><img id="main_logo" src="images/logo_web.png" alt="Integrated Sciences Logo" title="Home"/></a>
+      <h1>
+        Integrated Sciences
+      </h1>
+      <h2>an open-source, multi-tool suite for scientific research</h2>
+    </header>
+    <div class="handlebars" id="nav">
+      <ul>
+        {{#nav}}
+          <li><a href="{{url}}">{{title}}</a></li>
+        {{/nav}}
+    </div>
+    
+    <main>
+      <article>
+        <a href="gelViz.html" title="Gel Visualization Tool"><h3>gel.Viz</h3></a>
+        <p>gel.Viz is a gel visualization tool that generates an image of a gel given a sequence and restriction enzymes. This tool is the perfect resource to plan and verify experiments involving gel electrophoresis.</p>
+      </article>
+      <article>
+        <a href="plasBUILDR.html" title="Plasmid BUILDR Tool"><h3>Plasmid BUILDR</h3></a>
+        <p>The Plasmid BUILDR, or <strong>B</strong>enchmark <strong>U</strong>tility for <strong>I</strong>ntegrating <strong>L</strong>ong <strong>D</strong>NA <strong>R</strong>eads, generates a protocol to build a desired plasmid given the sequences of the recipient plasmid and any insert genes or markers.<br/>Several features are under development.</p>
+      </article>
+      <a class="dl" href="data/ISTools.exe" title = "Download IS Toolkit" download>Get gel.Viz and Plasmid BUILDR Tools</a>
+    </main>
+  </body>
+</html>
