@@ -1,0 +1,8 @@
+{
+  "tools": [
+    {"url": "gelViz.html", "title": "gel.Viz", "im": "images/logo_gelViz.png", "desc": "gel.Viz is a gel visualization tool that generates an image of a gel given a sequence and restriction enzymes. This tool is the perfect resource to plan and verify experiments involving gel electrophoresis.", "done": true},
+    {"url": "msm.html", "title": "MSM", "im": "images/logo_msm.png", "desc": "A tool for returning all exact DNA matches between a list of sequences in a specified read frame.", "done": false},
+    {"url": "plasBUILDR.html", "title": "Plasmid BUILDR", "im": "images/logo_plas.png", "desc": "The Plasmid BUILDR, or Benchmark Utility for Integrating Long DNA Reads, generates a protocol to build a desired plasmid given the sequences of the recipient plasmid and any insert genes or markers.", "done": true},
+    {"url": "seqprop.html", "title": "SeqProp", "im": "images/logo_seqprop.png", "desc": "A program for producing relevant information of sequences (e.g. ATGC content, annealing and denaturation temperatures, sequence length, restriction sites if any and location, start and stop codons if any and location, etc).", "done": false}
+  ]
+}

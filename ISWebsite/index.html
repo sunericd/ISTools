@@ -9,17 +9,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
 
     <script>
-      var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
-
-      var tools_url = 
+      var data_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
 
       $(document).ready(function(){
-        $.getJSON(nav_url,
+        $.getJSON(data_url,
           function(data){
-            var mysource = $('.nav').html();
-            var mytemplate = Handlebars.compile(mysource);
-            var myresult = mytemplate(data);
-            $('.nav').html(myresult);
+            var navigation = $('.nav').html();
+            var mytemplate = Handlebars.compile(navigation);
+            var navresult = mytemplate(data);
+            $('.nav').html(navresult);
+
+            navigation= $('.tools_info')
+            mytemplate=Handlebars.compile(navigation);
+            navresult=mytemplate(data);
+            $('.tools_info').html(navresult);
           })
       })
     </script>
@@ -40,14 +43,14 @@
       </ul>
     
     <main>
-      <article>
-        <a href="gelViz.html" title="Gel Visualization Tool"><h3>gel.Viz</h3></a>
-        <p>gel.Viz is a gel visualization tool that generates an image of a gel given a sequence and restriction enzymes. This tool is the perfect resource to plan and verify experiments involving gel electrophoresis.</p>
-      </article>
-      <article>
-        <a href="plasBUILDR.html" title="Plasmid BUILDR Tool"><h3>Plasmid BUILDR</h3></a>
-        <p>The Plasmid BUILDR, or <strong>B</strong>enchmark <strong>U</strong>tility for <strong>I</strong>ntegrating <strong>L</strong>ong <strong>D</strong>NA <strong>R</strong>eads, generates a protocol to build a desired plasmid given the sequences of the recipient plasmid and any insert genes or markers.<br/>Several features are under development.</p>
-      </article>
+      <div class="tools_info">
+        {{#tools}}
+        <article>
+          <a href="{{url}}" title="{{title}}"><h3>{{title}}</h3></a>
+          <p>{{desc}}</p>
+        </article>
+        {{/tools}}
+      </div>
       <a class="dl" href="data/ISTools.exe" title = "Download IS Toolkit" download>Get gel.Viz and Plasmid BUILDR Tools</a>
     </main>
   </body>

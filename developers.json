@@ -1,0 +1,9 @@
+{
+  "developers": [
+    {"dev": true, "name":"Yein Christina Park", "im": "images/christina.jpg", "desc": "Christina is studying Chemistry and Physics at Harvard College."},
+    {"dev": true,"name":"Eric Sun", "im": "images/eric.jpg", "desc": "Eric is an undergraduate at Harvard College likely concentrating in Chemical and Physical Biology with a master's in Applied Mathematics. He hails from Pueblo, Colorado and has a neat box turtle named Tooty."}
+    {"dev": false, "name":"Yi Chen"},
+    {"dev": false, "name":"Jimmy Thai"},
+    {"dev": false, "name":"Siavash Zamirpour"}
+  ]
+}
