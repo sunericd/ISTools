@@ -5,6 +5,32 @@
     <meta charset="UTF-8"/>
     <title>Integrated Sciences: gel.Viz</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js" > </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
+
+    <script>
+      var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
+
+      var tools_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/tools.json";
+
+      $(document).ready(function(){
+        $.getJSON(nav_url,
+          function(data){
+            var mysource = $('.nav').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.nav').html(myresult);
+          })
+
+        $.getJSON(tools_url,
+          function(data){
+            var mysource = $('.tools_info').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.tools_info').html(myresult);
+          })
+      })
+    </script>
   </head>
 
   <body>
@@ -15,15 +41,13 @@
       </h1>
       <h2>an open-source, multi-tool suite for scientific research</h2>
     </header>
+    
     <ul class="nav">
-      <li><a href="index.html" title="Home">Home</a></li>
-      <li><a href="about.html" title="About">About Us</a></li>
-      <li><a href="gelViz.html" title="Gel Visualization Tool">gel.Viz</a></li>
-      <li><a href="msm.html" title="Multiple Sequence Mapper Tool">MSM</a></li>      
-      <li><a href="plasBUILDR.html" title="Plasmid BUILDR Tool">Plasmid BUILDR</a></li>
-      <li><a href="seqprop.html" title="Sequence Properties Tool">SeqProp</a></li>      
-      <li><a href="contact.html" title="Contact Us">Contact Us</a></li>
+      {{#nav}}
+        <li><a href="{{url}}">{{title}}</a></li>
+      {{/nav}}
     </ul>
+
     <main>
       <img class="tool_logo" src="images/logo_msm.png" title="Multiple Sequence Mapper logo" alt="Multiple Sequence Mapper logo"/>
       <article class="desc">

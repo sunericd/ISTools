@@ -9,20 +9,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
 
     <script>
-      var data_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
+      var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
+
+      var tools_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/tools.json";
 
       $(document).ready(function(){
-        $.getJSON(data_url,
+        $.getJSON(nav_url,
           function(data){
-            var navigation = $('.nav').html();
-            var mytemplate = Handlebars.compile(navigation);
-            var navresult = mytemplate(data);
-            $('.nav').html(navresult);
+            var mysource = $('.nav').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.nav').html(myresult);
+          })
 
-            navigation= $('.tools_info')
-            mytemplate=Handlebars.compile(navigation);
-            navresult=mytemplate(data);
-            $('.tools_info').html(navresult);
+        $.getJSON(tools_url,
+          function(data){
+            var mysource = $('.tools_info').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.tools_info').html(myresult);
           })
       })
     </script>
@@ -36,22 +41,30 @@
       </h1>
       <h2>an open-source, multi-tool suite for scientific research</h2>
     </header>
-      <ul class="nav">
-        {{#nav}}
-          <li><a href="{{url}}">{{title}}</a></li>
-        {{/nav}}
-      </ul>
+    
+    <ul class="nav">
+      {{#nav}}
+        <li><a href="{{url}}">{{title}}</a></li>
+      {{/nav}}
+    </ul>
     
     <main>
       <div class="tools_info">
         {{#tools}}
-        <article>
-          <a href="{{url}}" title="{{title}}"><h3>{{title}}</h3></a>
-          <p>{{desc}}</p>
-        </article>
+          {{#if done}}
+            <article>
+              <a href="{{url}}" title="{{title}}"><h3>{{title}}</h3></a>
+              <p>{{desc}}</p>
+            </article>
+          {{else}}
+            <article class="soon">
+              <h3>{{title}} (In development)</h3>
+              <p>{{desc}}</p>
+            </article>
+          {{/if}}
         {{/tools}}
       </div>
-      <a class="dl" href="data/ISTools.exe" title = "Download IS Toolkit" download>Get gel.Viz and Plasmid BUILDR Tools</a>
+      <a class="dl" href="data/ISTools.exe" title = "Download IS Toolkit" download>Get most recent toolkit</a>
     </main>
   </body>
 </html>

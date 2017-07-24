@@ -5,6 +5,32 @@
     <meta charset="UTF-8"/>
     <title>Integrated Sciences: About Us</title>
     <link rel="stylesheet" href="style.css" type="text/css"/>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js" > </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
+
+    <script>
+      var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
+
+      var dev_url="https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/developers.json";
+
+      $(document).ready(function(){
+        $.getJSON(nav_url,
+          function(data){
+            var mysource = $('.nav').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.nav').html(myresult);
+          })
+
+        $.getJSON(dev_url,
+          function(data){
+            var mysource = $('.person').html();
+            var mytemplate = Handlebars.compile(mysource);
+            var myresult = mytemplate(data);
+            $('.person').html(myresult);
+          })
+      })
+    </script>
   </head>
 
   <body>
@@ -15,15 +41,13 @@
       </h1>
       <h2>an open-source, multi-tool suite for scientific research</h2>
     </header>
+
     <ul class="nav">
-      <li><a href="index.html" title="Home">Home</a></li>
-      <li><a href="about.html" title="About">About Us</a></li>
-      <li><a href="gelViz.html" title="Gel Visualization Tool">gel.Viz</a></li>
-      <li><a href="msm.html" title="Multiple Sequence Mapper Tool">MSM</a></li>      
-      <li><a href="plasBUILDR.html" title="Plasmid BUILDR Tool">Plasmid BUILDR</a></li>
-      <li><a href="seqprop.html" title="Sequence Properties Tool">SeqProp</a></li>      
-      <li><a href="contact.html" title="Contact Us">Contact Us</a></li>
+      {{#nav}}
+        <li><a href="{{url}}">{{title}}</a></li>
+      {{/nav}}
     </ul>
+    
     <main>
       <article>
         <h3>About</h3>
@@ -32,8 +56,9 @@
       <article>
         <h3>Development Team</h3>
         <ul class="person">
-          <li><img src="images/christina.jpg" alt="Yein Christina Park" class="selfie"><strong>Yein Christina Park</strong><br/>Christina is studying Chemistry and Physics at Harvard College.</li>
-          <li><img src="images/eric.JPG" alt="Eric Sun" class="selfie"><strong>Eric Sun</strong><br/>Eric is an undergraduate at Harvard College likely concentrating in Chemical and Physical Biology with a master's in Applied Mathematics. He hails from Pueblo, Colorado and has a neat box turtle named Tooty.</li>
+          {{#developers}}
+            <li><img src="{{im}}" alt="{{name}}" class="selfie"><strong>{{name}}</strong><br/>{{desc}}</li>
+          {{/developers}}
         </ul>
       </article>
       <article>
@@ -41,7 +66,7 @@
         <ul>
           <li><strong>Yi Chen</strong></li>
           <li><strong>Jimmy Thai</strong></li>
-          <li><strong>Siavash Zamirpour</strong></li>
+          <li><strong>Siavash Zamirpour</strong></li>          
         </ul>
       </article>
     </main>
