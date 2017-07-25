@@ -10,6 +10,12 @@ def gel_visualize(plasmid_seqs, re_list,restriction_sites):
     plasmid_seqs = plasmid_seqs.split()
     re_list = re_list.split()
 
+    # Changes all to upper case (so user can input case insensitive)
+    plasmid_seqs_upper = []
+    for plasmid_seq in plasmid_seqs:
+        plasmid_seqs_upper.append(plasmid_seq.upper())
+    plasmid_seqs = plasmid_seqs_upper
+
     # ERROR HANDLING
     # 30 well maximum
     if len(plasmid_seqs) > 30:
@@ -100,8 +106,8 @@ def gel_visualize(plasmid_seqs, re_list,restriction_sites):
         lengths_list.append(lengths)
         max_lengths.append(max(lengths))
 
-        print ('Fragment Lengths:')
-        print (lengths)
+        #print ('Fragment Lengths:')
+        #print (lengths)
 
     # Selecting appropriate ladder
     #big_ladder = []
