@@ -215,10 +215,6 @@ form p{
   padding-left: 1%;
 } */
 
-form #success{
-  display: none;
-}
-
 footer, footer #email{
   color: #ffffff;
   text-align: center;
