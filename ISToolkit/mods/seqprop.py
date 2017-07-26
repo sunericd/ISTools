@@ -33,7 +33,11 @@ def SeqProp(sequence, restriction_sites):
     # Add one for long oligos
     
     # Reverse-Complement
-    complement = ''.join([{'A':'T','C':'G','G':'C','T':'A','a':'t','c':'g','g':'c','t':'a'}[B] for B in list(sequence)])
+    print (sequence)
+    try:
+        complement = ''.join([{'A':'T','C':'G','G':'C','T':'A','a':'t','c':'g','g':'c','t':'a', '\n':'', ' ':''}[B] for B in list(sequence)])
+    except:
+        assert False, "Make sure only A, T, C, or G!"
     reverse_complement = complement[::-1]
     
     # Indices of possible start and stop codons
@@ -133,7 +137,7 @@ def SeqProp(sequence, restriction_sites):
     lines.extend(('Restriction Cut Sites :' + ' ' + ', '.join(cut_idxs), ' ')) # Need to add names of enzymes
 
     out_text=''
-    for item in protocol:
+    for item in lines:
         out_text=out_text+("%s\n" % item)
         
     outPg=Toplevel()
