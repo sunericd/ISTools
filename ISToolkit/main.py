@@ -10,6 +10,7 @@ import mods.gel_visualizer as gv
 import os
 import mods.plasmid_builder as pb
 import pandas as pd
+import mods.seqprop as sp
 
 class Example(Frame):   
   
@@ -119,7 +120,7 @@ class Example(Frame):
         gelPg_clr=Button(gelPg,text="Clear",command=lambda:[f() for f in [gelPg_reList.selection_clear(0, END),gelPg_geneBox.delete('1.0', END)]])
         gelPg_clr.pack(side=RIGHT,padx=5,pady=5)
         
-        gelPg_ent= Button(gelPg,text="Enter", command=lambda:self.getValueG(gelPg_geneBox,gelPg_reList.curselection(),reData))
+        gelPg_ent= Button(gelPg,text="Enter", command=lambda:self.runGV(gelPg_geneBox,gelPg_reList.curselection(),reData))
         gelPg_ent.pack(side=RIGHT, padx=5, pady=5)  
 
         #Upload Gene Sequence File Button.
@@ -156,7 +157,7 @@ class Example(Frame):
 ]])
         plasPg_clr.pack(side=RIGHT,padx=5,pady=5)
         
-        plasPg_ent= Button(plasPg,text="Enter", command=lambda:self.getValueP(plasPg_geneBox,plasPg_mrkr,reData))
+        plasPg_ent= Button(plasPg,text="Enter", command=lambda:self.runBUILDR(plasPg_geneBox,plasPg_mrkr,reData))
         plasPg_ent.pack(side=RIGHT)
 
         plasPg_upl1=Button(plasPg_f1,text="Upload Recipient Plasmid Sequence", command=lambda: self.fileUpload(plasPg_geneBox,False))
@@ -172,8 +173,26 @@ class Example(Frame):
 
         #############################SeqProp##################################
 
-        comingSoon=Label(seqPg,text="SeqProp is a program for producing relevant information of sequences (e.g. ATGC content, annealing and denaturation temperatures, sequence length, restriction sites if any and location, start and stop codons if any and location, etc).\n\nComing Soon.",width=110)
-        comingSoon.pack(fill=BOTH,padx=10,pady=10)
+        seqPg_f1 = Frame(seqPg)
+        seqPg_f1.pack(fill=X)
+
+        seqPg_l1 = Label(seqPg_f1, text="Sequence to analyze (DNA bases only)")
+        seqPg_l1.pack(side=LEFT, padx=5, pady=5)      
+
+        seqPg_f2=Frame(seqPg)
+        seqPg_f2.pack(fill=X)
+        
+        seqPg_box = Text(seqPg_f2, height=10)
+        seqPg_box.pack(fill=X, padx=5, pady=5)
+        
+        seqPg_ul1 = Button(seqPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(seqPg_box, False))     
+        seqPg_ul1.pack(fill=Y, pady=5, padx=5, side=RIGHT)       
+        
+        seqPg_clr=Button(seqPg,text="Clear",command=lambda:[f() for f in [seqPg_box.delete('1.0', END)]])
+        seqPg_clr.pack(side=RIGHT,padx=5,pady=5)
+        
+        seqPg_ent= Button(seqPg,text="Enter", command=lambda:self.runSeqProp(seqPg_box,reData))
+        seqPg_ent.pack(side=RIGHT)
 
         ##########################Credits#################################
         credPg_f1 = Frame(credPg)
@@ -228,8 +247,8 @@ class Example(Frame):
         return text  
         
     
-    #Save text boxes to files for gel.Viz.    
-    def getValueG(self, geneBox,reIndex,reData):
+    #Get info from text boxes to run gel.Viz.    
+    def runGV(self, geneBox,reIndex,reData):
         seq=geneBox.get("1.0",END)
         seq = str(seq) 
         allre=self.getREs(reData)
@@ -239,8 +258,8 @@ class Example(Frame):
         gv.gel_visualize(seq,re,reData)
 
     
-    #Save text boxes to files.    
-    def getValueP(self, geneBox,reBox,reData):
+    #Get info from text boxes to run PlasBUILDR    
+    def runBUILDR(self, geneBox,reBox,reData):
         seq=geneBox.get("1.0",END)
         re=reBox.get("1.0",END)
         seq=geneBox.get("1.0",END)
@@ -248,6 +267,11 @@ class Example(Frame):
         re=reBox.get("1.0",END)
         re=str(re)
         pb.plasmid_builder(seq, re,reData)
+
+    def runSeqProp(self, seqBox, reData):
+        seq=seqBox.get("1.0", END)
+        seq=str(seq)
+        sp.SeqProp(seq, reData)
 
 #Runs the program
 def main():

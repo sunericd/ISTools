@@ -1,12 +1,5 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import pandas as pd
-
-
-# In[2]:
+from tkinter import *
 
 def find_all(a_str, sub):
     start = 0
@@ -16,10 +9,7 @@ def find_all(a_str, sub):
         yield start
         start += len(sub)
 
-
-# In[17]:
-
-def SeqProp (sequence, restriction_sites, save_path, filename):
+def SeqProp (sequence, restriction_sites):
     # Add re_list+re_Sites?, save_path_file, 
     
     '''Calculates GC_content, Tm, start/stop indices, possible exons, re_sites, motifs, binding domains, 
@@ -141,9 +131,71 @@ def SeqProp (sequence, restriction_sites, save_path, filename):
     lines.extend(('Stop Codon Indices: ' + ', '.join(stop_idxs), ' '))
     lines.extend(('Possible Exons :', ' ')) # Need to fix, need to loop?
     lines.extend(('Restriction Cut Sites :' + ' ' + ', '.join(cut_idxs), ' ')) # Need to add names of enzymes
-    
-    file = open(save_path+filename, 'w') # save_path+filename
-    
-    for line in lines:
-        file.write("%s\n" % line)
 
+    out_text=''
+    for item in protocol:
+        out_text=out_text+("%s\n" % item)
+        
+    outPg=Toplevel()
+    outPg.title("Sequence "+str(index))
+
+    outFrame=Frame(outPg)
+    outFrame.pack(fill=X)
+
+    output=Text(outFrame,wrap=WORD)
+    output.delete('1.0',END)
+    output.insert(END,out_text)
+    output.configure(state=DISABLED)
+    output.pack(fill=BOTH,expand=True,side=LEFT,padx=5,pady=5)
+
+    yScroll=Scrollbar(outFrame)
+    yScroll.pack(side=LEFT,fill=Y)
+    yScroll.configure(command=output.yview)
+
+    output.configure(yscrollcommand=yScroll.set)
+
+    pFrame=Frame(outPg)
+    pFrame.pack(fill=X,padx=5,pady=5)
+
+    pLabel=Label(pFrame, text="File Path: ")
+    pLabel.pack(fill=Y,padx=5,pady=5,side=LEFT)
+
+    pathBox=Text(pFrame,height=1,state=DISABLED)
+    pathBox.pack(fill=BOTH,side=LEFT,padx=5,pady=5)
+
+    browseButton=Button(pFrame, text="Browse", command=lambda:getDir(pathBox))
+    browseButton.pack(side=RIGHT,fill=Y,padx=5,pady=5)
+
+    fFrame=Frame(outPg)
+    fFrame.pack(fill=X,padx=5,pady=5)
+
+    fLabel=Label(fFrame,text="File Name: ")
+    fLabel.pack(fill=Y,padx=5,pady=5,side=LEFT)
+
+    fileBox=Text(fFrame,height=1)
+    fileBox.pack(fill=BOTH,side=LEFT,padx=5,pady=5)
+    
+    sButton=Button(fFrame, text="Save", command=lambda:writeFile(out_text,pathBox.get('1.0',END),fileBox.get('1.0',END)))
+    sButton.pack(side=RIGHT,fill=Y,padx=5,pady=5)
+    
+    #If multiple files: index=index+1
+
+def writeFile(text,path,fname):
+    name=path.strip()+fname.strip()
+    try:
+        os.chmod('*', 0o755)
+        os.remove(name+".txt")
+    except OSError:
+        pass
+
+    h=open(name.strip()+".txt","w")
+    h.write(text)
+    h.close()
+
+def getDir(box):
+    box.configure(state=NORMAL)
+    box.delete('1.0',END)
+    pathname=filedialog.askdirectory()
+    pathname=pathname+'/'
+    box.insert(END,pathname)
+    box.configure(state=DISABLED)
