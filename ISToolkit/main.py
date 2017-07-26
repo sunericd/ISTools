@@ -271,6 +271,8 @@ class Example(Frame):
     def runSeqProp(self, seqBox, reData):
         seq=seqBox.get("1.0", END)
         seq=str(seq)
+        print(seq)
+        print(reData)
         sp.SeqProp(seq, reData)
 
 #Runs the program

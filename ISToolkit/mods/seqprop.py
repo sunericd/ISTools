@@ -9,7 +9,7 @@ def find_all(a_str, sub):
         yield start
         start += len(sub)
 
-def SeqProp (sequence, restriction_sites):
+def SeqProp(sequence, restriction_sites):
     # Add re_list+re_Sites?, save_path_file, 
     
     '''Calculates GC_content, Tm, start/stop indices, possible exons, re_sites, motifs, binding domains, 
