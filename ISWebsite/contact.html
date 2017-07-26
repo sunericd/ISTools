@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="style.css" type="text/css"/>
     <script src="https://code.jquery.com/jquery-2.1.3.min.js" > </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"> </script>
-
-    <script>
+    <script type="text/javascript">
       var nav_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/nav.json";
 
       var tools_url = "https://raw.githubusercontent.com/sunericd/ISTools/master/ISWebsite/tools.json";
@@ -49,13 +48,28 @@
     </ul>
 
     <main>
-      <article>
-        <h3>Contact Us</h3>
-        <p>Please reach out with any questions, comments, or concerns! We will try to respond in a timely manner!</p>
-        <p>Integrated Sciences: <a id=email href="#" title="">intsci.tools@gmail.com</a></p>
+      <h3>Contact Us</h3>
+      <p>Please reach out with any questions, comments, or concerns! We will try to respond in a timely manner!</p>
+      <!-- <form action="" method="post">
+        <p><label for="name">Name: </label>
+        <input type="text" name="name" id="name" required="required" autofocus="autofocus"></input></p>
+        <p><label for="name">Email: </label>
+        <input type="email" name="email" id="email" required="required"></input></p>
+        <p><label for="comment">Comment: </label>
+        <input type="text" name="comment" id="comment" required="required"></input></p>
+        <p><input type="submit" name="submit" value="Submit" id="submit"></input></p>
+      </form> -->
+
+      <article id="contact">
+        <p>Integrated Sciences: <a id="email" href="#" title="">support@integratedsciences.org</a></p>
         <p>Eric Sun, developer: edsun97 [at] gmail [dot] com</p>
-        <p>Yein Christina Park, developer: 1004parky [at] gmail [dot] com</p>
+        <p>Yein Christina Park, developer: 1004parky [at] gmail [dot] com</p>        
       </article>
     </main>
+
+    <footer>
+      <p>MIT License, Copyright 2017 by Integrated Sciences Group</p>
+      <p><a id="email" href="mailto:support@integratedsciences.org" title="">support@integratedsciences.org</a></p>      
+    </footer>
   </body>
 </html>

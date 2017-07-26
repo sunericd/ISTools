@@ -10,9 +10,9 @@ html{
   background-color: #ffffff;
   border: 2px solid #000000;
   list-style: none;
-  margin: 1em;
+  margin: 1%;
   margin-top:0;
-  padding: 1em;
+  padding: 1%;
   clear: none;
   float:left;
   width:15%;
@@ -58,8 +58,8 @@ header{
   background-color: #ffffff;
   overflow: auto;
   border: 2px solid #000000;
-  padding: 1em;
-  margin: 1em;
+  padding: 1%;
+  margin: 1%;
 }
 
 #main_logo{
@@ -69,7 +69,7 @@ header{
 }
 
 header h1{
-  padding-top: 0em;
+  padding-top: 0;
   font-variant: small-caps;
   font-size: 64px;
   float: right;
@@ -77,7 +77,7 @@ header h1{
   width: 74%;
   text-align: right;
   padding-right: 6%;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.1%;
   margin-bottom:0;
 }
 
@@ -94,8 +94,8 @@ main{
   overflow: auto;
   background-color: #ffffff;
   border: 2px solid #000000;
-  margin: 1em;
-  padding: 1em;
+  margin: 1%;
+  padding: 1%;
   line-height: 1.5;
 }
 
@@ -138,35 +138,21 @@ article.desc{
 }
 
 h3{
-  margin-bottom:0.5em;
+  margin-bottom:0.5%;
   margin-top:0;
   font-size: 28px;
 }
 
-/* .toolSlides{
-  max-width: 1000px;
-  position: relative;
-}
-
-.toolSlides img{
-  height: 15%;
+ .slideshow{
+  width: 100%;
   margin: auto;
 }
 
-.toolSlides .dot{
-  text-align: center;
-  height: 13px;
-  width: 13px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
+img.toolSlide{
+  height: 15%;
+  margin: auto;
+  display: none;
 }
-
-.active {
-  background-color: #717171;
-} */
 
 @media (max-width: 1100px) {
   header h1 {
@@ -209,4 +195,34 @@ h3{
   .nav a{
     font-size: 18px;
   }
+}
+
+form{
+  border-right: 2px solid #000000;
+  overflow: auto;
+  float: left;
+  clear: left;
+  width: 58%;
+}
+
+form p{
+  float: left;
+  clear: left;
+}
+
+/* #contact{
+  width: 40%;
+  padding-left: 1%;
+} */
+
+form #success{
+  display: none;
+}
+
+footer, footer #email{
+  color: #ffffff;
+  text-align: center;
+  width: 100%;
+  float: left;
+  margin-bottom: 1%;
 }
