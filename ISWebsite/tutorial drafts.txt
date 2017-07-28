@@ -1,0 +1,12 @@
+1. Install the ISToolkit. (link)
+2. Upon open, the start screen will pop up. Closing this window will result in the termination of the program. Clicking "Start" will lead you to the main menu of the toolkit.
+3. 
+
+gel.Viz
+gel.Viz simulates gel electrophoresis. 
+
+Plasmid BUILDR
+
+MSM
+
+SeqProp
