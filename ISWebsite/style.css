@@ -29,7 +29,7 @@ header h1{
   width: 74%;
   text-align: right;
   padding-right: 6%;
-  letter-spacing: 0.1%;
+  letter-spacing: 10px;
   margin-bottom:0;
 }
 
@@ -126,7 +126,7 @@ a.dl{
   color: #bb2233;
 }
 
-a#email{
+a.email{
   font-size: 18px;
   text-decoration: underline;
 }
@@ -148,7 +148,7 @@ article.desc{
   clear: right;
 }
 
-footer, footer #email{
+footer, footer .email{
   color: #ffffff;
   text-align: center;
   width: 100%;
@@ -186,6 +186,7 @@ form p{
   header h1 {
     font-size: 54px;
     width: 77%;
+    letter-spacing: 5px;
   }
   #main_logo{
     padding-left: 2%;
@@ -217,10 +218,13 @@ form p{
   header h1{
     width: 100%;
   }
+  .nav a{
+    font-size: 20px;
+  }
 }
 
 @media (max-width: 540px) {
   .nav a{
-    font-size: 18px;
+    font-size: 14px;
   }
 }
