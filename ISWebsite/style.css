@@ -6,54 +6,6 @@ html{
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', Arial, sans-serif
 }
 
-.nav{
-  background-color: #ffffff;
-  border: 2px solid #000000;
-  list-style: none;
-  margin: 1%;
-  margin-top:0;
-  padding: 1%;
-  clear: none;
-  float:left;
-  width:15%;
-  overflow: auto;
-}
-
-.nav li{
-  padding-top:5%;
-  padding-bottom:5%;
-  float:right;
-  clear:right;
-  text-align: right;
-}
-
-ul.person li{
-  list-style: none;
-  padding-left:0;
-  float: right;
-  clear:right;
-  margin-top: 0;
-  margin-bottom: 4%;
-}
-
-ul.person{
-  float: right;
-  clear:right;
-  padding-left:2%;
-}
-
-ul .selfie{
-  border-radius: 50%;
-  width: 20%;
-  float: left;
-  clear: left;
-  padding-right: 2%;
-}
-
-.soon{
-  color: #777777;
-}
-
 header{
   background-color: #ffffff;
   overflow: auto;
@@ -90,6 +42,56 @@ header h2{
   padding-right: 6%;
 }
 
+.nav{
+  background-color: #ffffff;
+  border: 2px solid #000000;
+  list-style: none;
+  margin: 1%;
+  margin-top:0;
+  padding: 1%;
+  clear: none;
+  float:left;
+  width:15%;
+  overflow: auto;
+}
+
+.nav li{
+  padding-top:5%;
+  padding-bottom:5%;
+  float:right;
+  clear:right;
+  text-align: right;
+}
+
+/* People on the About Us page */
+ul.person li{
+  list-style: none;
+  padding-left:0;
+  float: right;
+  clear:right;
+  margin-top: 0;
+  margin-bottom: 4%;
+}
+
+ul.person{
+  float: right;
+  clear:right;
+  padding-left:2%;
+}
+
+ul .selfie{
+  border-radius: 50%;
+  width: 20%;
+  float: left;
+  clear: left;
+  padding-right: 2%;
+}
+
+/* For tools not completed yet */
+.soon{
+  color: #777777;
+}
+
 main{
   overflow: auto;
   background-color: #ffffff;
@@ -99,6 +101,7 @@ main{
   line-height: 1.5;
 }
 
+/* Position logos on tool pages. */
 .tool_logo{
   float:left;
   clear:none;
@@ -107,6 +110,7 @@ main{
   padding-right: 2%;
 }
 
+/* Link aesthetics */
 a:link, a:visited{
   font-size:24px;
   color: #223399;
@@ -117,6 +121,7 @@ a:hover, a:active{
   text-decoration: underline;
 }
 
+/* Bring more attention to tool download links */
 a.dl{
   color: #bb2233;
 }
@@ -124,6 +129,12 @@ a.dl{
 a#email{
   font-size: 18px;
   text-decoration: underline;
+}
+
+h3{
+  margin-bottom:0.5%;
+  margin-top:0;
+  font-size: 28px;
 }
 
 p, article{
@@ -137,23 +148,40 @@ article.desc{
   clear: right;
 }
 
-h3{
-  margin-bottom:0.5%;
-  margin-top:0;
-  font-size: 28px;
-}
-
- .slideshow{
+footer, footer #email{
+  color: #ffffff;
+  text-align: center;
   width: 100%;
-  margin: auto;
+  float: left;
+  margin-bottom: 1%;
 }
 
-img.toolSlide{
-  height: 15%;
-  margin: auto;
-  display: none;
+/* form{
+  border-right: 2px solid #000000;
+  overflow: auto;
+  float: left;
+  clear: left;
+  width: 58%;
 }
 
+form p{
+  float: left;
+  clear: left;
+}
+
+#info{
+  width: 40%;
+  padding-left: 1%;
+} */
+
+/* Current page */
+#iamhere{
+  width:100%;
+  border-bottom: 1.5px solid #000000;
+  border-top: 1.5px solid #000000;
+}
+
+/* Size adjusting */
 @media (max-width: 1100px) {
   header h1 {
     font-size: 54px;
@@ -195,30 +223,4 @@ img.toolSlide{
   .nav a{
     font-size: 18px;
   }
-}
-
-form{
-  border-right: 2px solid #000000;
-  overflow: auto;
-  float: left;
-  clear: left;
-  width: 58%;
-}
-
-form p{
-  float: left;
-  clear: left;
-}
-
-/* #contact{
-  width: 40%;
-  padding-left: 1%;
-} */
-
-footer, footer #email{
-  color: #ffffff;
-  text-align: center;
-  width: 100%;
-  float: left;
-  margin-bottom: 1%;
 }
