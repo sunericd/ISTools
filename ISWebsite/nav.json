@@ -1,11 +1,11 @@
 {
   "nav": [
-    {"url": "index.html", "title": "Home"},
-    {"url": "about.html", "title": "About Us"},
-    {"url": "gelViz.html", "title": "gel.Viz"},
-    {"url": "msm.html", "title": "MSM"},
-    {"url": "plasBUILDR.html", "title": "Plasmid BUILDR"},
-    {"url": "seqprop.html", "title": "SeqProp"},    
-    {"url": "contact.html", "title": "Contact Us"}
+    {"url": "index.html", "title": "Home", "id": "index"},
+    {"url": "about.html", "title": "About Us", "id": "about"},
+    {"url": "gelViz.html", "title": "gel.Viz", "id": "gv"},
+    {"url": "msm.html", "title": "MSM", "id": "msm"},
+    {"url": "plasBUILDR.html", "title": "Plasmid BUILDR", "id": "pb"},
+    {"url": "seqprop.html", "title": "SeqProp", "id": "sp"},    
+    {"url": "contact.html", "title": "Contact Us", "id": "contact"}
   ]
 }
