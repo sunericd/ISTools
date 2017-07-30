@@ -50,25 +50,25 @@ def SeqProp(sequence, restriction_sites, index):
     
     # Indices of possible start and stop codons
     if 'A' in sequence:
-        start_idxs = list(find_all(sequence, 'AUG'))
+        start_idxs = list(find_all(sequence, 'ATG'))
         if len(start_idxs) == 0:
             start_idxs.append('None')
         # Stop Codons UAA UAG UGA
-        UAA_idxs = list(find_all(sequence, 'UAA'))
-        UAG_idxs = list(find_all(sequence, 'UAG'))
-        UGA_idxs = list(find_all(sequence, 'UGA'))
+        UAA_idxs = list(find_all(sequence, 'TAA'))
+        UAG_idxs = list(find_all(sequence, 'TAG'))
+        UGA_idxs = list(find_all(sequence, 'TGA'))
         stop_idxs = UAA_idxs + UAG_idxs + UGA_idxs
         stop_idxs.sort()
         if len(stop_idxs) == 0:
             stop_idxs.append('None')
     else:
-        start_idxs = list(find_all(sequence, 'aug'))
+        start_idxs = list(find_all(sequence, 'atg'))
         if len(start_idxs) == 0:
             start_idxs.append('None')
         # Stop Codons UAA UAG UGA
-        UAA_idxs = list(find_all(sequence, 'uaa'))
-        UAG_idxs = list(find_all(sequence, 'uag'))
-        UGA_idxs = list(find_all(sequence, 'uga'))
+        UAA_idxs = list(find_all(sequence, 'taa'))
+        UAG_idxs = list(find_all(sequence, 'tag'))
+        UGA_idxs = list(find_all(sequence, 'tga'))
         stop_idxs = UAA_idxs + UAG_idxs + UGA_idxs
         stop_idxs.sort()
         if len(stop_idxs) == 0:
