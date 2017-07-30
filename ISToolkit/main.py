@@ -185,7 +185,7 @@ class Example(Frame):
         seqPg_box = Text(seqPg_f2, height=10)
         seqPg_box.pack(fill=X, padx=5, pady=5)
         
-        seqPg_ul1 = Button(seqPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(seqPg_box, False))     
+        seqPg_ul1 = Button(seqPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(seqPg_box, True))     
         seqPg_ul1.pack(fill=Y, pady=5, padx=5, side=RIGHT)       
         
         seqPg_clr=Button(seqPg,text="Clear",command=lambda:[f() for f in [seqPg_box.delete('1.0', END)]])
@@ -271,7 +271,7 @@ class Example(Frame):
     def runSeqProp(self, seqBox, reData):
         seq=seqBox.get("1.0", END)
         seq=str(seq)
-        sp.SeqProp(seq, reData)
+        sp.multSeqProp(seq, reData)
 
 #Runs the program
 def main():

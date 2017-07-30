@@ -14,9 +14,12 @@ Plasmid BUILDR
 2. First, upload or copy and paste the sequence of your recipient plasmid. Accepted file formats are .txt files and .fasta files.
 3. Then, upload or copy and paste the sequences of the marker(s) or gene(s) you want to insert into the plasmid (you may also use both methods). The application also accepts multiple sequences. Be sure to separate the sequences with spaces. (Uploading multiple files will automatically put spaces between the sequences).
 4. Click "Enter" to run the program.
-5. A separate protocol will be generated for each marker or sequence. You can choose to save the protocol(s).
+5. A separate protocol will be generated for each marker or sequence. You can choose to save the protocol(s) to different text files.
 
 MSM
 
 SeqProp
-1. SeqProp analyzes a sequence for ___
+1. SeqProp analyzes a given sequence for the GC content, melting temperature, start and stop codons, possible exons, and restriction enzyme sites.
+2. First, upload or copy and paste the sequence(s) you want to analyze. Accepted file formats are .txt files and .fasta files. Be sure to separate each sequence with a space. (Uploading multiple files will automatically put spaces between the sequences). 
+4. Click "Enter" to run the program.
+5. A separate file will be generated for each sequence. You can choose to save the analyses to different text files.

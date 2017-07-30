@@ -2,6 +2,14 @@ import pandas as pd
 from tkinter import *
 import os
 
+#Runs SeqProp for multiple sequences.
+def multSeqProp(sequences, restriction_sites):
+    sequences=sequences.split()
+    index=1
+    for seq in sequences:
+        SeqProp(seq, restriction_sites,index)
+        index=index+1
+
 def find_all(a_str, sub):
     start = 0
     while True:
@@ -10,7 +18,7 @@ def find_all(a_str, sub):
         yield start
         start += len(sub)
 
-def SeqProp(sequence, restriction_sites):
+def SeqProp(sequence, restriction_sites, index):
     # Add re_list+re_Sites?, save_path_file, 
     
     '''Calculates GC_content, Tm, start/stop indices, possible exons, re_sites, motifs, binding domains, 
@@ -141,7 +149,7 @@ def SeqProp(sequence, restriction_sites):
         out_text=out_text+("%s\n" % item)
         
     outPg=Toplevel()
-    outPg.title("SeqProp")
+    outPg.title("SeqProp "+str(index))
 
     outFrame=Frame(outPg)
     outFrame.pack(fill=X)
@@ -181,8 +189,6 @@ def SeqProp(sequence, restriction_sites):
     
     sButton=Button(fFrame, text="Save", command=lambda:writeFile(out_text,pathBox.get('1.0',END),fileBox.get('1.0',END)))
     sButton.pack(side=RIGHT,fill=Y,padx=5,pady=5)
-    
-    #If multiple files: index=index+1
 
 def writeFile(text,path,fname):
     name=path.strip()+fname.strip()
