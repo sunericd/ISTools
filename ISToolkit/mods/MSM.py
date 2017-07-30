@@ -1,12 +1,4 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import csv
-
-
-# In[7]:
 
 def msm (filename, motif_length = 10, match_threshold = 3):
     '''
@@ -89,15 +81,3 @@ def msm (filename, motif_length = 10, match_threshold = 3):
     with open('test.txt', 'w') as f:
         for key, value in new_seq_dict.items():
             f.write('%s:%s\n' % (key, value))
-            
-
-
-# In[ ]:
-
-#msm ("test_genes.tsv", 'a', 4)
-
-
-# In[ ]:
-
-
-

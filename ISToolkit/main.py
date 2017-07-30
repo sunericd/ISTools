@@ -11,6 +11,7 @@ import os
 import mods.plasmid_builder as pb
 import pandas as pd
 import mods.seqprop as sp
+import mods.MSM as msm
 
 class Example(Frame):   
   
@@ -68,6 +69,7 @@ class Example(Frame):
         msmPg=Frame(ntbk)
         seqPg=Frame(ntbk)
         primPg=Frame(ntbk)
+        msmPg=Frame(ntbk)
 
         #########################Front page#################################3
         
@@ -169,8 +171,47 @@ class Example(Frame):
 
         ##############################MSM####################################
 
-        comingSoon=Label(msmPg,text="A tool for returning all exact DNA matches between a list of sequences in a specified read frame.\n\nComing Soon.",width=110)
-        comingSoon.pack(fill=BOTH,padx=10,pady=10)
+        msmPg_f1 = Frame(msmPg)
+        msmPg_f1.pack(fill=X)
+
+        msmPg_l1 = Label(msmPg_f1, text="Select a .csv or .tsv file containing the names and the sequences.")
+        msmPg_l1.pack(fill=X)
+
+        msmPg_f2=Frame(msmPg)
+        msmPg_f2.pack(fill=X)
+
+        msmPg_l2 = Label(msmPg_f2, text="Filename: ")
+        msmPg_l2.pack(side = LEFT, padx=5, pady=5)
+
+        msmPg_box = Text(msmPg_f2, height=1, state=DISABLED)
+        msmPg_box.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
+
+        msmPg_browse=Button(msmPg_f2, text="Browse", command=lambda: self.getDir(msmPg_box))
+        msmPg_browse.pack(side=RIGHT,fill=Y,padx=5,pady=5)
+
+        msmPg_f3=Frame(msmPg)
+        msmPg_f3.pack(fill=X)
+
+        msmPg_l3 = Label(msmPg_f3, text="Motif Length (optional): ")
+        msmPg_l3.pack(side = LEFT, padx=5, pady=5)
+
+        msmPg_motif = Text(msmPg_f3, height=1)
+        msmPg_motif.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
+
+        msmPg_f4=Frame(msmPg)
+        msmPg_f4.pack(fill=X)
+
+        msmPg_l4 = Label(msmPg_f4, text="Match Threshold (optional): ")
+        msmPg_l4.pack(side = LEFT, padx=5, pady=5)
+
+        msmPg_thresh = Text(msmPg_f4, height=1)
+        msmPg_thresh.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
+
+        msmPg_clr=Button(msmPg,text="Clear",command=lambda:[f() for f in [self.delBox(msmPg_box),msmPg_motif.delete('1.0',END),msmPg_thresh.delete('1.0',END)]])
+        msmPg_clr.pack(side=RIGHT,padx=5,pady=5)
+        
+        msmPg_ent= Button(msmPg,text="Enter", command=lambda:self.runMSM(msmPg_box,msmPg_motif,msmPg_thresh))
+        msmPg_ent.pack(side=RIGHT)
 
         #############################SeqProp##################################
 
@@ -265,12 +306,23 @@ class Example(Frame):
                 tBox.delete('1.0',END)
             tBox.insert(END, text)
             
+    def delBox(self,box):
+        box.configure(state=NORMAL)
+        box.delete('1.0',END)
+        box.configure(state=DISABLED)
 
     def readFile(self, filename):
         f = open(filename, "r")
         text = f.read()
         return text  
-        
+
+    def getDir(self, tBox):
+        ftypes=[('CSV files', '*.csv'),('TSV files', '*.tsv')]
+        fname=filedialog.askopenfilename(title="Select file",filetypes=ftypes)
+        tBox.configure(state=NORMAL)
+        tBox.delete('1.0',END)
+        tBox.insert(END,fname)
+        tBox.configure(state=DISABLED)
     
     #Get info from text boxes to run gel.Viz.    
     def runGV(self, geneBox,reIndex,reData):
@@ -299,6 +351,24 @@ class Example(Frame):
         seq=str(seq)
         sp.multSeqProp(seq, reData)
 
+    def runMSM(self,fileBox, motifBox, threshBox):
+        fname=str(self.resource_path(fileBox.get('1.0',END)))
+        fname=fname.strip()
+        motif=str(motifBox.get('1.0',END))
+        thresh=str(threshBox.get('1.0',END))
+        print(thresh)
+        if len(motif)>0 and len(thresh)>0:
+            motif=int(motif.strip())
+            thresh=int(thresh.strip()) 
+            msm.msm(fname,motif_length=motif,match_threshold=thresh)
+        elif len(motif)>0:
+            motif=int(motif.strip())
+            msm.msm(fname,motif_length=motif)
+        elif thresh != None:
+            thresh=int(thresh.strip()) 
+            msm.msm(fname,match_threshold=thresh)
+        else:
+            msm.msm(fname)
     #Get info from text boxes to run PlasBUILDR    
     def runPrim(self,seqBox):
         print("hi")
@@ -318,3 +388,6 @@ def main():
 
 if __name__ == '__main__':
     main() 
+
+''' comingSoon=Label(msmPg,text="A tool for returning all exact DNA matches between a list of sequences in a specified read frame.\n\nComing Soon.",width=110)
+comingSoon.pack(fill=BOTH,padx=10,pady=10) '''
