@@ -67,6 +67,7 @@ class Example(Frame):
         credPg=Frame(ntbk)
         msmPg=Frame(ntbk)
         seqPg=Frame(ntbk)
+        primPg=Frame(ntbk)
 
         #########################Front page#################################3
         
@@ -194,6 +195,29 @@ class Example(Frame):
         seqPg_ent= Button(seqPg,text="Enter", command=lambda:self.runSeqProp(seqPg_box,reData))
         seqPg_ent.pack(side=RIGHT)
 
+        #############################PrimerDesign##################################
+
+        primPg_f1 = Frame(primPg)
+        primPg_f1.pack(fill=X)
+
+        primPg_l1 = Label(primPg_f1, text="Sequence to amplify (DNA bases only)")
+        primPg_l1.pack(side=LEFT, padx=5, pady=5)      
+
+        primPg_f2=Frame(primPg)
+        primPg_f2.pack(fill=X)
+        
+        primPg_box = Text(primPg_f2, height=10)
+        seqPg_box.pack(fill=X, padx=5, pady=5)
+        
+        primPg_ul1 = Button(primPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(primPg_box, True))     
+        primPg_ul1.pack(fill=Y, pady=5, padx=5, side=RIGHT)       
+        
+        primPg_clr=Button(primPg,text="Clear",command=lambda:[f() for f in [primPg_box.delete('1.0', END)]])
+        primPg_clr.pack(side=RIGHT,padx=5,pady=5)
+        
+        primPg_ent= Button(primPg,text="Enter", command=lambda:self.runPrim(primPg_box))
+        primPg_ent.pack(side=RIGHT)
+
         ##########################Credits#################################
         credPg_f1 = Frame(credPg)
         credPg_f1.pack(fill=X)    
@@ -213,6 +237,7 @@ class Example(Frame):
         ntbk.add(gelPg,text="gel.Viz", padding=5)
         ntbk.add(msmPg,text="Multiple Sequence Mapper",padding=5)
         ntbk.add(plasPg,text="Plasmid BUILDR", padding=5)
+        ntbk.add(primPg,text="PrimerDesign",padding=5)
         ntbk.add(seqPg,text="SeqProp",padding=5)
         ntbk.add(credPg,text="Credits", padding=5)
         
@@ -268,10 +293,15 @@ class Example(Frame):
         re=str(re)
         pb.plasmid_builder(seq, re,reData)
 
+    #Get info from text boxes to run SeqProp    
     def runSeqProp(self, seqBox, reData):
         seq=seqBox.get("1.0", END)
         seq=str(seq)
         sp.multSeqProp(seq, reData)
+
+    #Get info from text boxes to run PlasBUILDR    
+    def runPrim(self,seqBox):
+            
 
 #Runs the program
 def main():
