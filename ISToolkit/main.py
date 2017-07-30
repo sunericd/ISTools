@@ -207,7 +207,7 @@ class Example(Frame):
         primPg_f2.pack(fill=X)
         
         primPg_box = Text(primPg_f2, height=10)
-        seqPg_box.pack(fill=X, padx=5, pady=5)
+        primPg_box.pack(fill=X, padx=5, pady=5)
         
         primPg_ul1 = Button(primPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(primPg_box, True))     
         primPg_ul1.pack(fill=Y, pady=5, padx=5, side=RIGHT)       
