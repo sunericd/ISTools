@@ -78,7 +78,7 @@ class Example(Frame):
         mainPg_l1.configure(image=pic)
         mainPg_l1.grid(row=0, column=0,padx=5, sticky=E+W+S+N)
 
-        mainPg_l2=Label(mainPg,text="Welcome to the Integrated Sciences Toolkit. Click on the tabs above to alternate between tools. \n\nSend any questions to intsci.tools@gmail.com\n\nVersion 1.0.0\n\nLast updated July 16, 2017.", font=("Helvetica", 12), wraplength=250)
+        mainPg_l2=Label(mainPg,text="Welcome to the Integrated Sciences Toolkit. Click on the tabs above to alternate between tools. \n\nSend any questions to support@integratedsciences.org\n\nVersion 1.0.0\n\nLast updated July 27, 2017.", font=("Helvetica", 12), wraplength=250)
         mainPg_l2.grid(row=0, column=1, padx=5, sticky=E+W+S+N)
         
         #!!!Add a label, maybe beginning instructions.
