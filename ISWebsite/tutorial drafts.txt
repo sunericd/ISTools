@@ -1,12 +1,22 @@
 1. Install the ISToolkit. (link)
 2. Upon open, the start screen will pop up. Closing this window will result in the termination of the program. Clicking "Start" will lead you to the main menu of the toolkit.
-3. 
+3. The main menu lists all the tools available or in development. 
 
 gel.Viz
-gel.Viz simulates gel electrophoresis. 
+1. gel.Viz simulates gel electrophoresis. It takes two inputs: the gene sequence(s) and the restriction enzyme(s).
+2. First, upload or copy and paste the sequence you want to run (you may also use both methods). Accepted file formats are .txt files and .fasta files. The application also accepts multiple sequences. Be sure to separate the sequences with spaces. (Uploading multiple files will automatically put spaces between the sequences).
+3. Click the restriction enzymes you want from the alphabetical list. Multiple enzymes can be selected or deselected.
+4. Click "Enter" to run the program.
+5. The generated gel will automatically label each sequence in the order they were inputted. The length of the longest sequence fragment will determine the ladder. The longest fragment the program can handle is 3.0kb; the shortest is 0.05kb.
 
 Plasmid BUILDR
+1. Plasmid BUILDR generates a protocol for creating a plasmid. It takes two inputs: the sequence of the recipient plasmid (only one sequence) and the sequences of the marker(s) or gene(s) you want to insert into the plasmid.
+2. First, upload or copy and paste the sequence of your recipient plasmid. Accepted file formats are .txt files and .fasta files.
+3. Then, upload or copy and paste the sequences of the marker(s) or gene(s) you want to insert into the plasmid (you may also use both methods). The application also accepts multiple sequences. Be sure to separate the sequences with spaces. (Uploading multiple files will automatically put spaces between the sequences).
+4. Click "Enter" to run the program.
+5. A separate protocol will be generated for each marker or sequence. You can choose to save the protocol(s).
 
 MSM
 
 SeqProp
+1. SeqProp analyzes a sequence for ___
