@@ -1,5 +1,6 @@
 import pandas as pd
 from tkinter import *
+import os
 
 def find_all(a_str, sub):
     start = 0
@@ -33,7 +34,6 @@ def SeqProp(sequence, restriction_sites):
     # Add one for long oligos
     
     # Reverse-Complement
-    print (sequence)
     try:
         complement = ''.join([{'A':'T','C':'G','G':'C','T':'A','a':'t','c':'g','g':'c','t':'a', '\n':'', ' ':''}[B] for B in list(sequence)])
     except:
@@ -96,12 +96,12 @@ def SeqProp(sequence, restriction_sites):
         for cut_site in restriction_seqs[re_index]:
             site_idx = sequence.find(restriction_seqs[re_index][seq_index])
             if site_idx != -1:
-                re_idxs.append(site_idx)
+                re_idxs.append(str(site_idx))
                 while site_idx < len(sequence):
                     site_idx = sequence.find(restriction_seqs[re_index][seq_index], site_idx)
                     if site_idx == -1:
                         break
-                    re_idxs.append(site_idx)
+                    re_idxs.append(str(site_idx))
                     site_idx += len(restriction_seqs[re_index][seq_index])
             seq_index += 1
         if len(re_idxs) >= 2:
@@ -141,7 +141,7 @@ def SeqProp(sequence, restriction_sites):
         out_text=out_text+("%s\n" % item)
         
     outPg=Toplevel()
-    outPg.title("Sequence "+str(index))
+    outPg.title("SeqProp")
 
     outFrame=Frame(outPg)
     outFrame.pack(fill=X)
