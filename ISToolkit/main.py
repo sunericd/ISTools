@@ -301,7 +301,7 @@ class Example(Frame):
 
     #Get info from text boxes to run PlasBUILDR    
     def runPrim(self,seqBox):
-            
+        print("hi")
 
 #Runs the program
 def main():
