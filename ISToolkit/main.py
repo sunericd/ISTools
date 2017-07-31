@@ -97,7 +97,7 @@ class Example(Frame):
         gelPg_f2=Frame(gelPg)
         gelPg_f2.pack(fill=X)
         
-        gelPg_geneBox = Text(gelPg_f2, height=10)        
+        gelPg_geneBox = Text(gelPg_f2, height=10, width=60)        
         gelPg_geneBox.pack(fill=X, padx=5)
         
         #Restriction Enzyme list
@@ -110,7 +110,7 @@ class Example(Frame):
         allREs=StringVar()
         allREs.set(self.getREs(reData))
 
-        gelPg_reList = Listbox(gelPg_f3,selectmode="multiple",listvariable=allREs,width=110) 
+        gelPg_reList = Listbox(gelPg_f3,selectmode="multiple",listvariable=allREs, width=110) 
         gelPg_reList.pack(padx=5, side=LEFT, fill=Y)
 
         yScrollRE=Scrollbar(gelPg_f3)
@@ -142,7 +142,7 @@ class Example(Frame):
         plasPg_f2=Frame(plasPg)
         plasPg_f2.pack(fill=X)
         
-        plasPg_geneBox = Text(plasPg_f2, height=10)
+        plasPg_geneBox = Text(plasPg_f2, height=10, width=60)
         plasPg_geneBox.pack(fill=X, padx=5)
         
         #Restriction enzymes input
@@ -152,7 +152,7 @@ class Example(Frame):
         plasPg_l2 = Label(plasPg_f2, text="Markers or Genes (Separate sequences with spaces)")
         plasPg_l2.pack(side=LEFT, padx=5, pady=5)        
 
-        plasPg_mrkr = Text(plasPg_f3,height=10)
+        plasPg_mrkr = Text(plasPg_f3, height=10, width=60)
         plasPg_mrkr.pack(fill=X, padx=5)
 
         #Navigation
@@ -183,11 +183,11 @@ class Example(Frame):
         msmPg_l2 = Label(msmPg_f2, text="Filename: ")
         msmPg_l2.pack(side = LEFT, padx=5, pady=5)
 
-        msmPg_box = Text(msmPg_f2, height=1, state=DISABLED)
-        msmPg_box.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
-
         msmPg_browse=Button(msmPg_f2, text="Browse", command=lambda: self.getDir(msmPg_box))
         msmPg_browse.pack(side=RIGHT,fill=Y,padx=5,pady=5)
+
+        msmPg_box = Text(msmPg_f2, height=1, width=60, state=DISABLED)
+        msmPg_box.pack(side=RIGHT,padx=5,pady=5,fill=BOTH)
 
         msmPg_f3=Frame(msmPg)
         msmPg_f3.pack(fill=X)
@@ -195,8 +195,8 @@ class Example(Frame):
         msmPg_l3 = Label(msmPg_f3, text="Motif Length (optional): ")
         msmPg_l3.pack(side = LEFT, padx=5, pady=5)
 
-        msmPg_motif = Text(msmPg_f3, height=1)
-        msmPg_motif.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
+        msmPg_motif = Text(msmPg_f3, height=1, width=60)
+        msmPg_motif.pack(side=RIGHT ,padx=5,pady=5,fill=BOTH)
 
         msmPg_f4=Frame(msmPg)
         msmPg_f4.pack(fill=X)
@@ -204,8 +204,8 @@ class Example(Frame):
         msmPg_l4 = Label(msmPg_f4, text="Match Threshold (optional): ")
         msmPg_l4.pack(side = LEFT, padx=5, pady=5)
 
-        msmPg_thresh = Text(msmPg_f4, height=1)
-        msmPg_thresh.pack(side=LEFT,padx=5,pady=5,fill=BOTH)
+        msmPg_thresh = Text(msmPg_f4, height=1, width=60)
+        msmPg_thresh.pack(side=RIGHT,padx=5,pady=5,fill=BOTH)
 
         msmPg_clr=Button(msmPg,text="Clear",command=lambda:[f() for f in [self.delBox(msmPg_box),msmPg_motif.delete('1.0',END),msmPg_thresh.delete('1.0',END)]])
         msmPg_clr.pack(side=RIGHT,padx=5,pady=5)
@@ -224,7 +224,7 @@ class Example(Frame):
         seqPg_f2=Frame(seqPg)
         seqPg_f2.pack(fill=X)
         
-        seqPg_box = Text(seqPg_f2, height=10)
+        seqPg_box = Text(seqPg_f2, height=10, width=60)
         seqPg_box.pack(fill=X, padx=5, pady=5)
         
         seqPg_ul1 = Button(seqPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(seqPg_box, True))     
@@ -247,7 +247,7 @@ class Example(Frame):
         primPg_f2=Frame(primPg)
         primPg_f2.pack(fill=X)
         
-        primPg_box = Text(primPg_f2, height=10)
+        primPg_box = Text(primPg_f2, height=10, width=60)
         primPg_box.pack(fill=X, padx=5, pady=5)
         
         primPg_ul1 = Button(primPg_f1, text= "Upload Sequence", command = lambda: self.fileUpload(primPg_box, True))     
@@ -356,15 +356,14 @@ class Example(Frame):
         fname=fname.strip()
         motif=str(motifBox.get('1.0',END))
         thresh=str(threshBox.get('1.0',END))
-        print(thresh)
-        if len(motif)>0 and len(thresh)>0:
+        if motif!='' and thresh!='':
             motif=int(motif.strip())
             thresh=int(thresh.strip()) 
             msm.msm(fname,motif_length=motif,match_threshold=thresh)
-        elif len(motif)>0:
+        elif motif!='':
             motif=int(motif.strip())
             msm.msm(fname,motif_length=motif)
-        elif thresh != None:
+        elif thresh!='':
             thresh=int(thresh.strip()) 
             msm.msm(fname,match_threshold=thresh)
         else:
