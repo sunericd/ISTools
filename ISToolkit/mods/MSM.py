@@ -1,6 +1,9 @@
 import csv
+from tkinter import *
+import os
+import saveOutput
 
-def msm (filename, motif_length = 10, match_threshold = 3):
+def msm(filename, motif_length = 10, match_threshold = 3):
     '''
     filename = STRING (address of the tsv/csv file to be read; organized with 1. NAME, 2. SEQ)
     motif_length = INT (min length of the matching seqeunces/motifs)
@@ -77,7 +80,9 @@ def msm (filename, motif_length = 10, match_threshold = 3):
         num_genes = len(gene_name)
         if num_genes >= match_threshold:
             new_seq_dict[sequence] = gene_name
-            
-    with open('test.txt', 'w') as f:
-        for key, value in new_seq_dict.items():
-            f.write('%s:%s\n' % (key, value))
+
+    out_text=''
+    for key, value in new_seq_dict.items():
+        out_text=out_text+('%s:%s\n' % (key, value))
+
+    saveOutput.saveData(out_text,"MSM")

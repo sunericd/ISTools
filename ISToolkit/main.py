@@ -192,7 +192,7 @@ class Example(Frame):
         msmPg_f3=Frame(msmPg)
         msmPg_f3.pack(fill=X)
 
-        msmPg_l3 = Label(msmPg_f3, text="Motif Length (optional): ")
+        msmPg_l3 = Label(msmPg_f3, text="Motif Length: ")
         msmPg_l3.pack(side = LEFT, padx=5, pady=5)
 
         msmPg_motif = Text(msmPg_f3, height=1, width=60)
@@ -201,7 +201,7 @@ class Example(Frame):
         msmPg_f4=Frame(msmPg)
         msmPg_f4.pack(fill=X)
 
-        msmPg_l4 = Label(msmPg_f4, text="Match Threshold (optional): ")
+        msmPg_l4 = Label(msmPg_f4, text="Match Threshold: ")
         msmPg_l4.pack(side = LEFT, padx=5, pady=5)
 
         msmPg_thresh = Text(msmPg_f4, height=1, width=60)
@@ -278,7 +278,7 @@ class Example(Frame):
         ntbk.add(gelPg,text="gel.Viz", padding=5)
         ntbk.add(msmPg,text="Multiple Sequence Mapper",padding=5)
         ntbk.add(plasPg,text="Plasmid BUILDR", padding=5)
-        ntbk.add(primPg,text="PrimerDesign",padding=5)
+        ntbk.add(primPg,text="Primo",padding=5)
         ntbk.add(seqPg,text="SeqProp",padding=5)
         ntbk.add(credPg,text="Credits", padding=5)
         
@@ -356,18 +356,19 @@ class Example(Frame):
         fname=fname.strip()
         motif=str(motifBox.get('1.0',END))
         thresh=str(threshBox.get('1.0',END))
-        if motif!='' and thresh!='':
-            motif=int(motif.strip())
-            thresh=int(thresh.strip()) 
-            msm.msm(fname,motif_length=motif,match_threshold=thresh)
-        elif motif!='':
+        ''' if motif!='' and thresh!='': '''
+        motif=int(motif.strip())
+        thresh=int(thresh.strip()) 
+        print(motif, thresh)
+        msm.msm(fname,motif_length=motif,match_threshold=thresh)
+        ''' elif motif!='':
             motif=int(motif.strip())
             msm.msm(fname,motif_length=motif)
         elif thresh!='':
             thresh=int(thresh.strip()) 
             msm.msm(fname,match_threshold=thresh)
         else:
-            msm.msm(fname)
+            msm.msm(fname) '''
     #Get info from text boxes to run PlasBUILDR    
     def runPrim(self,seqBox):
         print("hi")
