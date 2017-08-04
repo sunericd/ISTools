@@ -6,7 +6,7 @@ from math import *
 from PIL import Image as NewImage
 
 
-def gel_visualize(plasmid_seqs, re_list,restriction_sites):
+def gel_visualize(plasmid_seqs, re_list, restriction_sites):
     
     max_lengths, lengths_list = digestSeq(plasmid_seqs, re_list, restriction_sites)
             
