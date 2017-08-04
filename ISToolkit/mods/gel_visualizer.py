@@ -7,6 +7,18 @@ from PIL import Image as NewImage
 
 
 def gel_visualize(plasmid_seqs, re_list,restriction_sites):
+    
+    max_lengths, lengths_list = digestSeq(plasmid_seqs, re_list, restriction_sites)
+            
+    if max(max_lengths) > 1000:
+        #print("big")
+        bigDraw(lengths_list)
+
+    else:
+        #print("Small")
+        smallDraw(lengths_list)
+
+def digestSeq (plasmid_seqs, re_list,restriction_sites):
     plasmid_seqs = plasmid_seqs.split()
     re_list = re_list.split()
 
@@ -109,17 +121,7 @@ def gel_visualize(plasmid_seqs, re_list,restriction_sites):
         #print ('Fragment Lengths:')
         #print (lengths)
 
-    # Selecting appropriate ladder
-    #big_ladder = []
-    #small_ladder = []
-            
-    if max(max_lengths) > 1000:
-        #print("big")
-        bigDraw(lengths_list)
-
-    else:
-        #print("Small")
-        smallDraw(lengths_list)
+        return (max_lengths, lengths_list)
 
 #Small Ladder
 def smallDraw (lengths):
