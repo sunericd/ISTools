@@ -80,6 +80,7 @@ def SeqProp(sequence, restriction_sites, index):
             start_idxs = list(find_all(sequence, 'ATG'))
             if len(start_idxs) == 0:
                 start_idxs.append('None')
+                print ("Warning: No start codons detected.")
             # Stop Codons UAA UAG UGA
             UAA_idxs = list(find_all(sequence, 'TAA'))
             UAG_idxs = list(find_all(sequence, 'TAG'))
@@ -88,10 +89,12 @@ def SeqProp(sequence, restriction_sites, index):
             stop_idxs.sort()
             if len(stop_idxs) == 0:
                 stop_idxs.append('None')
+                print ("Warning: No stop codons detected.")
         else:
             start_idxs = list(find_all(sequence, 'atg'))
             if len(start_idxs) == 0:
                 start_idxs.append('None')
+                print ("Warning: No start codons detected.")
             # Stop Codons UAA UAG UGA
             UAA_idxs = list(find_all(sequence, 'taa'))
             UAG_idxs = list(find_all(sequence, 'tag'))
@@ -100,6 +103,7 @@ def SeqProp(sequence, restriction_sites, index):
             stop_idxs.sort()
             if len(stop_idxs) == 0:
                 stop_idxs.append('None')
+                print ("Warning: No stop codons detected.")
         return (start_idxs, stop_idxs)
 
     def getExons(sequence, starts, stops):
@@ -109,6 +113,7 @@ def SeqProp(sequence, restriction_sites, index):
             exons.append([start_codon, stop_idxs[i]])
         if len(exons) == 0:
             exons.append('None')
+            print ("Warning: No exons detected.")
         return(exons)
 
     def getRe(sequence, restriction_sites):
@@ -145,6 +150,7 @@ def SeqProp(sequence, restriction_sites, index):
                 cut_idxs.append(re_idxs)
         if len(cut_idxs) == 0:
             cut_idxs.append('None')
+            print ("Warning: No restriction sites detected.")
         cut_idxs.sort()
         # Cleaning NaNs
         # restriction_seqs = []
