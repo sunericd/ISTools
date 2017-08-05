@@ -43,27 +43,47 @@ class TestGene:
 	def test_GelViz(self):
 		print ("Testing Gel.Viz...")
 		# Testing that digestSeq() works
-		max_lengths, lengths_lists = gv.digestSeq() # Fill in with inputs
-		assert len(max_lengths) =< len(length_lists), "Please make sure that your inputs are structured correctly."
+		max_lengths, lengths_lists = gv.digestSeq() # NEED SAMPLE SEQUENCE
+		assert len(max_lengths) ==< len(length_lists), "Please make sure that your inputs are structured correctly."
 		for length in max_length:
-			assert isinstance (length, int), "Please make sure input is formatted correctly"
+			assert isinstance (length, int), "Please make sure input is formatted correctly."
 		for lengths in lengths_list:
-			for lenght in lengths:
-				assert isinstance (length, int), "Please make sure input is formatted correctly"
+			for length in lengths:
+				assert isinstance (length, int), "Please make sure input is formatted correctly."
+		# TEST THAT LENGTHS CORRECT FOR TEST DATA
+		assert lengths_lists == [[val, val], [val, val], [val, val]], "Restriction lengths do match correct lengths."
 
 		# Testing that bigDraw() works
 
 		# Testing that smallDraw() works
 
 	def test_SeqProp(self):
-		print ("Testing SeqProp")
-	# break up into smaller functions and then assert for each
-	# if no re sites, start, stop, or if tm range bad print warning
+		print ("Testing SeqProp...")
+		# Testing GC, Tm outputs
+		# NEED SAMPLE SEQUENCES X 2 (one small < 14, one big > 15)
+		gcc_small, gcn_small = sp.getGC(small_seq) # SMALL SEQUENCE HERE
+		assert gcc_small == Ns, "Small oligomer GC content does not match." # KNOWN GCC
+		gcc_big, gcn_big = sp.getGC(big_seq) # BIG SEQ HERE
+		assert gcc_big == Nb, "Large oligomer GC content does not match." # KNOWN GCC
+		Tm = sp.getTm(big_seq, gcc_big)
+		assert Tm == val, "Melting temperature does not match." 
+		# Reverse Complement
+		assert len(big_seq) == len(sp.getRevComp(big_seq)), "Reverse complement length does not match."
+		# Testing Start, Stop, Exon, and Re Site Indices and Warnings
+		starts, stops = sp.getStartStop(big_seq) 
+		assert len(starts) == val, "Number of start codon indices do not match."
+		assert len(stops) == val, "Number of stop codon indices do not match."
+		exons = sp.getExons(big_seq, starts, stops)
+		assert len(exons) == min([len(starts), len(stops)]), "Error with exon detection; number of exons does not match min(codons)"
+		# READ RE SITES HERE
+		re_sites = sp.getRe(sequence, re_sites)
+		assert len(re_sites) == val, "Number of restriction sites do not match."
+
 
 	def test_BUILDR(self):
-		print ("Testing BUILDR")
+		print ("Testing BUILDR...")
 	# Wait until BUILDR is finished
 
 	def test_MSM(self):
-		print ("Testing MSM")
+		print ("Testing MSM...")
 	# Wait until MSM is finished
