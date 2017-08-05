@@ -110,9 +110,10 @@ def SeqProp(sequence, restriction_sites, index):
 
     def getExons(sequence, starts, stops):
         exons = []
-        i = 0
         for start_codon in start_idxs:
-            exons.append([start_codon, stop_idxs[i]])
+            for stop_codon in stop_idxs:
+                if stop_codon - start_codon >= 3:
+                    exons.append([start_codon, stop_codon])
         if len(exons) == 0:
             exons.append('None')
             print ("Warning: No exons detected.")
@@ -173,7 +174,7 @@ def SeqProp(sequence, restriction_sites, index):
         lines.extend(('Reverse Complement: ' + reverse_complement, ' '))
         lines.extend(('Start Codon Indices: ' + ''.join(str(start_idxs)), ' '))
         lines.extend(('Stop Codon Indices: ' + ''.join(str(stop_idxs)), ' '))
-        lines.extend(('Possible Exons :', ' ')) # Need to fix, need to loop?
+        lines.extend(('Possible Exons :'+ ' ' + ''.join(str(exons)), ' '))
         lines.extend(('Restriction Cut Sites :' + ' ' + ''.join(str(cut_idxs)), ' ')) # Need to add names of enzymes
 
         out_text=''
