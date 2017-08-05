@@ -59,25 +59,28 @@ class TestGene:
 
 	def test_SeqProp(self):
 		print ("Testing SeqProp...")
+		print ("reading restriction site data...")
+		reData = pd.read_csv('C:\\Users\\edsun\\Desktop\\IntegratedSciences\\ISTools\\ISToolkit\\data\\restriction_sites2.csv', sep=',')
 		# Testing GC, Tm outputs
 		# NEED SAMPLE SEQUENCES X 2 (one small < 14, one big > 15)
-		gcc_small, gcn_small = sp.getGC(small_seq) # SMALL SEQUENCE HERE
-		assert gcc_small == Ns, "Small oligomer GC content does not match." # KNOWN GCC
-		gcc_big, gcn_big = sp.getGC(big_seq) # BIG SEQ HERE
-		assert gcc_big == Nb, "Large oligomer GC content does not match." # KNOWN GCC
-		Tm = sp.getTm(big_seq, gcc_big)
-		assert Tm == val, "Melting temperature does not match." 
+		gcc_small, gcn_small = sp.getGC('atgcatgcATGC') # SMALL SEQUENCE HERE
+		assert gcc_small == 16.67, "Small oligomer GC content does not match." # KNOWN GCC
+		assert sp.getTm('atgcatgcATGC') == 28, "Small oligomer Tm does not match"
+		gcc_big, gcn_big = sp.getGC('AAAAATGAAAAGGATCCAAAATGAAAAA') # BIG SEQ HERE
+		assert gcc_big == 21.43, "Large oligomer GC content does not match." # KNOWN GCC
+		Tm = sp.getTm('AAAAATGAAAAGGATCCAAAATGAAAAA', gcc_big)
+		assert Tm == 49.67, "Big oligomer Tm does not match." 
 		# Reverse Complement
-		assert len(big_seq) == len(sp.getRevComp(big_seq)), "Reverse complement length does not match."
+		assert len('AAAAATGAAAAGGATCCAAAATGAAAAA') == len(sp.getRevComp('AAAAATGAAAAGGATCCAAAATGAAAAA')), "Reverse complement length does not match."
 		# Testing Start, Stop, Exon, and Re Site Indices and Warnings
-		starts, stops = sp.getStartStop(big_seq) 
-		assert len(starts) == val, "Number of start codon indices do not match."
-		assert len(stops) == val, "Number of stop codon indices do not match."
-		exons = sp.getExons(big_seq, starts, stops)
+		starts, stops = sp.getStartStop('AAAAATGAAAAGGATCCAAAATGAAAAA') 
+		assert len(starts) == 2, "Number of start codon indices do not match."
+		assert len(stops) == 2, "Number of stop codon indices do not match."
+		exons = sp.getExons('AAAAATGAAAAGGATCCAAAATGAAAAA', starts, stops)
 		assert len(exons) == min([len(starts), len(stops)]), "Error with exon detection; number of exons does not match min(codons)"
 		# READ RE SITES HERE
-		re_sites = sp.getRe(sequence, re_sites)
-		assert len(re_sites) == val, "Number of restriction sites do not match."
+		re_sites = sp.getRe('AAAAATGAAAAGGATCCAAAATGAAAAA', reData)
+		assert len(re_sites) == 2, "Number of restriction sites do not match."
 
 
 	def test_BUILDR(self):
