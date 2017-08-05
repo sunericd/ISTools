@@ -50,6 +50,8 @@ def SeqProp(sequence, restriction_sites, index):
     def getGC(sequence):
         GC_num = 0
         for nuc in sequence:
+            if nuc.upper() not in 'ATCG':
+                raise Exception('Please only input DNA sequences: ATCG!!!')
             # Finding number of G's and C's
             if nuc is 'G' or nuc is 'C':
                 GC_num += 1
@@ -104,7 +106,7 @@ def SeqProp(sequence, restriction_sites, index):
             if len(stop_idxs) == 0:
                 stop_idxs.append('None')
                 print ("Warning: No stop codons detected.")
-        return (start_idxs, stop_idxs)
+        return (list(start_idxs), list(stop_idxs))
 
     def getExons(sequence, starts, stops):
         exons = []
@@ -169,10 +171,10 @@ def SeqProp(sequence, restriction_sites, index):
         lines.extend(('GC Content: ' + str(GC_content) + '%', ' '))
         lines.extend(('Melting Temperature (C): ' + str(Tm), ' '))
         lines.extend(('Reverse Complement: ' + reverse_complement, ' '))
-        lines.extend(('Start Codon Indices: ' + ', '.join(str(start_idxs)), ' '))
-        lines.extend(('Stop Codon Indices: ' + ', '.join(str(stop_idxs)), ' '))
+        lines.extend(('Start Codon Indices: ' + ''.join(str(start_idxs)), ' '))
+        lines.extend(('Stop Codon Indices: ' + ''.join(str(stop_idxs)), ' '))
         lines.extend(('Possible Exons :', ' ')) # Need to fix, need to loop?
-        lines.extend(('Restriction Cut Sites :' + ' ' + ', '.join(cut_idxs), ' ')) # Need to add names of enzymes
+        lines.extend(('Restriction Cut Sites :' + ' ' + ''.join(str(cut_idxs)), ' ')) # Need to add names of enzymes
 
         out_text=''
         for item in lines:
