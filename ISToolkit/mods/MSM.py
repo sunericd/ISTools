@@ -30,7 +30,7 @@ def msm(filename, motif_length = 10, match_threshold = 3):
             for line in csv.reader(file, delimiter="\t"):
                 gene_list.append(line)
         elif '.csv' in filename:
-            for line in csv.reader(file, delimiter="\t"):
+            for line in csv.reader(file, delimiter=","):
                 gene_list.append(line)
         else:
             raise Exception('Please use a tsv or csv file as input!')
