@@ -46,6 +46,8 @@ def msm(filename, motif_length = 10, match_threshold = 3):
         gene_info = str(gene[0])
         name_list.append(gene_info)
         seq = gene[1]
+        if len(seq) < 10:
+            print ('Warning: Sequence with length under 10 detected.')
         sequences_list.append(seq)
         
     length_list = []
