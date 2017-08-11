@@ -87,4 +87,5 @@ def msm(filename, motif_length = 10, match_threshold = 3):
     for key, value in new_seq_dict.items():
         out_text=out_text+('%s:%s\n' % (key, value))
 
+
     saveOutput.saveData(out_text,"MSM")

@@ -89,4 +89,12 @@ class TestGene:
 
 	def test_MSM(self):
 		print ("Testing MSM...")
+		try:
+			msm.msm('Test_Data/msm_test.tsv')
+		except:
+			print ('MSM tsv error')
+		try:
+			msm.msm('Test_Data/msm_test.csv')
+		except:
+			print('MSM csv error')
 	# Wait until MSM is finished
