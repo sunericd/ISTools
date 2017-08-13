@@ -1,7 +1,7 @@
 # Testing for the whole ISgeneTK package
 
 import mods.gel_visualizer as gv
-import mods.SeqProp as sp
+import mods.seqprop as sp
 import mods.plasmid_builder as pb
 import mods.MSM as msm
 
@@ -20,7 +20,7 @@ def is_teardown_function():
  
 @with_setup(is_setup_function, is_teardown_function)
 def test_data():
-    print 'Checking test data'
+    print ('Checking test data')
 #    assert multiply(3,4) == 12  <--- Do some assertions with all test data
  
 
@@ -44,7 +44,7 @@ class TestGene:
 		print ("Testing Gel.Viz...")
 		# Testing that digestSeq() works
 		max_lengths, lengths_lists = gv.digestSeq() # NEED SAMPLE SEQUENCE
-		assert len(max_lengths) ==< len(length_lists), "Please make sure that your inputs are structured correctly."
+		assert len(max_lengths) <= len(length_lists), "Please make sure that your inputs are structured correctly."
 		for length in max_length:
 			assert isinstance (length, int), "Please make sure input is formatted correctly."
 		for lengths in lengths_list:
