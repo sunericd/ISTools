@@ -70,7 +70,6 @@ class Example(Frame):
         msmPg=Frame(ntbk)
         seqPg=Frame(ntbk)
         primPg=Frame(ntbk)
-        msmPg=Frame(ntbk)
 
         #########################Front page#################################3
         
@@ -356,7 +355,8 @@ class Example(Frame):
             msm.msm(fname,match_threshold=thresh)
         else:
             msm.msm(fname) '''
-    #Get info from text boxes to run PlasBUILDR    
+            
+    #Get info from text boxes to run Primer Design    
     def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox):
         seq=seqBox.get('1.0',END)
         seq=str(seq)
