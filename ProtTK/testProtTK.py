@@ -1,4 +1,4 @@
-# Testing for the whole ISgeneTK package
+# Testing for the whole ISProtTK package
 
 import mods.ProtQuant as pq
 

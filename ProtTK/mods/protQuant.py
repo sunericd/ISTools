@@ -1,16 +1,9 @@
-
-# coding: utf-8
-
-# In[4]:
-
 from csv import reader
 import numpy as np
 from sklearn.linear_model import LinearRegression, LogisticRegression
+import mods.saveOutput as saveOutput
 
-
-# In[9]:
-
-def protQuant (standards_file, protein_file, N_mass, regression_style='Linear'):
+def protQuant (standards_file, protein_file, N_mass=25, regression_style='Linear'):
     '''
     standards_file = csv or tsv file where first row are the standard concentrations and other rows are fluoresence
     protein_file = csv or tsv file where rows are fluoresences
@@ -43,11 +36,12 @@ def protQuant (standards_file, protein_file, N_mass, regression_style='Linear'):
             print ("Error: Protein Concentration regresses to zero!")
             return
         N_vols.append(N_vol)
+    
+    out_text = str(prot_concs)
+    for item in N_vols:
+        out_text=out_text+("%s\n" % item)
         
-    return (prot_concs, N_vols)
-
-
-# In[20]:
+    saveOutput.saveData(out_text, "ProtQuant")
 
 def readStandards (filename):
     standards_concs = []
@@ -86,9 +80,6 @@ def readStandards (filename):
     
     return (standard_concs, standard_fluors)
 
-
-# In[21]:
-
 def readProteins (filename):
     prot_fluors = []
     
@@ -108,9 +99,6 @@ def readProteins (filename):
     
     return (prot_fluors)
 
-
-# In[22]:
-
 def averageRows (list_of_lists):
     float_lists = []
     for x in list_of_lists:
@@ -118,9 +106,6 @@ def averageRows (list_of_lists):
         float_lists.append(float_x)
     avg = [float(sum(col))/len(col) for col in zip(*float_lists)]
     return (avg)
-
-
-# In[23]:
 
 def regressor(standard_concs, standard_fluors, prot_fluors, regression_style):
     # Reshaping...
@@ -141,12 +126,4 @@ def regressor(standard_concs, standard_fluors, prot_fluors, regression_style):
     return (prot_concs)
 
 
-# In[24]:
-
 #protQuant('test_standards.csv', 'test_proteins.csv', 25, 'Linear')
-
-
-# In[ ]:
-
-
-

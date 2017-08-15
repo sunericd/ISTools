@@ -118,7 +118,7 @@ class Example(Frame):
         gelPg_ent.grid(row=4,column=1,sticky=E,padx=5,pady=5)
 
         #Upload Gene Sequence File Button.
-        gelPg_upload=Button(gelPg,text='Upload Gene Sequence(s)', command=lambda: self.fileUpload(gelPg_geneBox,True))
+        gelPg_upload=Button(gelPg,text='Upload Gene Sequence(s)', command=lambda: self.seqUpload(gelPg_geneBox,True))
         gelPg_upload.grid(row=0,column=1,sticky=E,padx=5,pady=5)
 
         ####################################Plasmid BUILDR##################################
@@ -144,10 +144,10 @@ class Example(Frame):
         plasPg_ent= Button(plasPg,text='Enter', command=lambda:self.runBUILDR(plasPg_geneBox,plasPg_mrkr,reData))
         plasPg_ent.grid(row=4,column=1, padx=5, pady=5,sticky=E)
 
-        plasPg_upl1=Button(plasPg,text='Upload Recipient Plasmid Sequence', command=lambda: self.fileUpload(plasPg_geneBox,False))
+        plasPg_upl1=Button(plasPg,text='Upload Recipient Plasmid Sequence', command=lambda: self.seqUpload(plasPg_geneBox,False))
         plasPg_upl1.grid(row=0,column=1, padx=5, pady=5,sticky=E)
 
-        plasPg_upl2=Button(plasPg,text='Upload Marker/Gene Sequence(s)', command=lambda: self.fileUpload(plasPg_mrkr,True))
+        plasPg_upl2=Button(plasPg,text='Upload Marker/Gene Sequence(s)', command=lambda: self.seqUpload(plasPg_mrkr,True))
         plasPg_upl2.grid(row=2,column=1, padx=5, pady=5,sticky=E)
 
         ##############################MSM####################################
@@ -195,7 +195,7 @@ class Example(Frame):
         seqPg_box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+N+S)
 
         #Navigation        
-        seqPg_ul1 = Button(seqPg, text= 'Upload Sequence(s)', command = lambda: self.fileUpload(seqPg_box, True))
+        seqPg_ul1 = Button(seqPg, text= 'Upload Sequence(s)', command = lambda: self.seqUpload(seqPg_box, True))
         seqPg_ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
         
         seqPg_clr=Button(seqPg,text='Clear',command=lambda:[f() for f in [seqPg_box.delete('1.0', END)]])
@@ -239,7 +239,7 @@ class Example(Frame):
         primPg_len.grid(row=9,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+S+N)
 
         #Navigation        
-        primPg_ul1 = Button(primPg, text= 'Upload Sequence', command = lambda: self.fileUpload(primPg_box, True))     
+        primPg_ul1 = Button(primPg, text= 'Upload Sequence', command = lambda: self.seqUpload(primPg_box, True))     
         primPg_ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
         
         primPg_clr=Button(primPg,text='Clear',command=lambda:[f() for f in [primPg_box.delete('1.0', END), primPg_idx.delete('1.0',END),primPg_gc.delete('1.0',END),primPg_tm.delete('1.0',END),primPg_len.delete('1.0',END)]])
@@ -276,7 +276,7 @@ class Example(Frame):
         re = re[0]
         return re
     
-    def fileUpload(self,tBox, multiple):
+    def seqUpload(self,tBox, multiple):
         ftypes=[('Fasta files','*.fasta'),('Text files','*.txt')]        
         fname = filedialog.askopenfilename(title='Select file', filetypes=ftypes)
         if fname != '':
