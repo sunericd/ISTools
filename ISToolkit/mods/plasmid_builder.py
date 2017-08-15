@@ -5,7 +5,7 @@ import pandas as pd
 import os
 from graphics import *
 from PIL import Image as NewImage
-import saveOutput
+import mods.saveOutput as saveOutput
 
 def plasmid_builder (plsmds, mrkrs,restriction_sites):
 

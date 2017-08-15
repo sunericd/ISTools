@@ -1,7 +1,7 @@
 import csv
 from tkinter import *
 import os
-import saveOutput
+import mods.saveOutput as saveOutput
 
 def msm(filename, motif_length = 10, match_threshold = 3):
     '''
