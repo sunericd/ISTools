@@ -23,21 +23,21 @@ class Example(Frame):
         self.initUI()
                 
     def initUI(self):
-        self.parent.title('Integrated Sciences Toolkit')
+        self.parent.title('Integrated Sciences Gene Toolkit')
         self.style=Style()
         self.style.theme_use('default')  
 
         self.pack(fill=BOTH, expand=1)
         
-        mlabel = Label(self, text='Integrated Sciences Toolkit\n\nDo NOT close this window.', font=('Helvetica', 16), wraplength=350)
-        mlabel.pack(pady=15)
+        mlabel = Label(self, text='Integrated Sciences Gene Toolkit\n\nDo NOT close this window.', font=('Helvetica', 16),justify=CENTER,wraplength=350)
+        mlabel.grid(row=0,column=0,pady=15,padx=10,sticky=S+N+E+W)
 
         #Navigation
         sButton=Button(self,text='Start',command=self.nav)
-        sButton.pack(padx=15,pady=5)
+        sButton.grid(row=1,column=0,padx=15,pady=5)
 
         qButton=Button(self,text='Quit',command=self.quit)
-        qButton.pack(padx=15,pady=5)
+        qButton.grid(row=2,column=0,padx=15,pady=5)
 
     # Needed for PyInstaller to read files: filepath = resource_path()
 
