@@ -71,6 +71,27 @@ class Example(Frame):
         seqPg=Frame(ntbk)
         primPg=Frame(ntbk)
 
+        #############################Compile notebook############
+        self.loadmainPg(mainPg)
+        self.loadprimPg(primPg)
+        self.loadseqPg(seqPg, reData)
+        self.loadmsmPg(msmPg)
+        self.loadplasPg(plasPg, reData)
+        self.loadgelPg(gelPg, reData)
+        self.loadcredPg(credPg)
+
+        ntbk.add(mainPg, compound=LEFT, text='Welcome',padding=5)
+        ntbk.add(gelPg,text='gel.Viz', padding=5)
+        ntbk.add(msmPg,text='Multiple Sequence Mapper',padding=5)
+        ntbk.add(plasPg,text='Plasmid BUILDR', padding=5)
+        ntbk.add(primPg,text='Primo',padding=5)
+        ntbk.add(seqPg,text='SeqProp',padding=5)
+        ntbk.add(credPg,text='Credits', padding=5)
+        
+        ntbk.pack(fill=BOTH)
+        self.pack(fill=BOTH,expand=True)
+
+    def loadmainPg(self,mainPg):
         #########################Front page#################################3
         
         #Insert personalized logo
@@ -83,9 +104,8 @@ class Example(Frame):
 
         mainPg_l2=Label(mainPg,text='Welcome to the Integrated Sciences Gene Toolkit. Click on the tabs above to alternate between tools. \n\nSend any questions to support@integratedsciences.org\n\nVersion 1.0.0\n\nLast updated Aug 15, 2017.', font=('Helvetica', 12), wraplength=250)
         mainPg_l2.grid(row=0, column=1, padx=5, sticky=E+W+S+N)
-        
-        #!!!Add a label, maybe beginning instructions.
 
+    def loadgelPg(self, gelPg, reData):
         ##############################Gel.Viz Page#################################
         #Gene sequence input
         gelPg_l1 = Label(gelPg, text='Sequence(s) (DNA bases only). Separate different sequences with spaces.')
@@ -111,7 +131,7 @@ class Example(Frame):
         gelPg_reList.configure(yscrollcommand=yScrollRE.set)
         
         #Navigation
-        gelPg_clr=Button(gelPg,text='Clear',command=lambda:[f() for f in [gelPg_reList.selection_clear(0, END),gelPg_geneBox.delete('1.0', END)]])
+        gelPg_clr=Button(gelPg,text='Clear',command=lambda:self.loadgelPg(gelPg, reData))
         gelPg_clr.grid(row=4,column=0,sticky=W,padx=5,pady=5)
         
         gelPg_ent= Button(gelPg,text='Enter', command=lambda:self.runGV(gelPg_geneBox,gelPg_reList.curselection(),reData))
@@ -121,6 +141,7 @@ class Example(Frame):
         gelPg_upload=Button(gelPg,text='Upload Gene Sequence(s)', command=lambda: self.seqUpload(gelPg_geneBox,True))
         gelPg_upload.grid(row=0,column=1,sticky=E,padx=5,pady=5)
 
+    def loadplasPg(self,plasPg, reData):
         ####################################Plasmid BUILDR##################################
 
         #Plasmid sequence input        
@@ -138,7 +159,7 @@ class Example(Frame):
         plasPg_mrkr.grid(row=3,column=0, columnspan=2, padx=5, pady=5,sticky=W+E+S+N)
 
         #Navigation
-        plasPg_clr=Button(plasPg,text='Clear',command=lambda:[f() for f in [plasPg_mrkr.delete('1.0', END),plasPg_geneBox.delete('1.0', END)]])
+        plasPg_clr=Button(plasPg,text='Clear',command=lambda:self.loadplasPg(plasPg, reData))
         plasPg_clr.grid(row=4,column=0, padx=5, pady=5,sticky=W)
         
         plasPg_ent= Button(plasPg,text='Enter', command=lambda:self.runBUILDR(plasPg_geneBox,plasPg_mrkr,reData))
@@ -150,6 +171,7 @@ class Example(Frame):
         plasPg_upl2=Button(plasPg,text='Upload Marker/Gene Sequence(s)', command=lambda: self.seqUpload(plasPg_mrkr,True))
         plasPg_upl2.grid(row=2,column=1, padx=5, pady=5,sticky=E)
 
+    def loadmsmPg(self,msmPg):
         ##############################MSM####################################
 
         #Inputs
@@ -157,7 +179,7 @@ class Example(Frame):
         msmPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W,columnspan=2)
 
         msmPg_l2 = Label(msmPg, text='Filename: ')
-        msmPg_l2.grid(row=1,column=0, padx=5, pady=5,sticky=W)
+        msmPg_l2.grid(row=1,column=0, padx=5, pady=5,sticky=W+N+S)
 
         msmPg_browse=Button(msmPg, text='Browse', command=lambda: self.getDir(msmPg_box))
         msmPg_browse.grid(row=1,column=1, padx=5, pady=5,sticky=E)
@@ -180,74 +202,36 @@ class Example(Frame):
         msmPg_thresh.grid(row=6,column=0, padx=5, pady=5,sticky=W+N+S+E,columnspan=2)
 
         #Navigation
-        msmPg_clr=Button(msmPg,text='Clear',command=lambda:[f() for f in [self.delBox(msmPg_box),msmPg_motif.delete('1.0',END),msmPg_thresh.delete('1.0',END)]])
+        msmPg_clr=Button(msmPg,text='Clear',command=lambda:self.loadmsmPg(msmPg))
         msmPg_clr.grid(row=7,column=0, padx=5, pady=5,sticky=W)
         
         msmPg_ent= Button(msmPg,text='Enter', command=lambda:self.runMSM(msmPg_box,msmPg_motif,msmPg_thresh))
         msmPg_ent.grid(row=7,column=1, padx=5, pady=5,sticky=E)
 
+    def loadseqPg(self,seqPg, reData):
         #############################SeqProp##################################
 
-        seqPg_l1 = Label(seqPg, text='Sequence(s) (DNA bases only). Separate different sequences with spaces.')
-        seqPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W)
+        l1 = Label(seqPg, text='Sequence(s) (DNA bases only). Separate different sequences with spaces.')
+        l1.grid(row=0,column=0, padx=5, pady=5,sticky=W)
         
-        seqPg_box = Text(seqPg, height=10)
-        seqPg_box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+N+S)
+        box = Text(seqPg, height=10)
+        box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+N+S)
+
+        errorLabel=Label(seqPg)
+        errorLabel.config(text='')
+        errorLabel.grid(row=2, column=0,sticky=E)
 
         #Navigation        
-        seqPg_ul1 = Button(seqPg, text= 'Upload Sequence(s)', command = lambda: self.seqUpload(seqPg_box, True))
-        seqPg_ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
+        ul1 = Button(seqPg, text= 'Upload Sequence(s)', command = lambda: self.seqUpload(box, True))
+        ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
         
-        seqPg_clr=Button(seqPg,text='Clear',command=lambda:[f() for f in [seqPg_box.delete('1.0', END)]])
-        seqPg_clr.grid(row=2,column=0, padx=5, pady=5,sticky=W)
+        clr=Button(seqPg,text='Clear',command=lambda:self.loadseqPg(seqPg, reData))
+        clr.grid(row=2,column=0, padx=5, pady=5,sticky=W)
         
-        seqPg_ent= Button(seqPg,text='Enter', command=lambda:self.runSeqProp(seqPg_box,reData))
-        seqPg_ent.grid(row=2,column=1, padx=5, pady=5,sticky=E)
+        ent= Button(seqPg,text='Enter', command=lambda:self.runSeqProp(box,reData,errorLabel))
+        ent.grid(row=2,column=1, padx=5, pady=5,sticky=E)
 
-        #############################PrimerDesign##################################
-        primPg_l1 = Label(primPg, text='Sequence to amplify AND surrounding regions (DNA bases only)')
-        primPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W)
-        
-        primPg_box = Text(primPg, height=10)
-        primPg_box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+N+S+W)
-
-        primPg_l2 = Label(primPg, text='Start and end indices of sequence to amplify (Ex. 196-291)')
-        primPg_l2.grid(row=2,column=0, padx=5, pady=5,sticky=W)
-
-        primPg_idx = Text(primPg, height=1)      
-        primPg_idx.grid(row=3,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+S+N)
-
-        primPg_l3 = Label(primPg, text='GC Content (Default is 40-60%)')
-        primPg_l3.grid(row=4,column=0, padx=5, pady=5,sticky=W)
-
-        primPg_gc = Text(primPg, height=1)    
-        primPg_gc.insert('1.0', '40-60')
-        primPg_gc.grid(row=5,column=0, columnspan=2, padx=5, pady=5,sticky=E+N+S+W)
-
-        primPg_l4 = Label(primPg, text='Melting Temperature (Default is 42-46C)')
-        primPg_l4.grid(row=6,column=0, padx=5, pady=5,sticky=W)
-
-        primPg_tm = Text(primPg, height=1)    
-        primPg_tm.insert('1.0', '42-46')
-        primPg_tm.grid(row=7,column=0, columnspan=2, padx=5, pady=5,sticky=W+S+E+N)
-
-        primPg_l5 = Label(primPg, text='Primer length (Default is 20)')
-        primPg_l5.grid(row=8,column=0, padx=5, pady=5,sticky=W)
-
-        primPg_len = Text(primPg, height=1)    
-        primPg_len.insert('1.0', '20')
-        primPg_len.grid(row=9,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+S+N)
-
-        #Navigation        
-        primPg_ul1 = Button(primPg, text= 'Upload Sequence', command = lambda: self.seqUpload(primPg_box, True))     
-        primPg_ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
-        
-        primPg_clr=Button(primPg,text='Clear',command=lambda:[f() for f in [primPg_box.delete('1.0', END), primPg_idx.delete('1.0',END),primPg_gc.delete('1.0',END),primPg_tm.delete('1.0',END),primPg_len.delete('1.0',END)]])
-        primPg_clr.grid(row=10,column=0, padx=5, pady=5,sticky=W)
-        
-        primPg_ent= Button(primPg,text='Enter', command=lambda:self.runPrim(primPg_box, primPg_idx, primPg_gc, primPg_tm, primPg_len))
-        primPg_ent.grid(row=10,column=1, padx=5, pady=5,sticky=E)
-
+    def loadcredPg(self,credPg):
         ##########################Credits#################################        
         cred = Text(credPg,wrap=WORD)
         cred.insert(END, 'The Integrated Sciences Group is dedicated to the development of free, open-source tools for a range of scientific research. We ship large toolkits with user inteferfaces in order to make the application of our tools as seamless as possible. We are currently working to improve our current tools and to build new ones!\n\ngel.Viz is a gel visualization tool that generates an image of a gel given a sequence and restriction enzymes. This tool is the perfect resource to plan and verify experiments involving gel electrophoresis.\n\nThe Plasmid BUILDR, or Benchmark Utility for Integrating Long DNA Reads, generates a protocol to build a desired plasmid given the sequences of the recepient plasmid and any insert genes or markers.\n\nDevelopers: Yein Christina Park, Eric Sun, and Yi Chen.\n\nVisit our website at integratedsciences.org.\n\nQuestions? Concerns? Email us at support@integratedsciences.org.\n\nMany thanks to Jimmy Thai and Siavash Zamirpour.\n\n\nCopyright 2017 Integrated Sciences\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \'Software\'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \'AS IS\', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.')
@@ -258,18 +242,62 @@ class Example(Frame):
         yScrollCredits.config(command=cred.yview)
         cred.config(state=DISABLED,yscrollcommand=yScrollCredits.set)
 
-        #############################Compile notebook############
-
-        ntbk.add(mainPg, compound=LEFT, text='Welcome',padding=5)
-        ntbk.add(gelPg,text='gel.Viz', padding=5)
-        ntbk.add(msmPg,text='Multiple Sequence Mapper',padding=5)
-        ntbk.add(plasPg,text='Plasmid BUILDR', padding=5)
-        ntbk.add(primPg,text='Primo',padding=5)
-        ntbk.add(seqPg,text='SeqProp',padding=5)
-        ntbk.add(credPg,text='Credits', padding=5)
+    def loadprimPg(self, primPg):
+        #############################PrimerDesign##################################
+        primPg_l1 = Label(primPg, text='Sequence to amplify AND surrounding regions (DNA bases only)')
+        primPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W)
         
-        ntbk.pack(fill=BOTH)
-        self.pack(fill=BOTH,expand=True)        
+        primPg_box = Text(primPg, height=10)
+        primPg_box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+N+S+W)
+
+        primPg_l2 = Label(primPg, text='Start and end indices of sequence to amplify (Ex. 196-291)')
+        primPg_l2.grid(row=2,column=0, padx=5, pady=5,sticky=W)
+
+        primPg_idx = Text(primPg, height=1, width=35)      
+        primPg_idx.grid(row=3,column=0, padx=5, pady=5,sticky=E+W+S+N)
+
+        primPg_l3 = Label(primPg, text='GC Content (Default is 40-60%)')
+        primPg_l3.grid(row=2,column=1, padx=5, pady=5,sticky=W)
+
+        primPg_gc = Text(primPg, height=1, width=40)    
+        primPg_gc.insert('1.0', '40-60')
+        primPg_gc.grid(row=3,column=1, padx=5, pady=5,sticky=E+N+S+W)
+
+        primPg_l4 = Label(primPg, text='Melting Temperature (Default is 42-46C)')
+        primPg_l4.grid(row=4,column=0, padx=5, pady=5,sticky=W)
+
+        primPg_tm = Text(primPg, height=1, width=40)    
+        primPg_tm.insert('1.0', '42-46')
+        primPg_tm.grid(row=5,column=0, padx=5, pady=5,sticky=W+S+E+N)
+
+        primPg_l5 = Label(primPg, text='Primer length (Default is 20)')
+        primPg_l5.grid(row=4,column=1, padx=5, pady=5,sticky=W)
+
+        primPg_len = Text(primPg, height=1, width=40)
+        primPg_len.insert('1.0', '20')
+        primPg_len.grid(row=5,column=1, padx=5, pady=5,sticky=E+W+S+N)
+
+        choice=StringVar()
+
+        primPg_f = Radiobutton(primPg,text='Forward primer only', variable=choice, value='f')
+        primPg_r = Radiobutton(primPg,text='Reverse primer only', variable=choice, value='r')
+        primPg_fr = Radiobutton(primPg,text='Both forward and reverse primers (Default)', variable=choice, value='fr')
+
+        primPg_f.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=W+N+S)
+        primPg_r.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=N+S)
+        primPg_fr.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=E+N+S)
+        primPg_fr.invoke()
+                
+        #Navigation        
+        primPg_ul1 = Button(primPg, text= 'Upload Sequence', command = lambda: self.seqUpload(primPg_box, True))     
+        primPg_ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
+        
+        primPg_fr.invoke()
+        primPg_clr=Button(primPg,text='Clear',command=lambda: self.loadprimPg(primPg))
+        primPg_clr.grid(row=7,column=0, padx=5, pady=5,sticky=W)
+        
+        primPg_ent= Button(primPg,text='Enter', command=lambda:self.runPrim(primPg_box, primPg_idx, primPg_gc, primPg_tm, primPg_len, choice.get()))
+        primPg_ent.grid(row=7,column=1, padx=5, pady=5,sticky=E)    
 
     def getREs(self,reData):
         re = reData.values.T.tolist()
@@ -331,11 +359,17 @@ class Example(Frame):
         re=str(re)
         pb.plasmid_builder(seq, re,reData)
 
-    #Get info from text boxes to run SeqProp    
-    def runSeqProp(self, seqBox, reData):
-        seq=seqBox.get('1.0', END)
+    #Get info from text boxes to run SeqProp
+    def runSeqProp(self, seqBox, reData, errorLabel):
+        errorLabel.config(text='')
+        seq=seqBox.get('1.0',END)
         seq=str(seq)
-        sp.multSeqProp(seq, reData)
+        if len(seq)<=1:
+            errorLabel.config(text='Fill out all required fields!')
+            seqBox.focus()
+        else:
+            if sp.multSeqProp(seq, reData):
+                print('hi')
 
     def runMSM(self,fileBox, motifBox, threshBox):
         fname=str(self.resource_path(fileBox.get('1.0',END)))
@@ -357,7 +391,7 @@ class Example(Frame):
             msm.msm(fname) '''
             
     #Get info from text boxes to run Primer Design    
-    def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox):
+    def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox, primType):
         seq=seqBox.get('1.0',END)
         seq=str(seq)
         #seq_idx will be a string. First value is start, last value is end. Separated by '-'
@@ -369,7 +403,7 @@ class Example(Frame):
         tm=str(tm)
         length=lenBox.get('1.0',END)
         length=str(length)
-        #pd.pd(seq, start, end, gc=gc, tm=tm, range=len_range)
+        #pd.pd(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
 
 #Runs the program
 def main():
