@@ -9,8 +9,8 @@ from PIL import Image as NewImage
 def gel_visualize(plasmid_seqs, re_list, restriction_sites):
     
     max_lengths, lengths_list = digestSeq(plasmid_seqs, re_list, restriction_sites)
-    print (max_lengths)
-    print (lengths_list)     
+    #print (max_lengths)
+    #print (lengths_list)     
     if max(max_lengths) > 1000:
         #print("big")
         bigDraw(lengths_list)
