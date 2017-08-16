@@ -1,8 +1,9 @@
-#8/15/17 Added GUI for protQuant. Need to add descriptions for toolkit
+#8/16/17 Error handling!
+#8/15/17 Added GUI for protQuant. Need to add descriptions for toolkit.
 
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 from Bio import SeqIO
 import mods.protQuant as pq
@@ -141,11 +142,17 @@ class Example(Frame):
     
     #Get info from text boxes to run protQuant.    
     def runPQ(self,standards,proteins):
-        stdfile=str(self.resource_path(standards.get('1.0',END)))
-        stdfile=stdfile.strip()
-        datafile=str(self.resource_path(proteins.get('1.0',END)))
-        datafile=datafile.strip()
-        pq.protQuant(stdfile,datafile)
+        if standards.get('1.0',END)>1 and proteins.get('1.0',END)>1:
+            stdfile=str(self.resource_path(standards.get('1.0',END)))
+            stdfile=stdfile.strip()
+            datafile=str(self.resource_path(proteins.get('1.0',END)))
+            datafile=datafile.strip()
+            try:
+                pq.protQuant(stdfile,datafile)
+            except Exception as errormsg:
+                messagebox.showerror('Error',errormsg)
+        else:
+            messagebox.showerror('Error', 'Fill out all required fields!')
 
 #Runs the program
 def main():
