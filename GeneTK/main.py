@@ -4,7 +4,7 @@
 
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk
 from Bio import SeqIO
 import mods.gel_visualizer as gv
@@ -187,18 +187,16 @@ class Example(Frame):
         msmPg_box = Text(msmPg, height=1, state=DISABLED)
         msmPg_box.grid(row=2,column=0, columnspan=2, padx=5, pady=5,sticky=N+S+W)
 
-        msmPg_l3 = Label(msmPg, text='Motif Length (Default is 10): ')
+        msmPg_l3 = Label(msmPg, text='Motif Length (Optional, default is 10): ')
         msmPg_l3.grid(row=3,column=0, padx=5, pady=5,sticky=W)
 
         msmPg_motif = Text(msmPg, height=1)
-        msmPg_motif.insert(END, '10')
         msmPg_motif.grid(row=4,column=0,padx=5, pady=5,sticky=W+N+S+E,columnspan=2)
 
-        msmPg_l4 = Label(msmPg, text='Match Threshold (Default is 3): ')
+        msmPg_l4 = Label(msmPg, text='Match Threshold (Optional, default is 3): ')
         msmPg_l4.grid(row=5,column=0, padx=5, pady=5,sticky=W)
 
         msmPg_thresh = Text(msmPg, height=1)
-        msmPg_thresh.insert(END, '3')        
         msmPg_thresh.grid(row=6,column=0, padx=5, pady=5,sticky=W+N+S+E,columnspan=2)
 
         #Navigation
@@ -217,10 +215,6 @@ class Example(Frame):
         box = Text(seqPg, height=10)
         box.grid(row=1,column=0, columnspan=2, padx=5, pady=5,sticky=E+W+N+S)
 
-        errorLabel=Label(seqPg)
-        errorLabel.config(text='')
-        errorLabel.grid(row=2, column=0,sticky=E)
-
         #Navigation        
         ul1 = Button(seqPg, text= 'Upload Sequence(s)', command = lambda: self.seqUpload(box, True))
         ul1.grid(row=0,column=1, padx=5, pady=5,sticky=E)    
@@ -228,7 +222,7 @@ class Example(Frame):
         clr=Button(seqPg,text='Clear',command=lambda:self.loadseqPg(seqPg, reData))
         clr.grid(row=2,column=0, padx=5, pady=5,sticky=W)
         
-        ent= Button(seqPg,text='Enter', command=lambda:self.runSeqProp(box,reData,errorLabel))
+        ent= Button(seqPg,text='Enter', command=lambda:self.runSeqProp(box,reData))
         ent.grid(row=2,column=1, padx=5, pady=5,sticky=E)
 
     def loadcredPg(self,credPg):
@@ -256,25 +250,22 @@ class Example(Frame):
         primPg_idx = Text(primPg, height=1, width=35)      
         primPg_idx.grid(row=3,column=0, padx=5, pady=5,sticky=E+W+S+N)
 
-        primPg_l3 = Label(primPg, text='GC Content (Default is 40-60%)')
+        primPg_l3 = Label(primPg, text='GC Content (Optional, default is 40-60%)')
         primPg_l3.grid(row=2,column=1, padx=5, pady=5,sticky=W)
 
         primPg_gc = Text(primPg, height=1, width=40)    
-        primPg_gc.insert('1.0', '40-60')
         primPg_gc.grid(row=3,column=1, padx=5, pady=5,sticky=E+N+S+W)
 
-        primPg_l4 = Label(primPg, text='Melting Temperature (Default is 42-46C)')
+        primPg_l4 = Label(primPg, text='Melting Temperature (Optional, default is 42-46C)')
         primPg_l4.grid(row=4,column=0, padx=5, pady=5,sticky=W)
 
         primPg_tm = Text(primPg, height=1, width=40)    
-        primPg_tm.insert('1.0', '42-46')
         primPg_tm.grid(row=5,column=0, padx=5, pady=5,sticky=W+S+E+N)
 
-        primPg_l5 = Label(primPg, text='Primer length (Default is 20)')
+        primPg_l5 = Label(primPg, text='Primer length (Optional, default is 20. Range also acceptable (Ex. 18-22))')
         primPg_l5.grid(row=4,column=1, padx=5, pady=5,sticky=W)
 
         primPg_len = Text(primPg, height=1, width=40)
-        primPg_len.insert('1.0', '20')
         primPg_len.grid(row=5,column=1, padx=5, pady=5,sticky=E+W+S+N)
 
         choice=StringVar()
@@ -341,69 +332,106 @@ class Example(Frame):
     #Get info from text boxes to run gel.Viz.    
     def runGV(self, geneBox,reIndex,reData):
         seq=geneBox.get('1.0',END)
-        seq = str(seq) 
+        seq = str(seq).strip()
         allre=self.getREs(reData)
         re=''
         for i in reIndex:
             re=re+str(allre[i])+' '
-        gv.gel_visualize(seq,re,reData)
-
+        re=re.strip()
+        if len(seq)>0 and len(re)>0:
+            try:
+                gv.gel_visualize(seq,re,reData)
+            except Exception as errormsg:
+                messagebox.showerror('Error', errormsg)
+        else:
+            messagebox.showerror('Error','Fill out all required fields!')
     
     #Get info from text boxes to run PlasBUILDR    
     def runBUILDR(self, geneBox,reBox,reData):
         seq=geneBox.get('1.0',END)
         re=reBox.get('1.0',END)
         seq=geneBox.get('1.0',END)
-        seq = str(seq) 
+        seq = str(seq).strip()
         re=reBox.get('1.0',END)
-        re=str(re)
-        pb.plasmid_builder(seq, re,reData)
+        re=str(re).strip()
+        if len(seq)>0 and len(re)>0:
+            try:
+                pb.plasmid_builder(seq, re,reData)
+            except Exception as errormsg:
+                messagebox.showerror('Error', errormsg)
+        else:
+            messagebox.showerror('Error','Fill out all required fields!')            
 
     #Get info from text boxes to run SeqProp
-    def runSeqProp(self, seqBox, reData, errorLabel):
-        errorLabel.config(text='')
+    def runSeqProp(self, seqBox, reData):
         seq=seqBox.get('1.0',END)
-        seq=str(seq)
-        if len(seq)<=1:
-            errorLabel.config(text='Fill out all required fields!')
-            seqBox.focus()
+        seq=str(seq).strip()
+        if len(seq)>0:
+            try:
+                sp.multSeqProp(seq, reData)
+            except Exception as errormsg:
+                messagebox.showerror('Error', errormsg)
         else:
-            if sp.multSeqProp(seq, reData):
-                print('hi')
+            messagebox.showerror('Error','Fill out all required fields!')
+            seqBox.focus()
 
     def runMSM(self,fileBox, motifBox, threshBox):
-        fname=str(self.resource_path(fileBox.get('1.0',END)))
-        fname=fname.strip()
-        motif=str(motifBox.get('1.0',END))
-        thresh=str(threshBox.get('1.0',END))
-        ''' if motif!='' and thresh!='': '''
-        motif=int(motif.strip())
-        thresh=int(thresh.strip()) 
-        print(motif, thresh)
-        msm.msm(fname,motif_length=motif,match_threshold=thresh)
-        ''' elif motif!='':
-            motif=int(motif.strip())
-            msm.msm(fname,motif_length=motif)
-        elif thresh!='':
-            thresh=int(thresh.strip()) 
-            msm.msm(fname,match_threshold=thresh)
+        if len(fileBox.get('1.0',END))>1:    
+            fname=str(self.resource_path(fileBox.get('1.0',END)))
+            fname=fname.strip()
+            motif=str(motifBox.get('1.0',END)).strip()
+            thresh=str(threshBox.get('1.0',END)).strip()
+            if len(motif)>0 and len(thresh)>0:
+                try:
+                    msm.msm(fname,motif_length=motif,match_threshold=thresh)
+                except Exception as errormsg:
+                    messagebox.showerror('Error', errormsg)
+            elif len(motif)>0:
+                try:
+                    msm.msm(fname,motif_length=motif)
+                except Exception as errormsg:
+                    messagebox.showerror('Error', errormsg)
+            elif len(thresh)>0:
+                try:
+                    msm.msm(fname,match_threshold=thresh)
+                except Exception as errormsg:
+                    messagebox.showerror('Error', errormsg)
+            else:
+                try:
+                    msm.msm(fname)
+                except Exception as errormsg:
+                    messagebox.showerror('Error', errormsg)
         else:
-            msm.msm(fname) '''
-            
+            messagebox.showerror('Error','Fill out all required fields!')            
+
     #Get info from text boxes to run Primer Design    
     def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox, primType):
         seq=seqBox.get('1.0',END)
-        seq=str(seq)
+        seq=str(seq).strip()
         #seq_idx will be a string. First value is start, last value is end. Separated by '-'
         seq_idx=idx.get('1.0',END)
-        seq_idx=str(seq_idx)
+        seq_idx=str(seq_idx).strip()
         gc=gcBox.get('1.0',END)
-        gc=str(gc)
+        gc=str(gc).strip()
         tm=tmBox.get('1.0',END)
-        tm=str(tm)
+        tm=str(tm).strip()
         length=lenBox.get('1.0',END)
-        length=str(length)
-        #pd.pd(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
+        length=str(length).strip()
+        if len(seq)>0 and len(seq_idx)>0:
+            if len(gc)>0 and len(tm)>0 and len(length)>0 and primType!='fr':
+                try:
+                    print('all 4')
+                    #pd.pd(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
+                except Exception as errormsg:
+                    messagebox.showerror('Error', errormsg)
+            #What should I do? combinations get outta hand..
+            try:
+                print('none')
+                #pd.pd(seq, start, end)
+            except Exception as errormsg:
+                messagebox.showerror('Error', errormsg)
+        else:
+            messagebox.showerror('Error', 'Fill out all required fields!')
 
 #Runs the program
 def main():
