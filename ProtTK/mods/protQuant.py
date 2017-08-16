@@ -105,6 +105,7 @@ def averageRows (list_of_lists):
         float_x = list(map(float, x))
         float_lists.append(float_x)
     avg = [float(sum(col))/len(col) for col in zip(*float_lists)]
+
     return (avg)
 
 def regressor(standard_concs, standard_fluors, prot_fluors, regression_style):
