@@ -37,13 +37,13 @@ def protQuant (standards_file, protein_file, N_mass=25, regression_style='Linear
             return
         N_vols.append(N_vol)
     
-    out_text = str(prot_concs)
+    out_text = 'Protein Concentrations: '+str(prot_concs)+'\n'
     for item in N_vols:
-        out_text=out_text+("%s\n" % item)
+        out_text=out_text+("\n%s" % item)
         
     saveOutput.saveData(out_text, "ProtQuant")
 
-def readStandards (filename):
+def readStandards(filename):
     standards_concs = []
     standard_fluors = []
     
