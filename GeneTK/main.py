@@ -1,3 +1,4 @@
+#8/16/17 Error handling!
 #8/15/17 Added GUI for primer design. Changed formatting from pack to grid.
 #07/13/2017 Tab view for tools. Additional changes to reflect structure from Exe Toolkit.
 #07/08/2017 allows multiple files/sequences to be uploaded.
@@ -13,6 +14,7 @@ import mods.plasmid_builder as pb
 import pandas as pd
 import mods.seqprop as sp
 import mods.MSM as msm
+import mods.primer_design as primo
 
 class Example(Frame):   
   
@@ -421,13 +423,13 @@ class Example(Frame):
             if len(gc)>0 and len(tm)>0 and len(length)>0 and primType!='fr':
                 try:
                     print('all 4')
-                    #pd.pd(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
+                    #primo.primer_design(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
                 except Exception as errormsg:
                     messagebox.showerror('Error', errormsg)
             #What should I do? combinations get outta hand..
             try:
                 print('none')
-                #pd.pd(seq, start, end)
+                #primo.primer_design(seq, start, end)
             except Exception as errormsg:
                 messagebox.showerror('Error', errormsg)
         else:

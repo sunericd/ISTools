@@ -1,12 +1,4 @@
-
-# coding: utf-8
-
-# In[411]:
-
 import numpy as np
-
-
-# In[499]:
 
 #########################Select type of primer to design
 ######## 1 = primer pair
@@ -36,9 +28,6 @@ import numpy as np
 #sequence = seq1
 #primer_design(1, sequence, started, ended, primer_length, temp_range, gc_range)
 
-
-# In[490]:
-
 ################################## Forward and Reverse Sequence Function
 def split_seq(split_sequence, started, ended):
     #Error Handling
@@ -55,9 +44,6 @@ def split_seq(split_sequence, started, ended):
         rv_seq = seq[ended-2:len(seq)]
         return fwd_seq, rv_seq
     #function returns fwd_seq and rv_seq
-
-
-# In[456]:
 
 #################################Primer Find Function 
 def primerfind(sequence, length = [20, 19, 21, 18, 22], temperature = [40, 60], gcontent = [.4, .6]):
@@ -107,9 +93,6 @@ def primerfind(sequence, length = [20, 19, 21, 18, 22], temperature = [40, 60], 
         return primer, gc, temp, index
 ########### End of primer find function
 
-
-# In[445]:
-
 #####################################Reverse Complement Function
 def rv_comp(unrev, ended):
     
@@ -139,9 +122,6 @@ def rv_comp(unrev, ended):
     rv_final.append(rv_index)
     return rv_final
 #########Returns reverse complement, gc, temp, and index of sequences    
-
-
-# In[396]:
 
 ###########################################Forward and Reverse Match Function
 #Tm should be +- 2 degrees celsius difference
@@ -181,9 +161,6 @@ def primer_pair(fwd_final, rv_final, started, ended):
             
     return primer_pair
 #primer_pair outputs include fwd primer info, rv primer info, and length of sequence
-
-
-# In[500]:
 
 ##############################################Primer Design Function
 def primer_design(primer_type, sequence_input, started, ended, primer_length = [20, 19, 21, 18, 22], temp_range= [4, 60], gc_range = [.4, .6]):
