@@ -1,4 +1,4 @@
-#8/15/17 Added/started GUI for ProtTK
+#8/15/17 Added GUI for protQuant. Need to add descriptions for toolkit
 
 from tkinter import *
 from tkinter.ttk import *
@@ -60,6 +60,20 @@ class Example(Frame):
         credPg=Frame(ntbk)
         quantPg=Frame(ntbk)
 
+        self.loadmainPg(mainPg)
+        self.loadquantPg(quantPg)
+        self.loadcredPg(credPg)
+
+        #############################Compile notebook############
+
+        ntbk.add(mainPg, compound=LEFT, text='Welcome',padding=5)
+        ntbk.add(quantPg,text='ProtQuant', padding=5)
+        ntbk.add(credPg,text='Credits', padding=5)        
+        
+        ntbk.pack(fill=BOTH)
+        self.pack(fill=BOTH,expand=True)
+
+    def loadmainPg(self,mainPg):
         #########################Front page#################################3
         
         #Insert personalized logo
@@ -72,9 +86,8 @@ class Example(Frame):
 
         mainPg_l2=Label(mainPg,text='Welcome to the Integrated Sciences Protein Toolkit. Click on the tabs above to alternate between tools. \n\nSend any questions to support@integratedsciences.org\n\nVersion 1.0.0\n\nLast updated Aug 15, 2017.', font=('Helvetica', 12), wraplength=250)
         mainPg_l2.grid(row=0, column=1, padx=5, sticky=E+W+S+N)
-        
-        #!!!Add a label, maybe beginning instructions.
 
+    def loadquantPg(self, quantPg):
         ##############################ProtQuant Page##############################
         quantPg_l1 = Label(quantPg, text='Select a .csv file of the standards.')
         quantPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W,columnspan=2)
@@ -101,12 +114,13 @@ class Example(Frame):
         quantPg_data.grid(row=5,column=0, columnspan=2, padx=5, pady=5,sticky=N+S+W)
 
         #Navigation
-        quantPg_clr=Button(quantPg,text='Clear',command=lambda:[f() for f in [quantPg_std.delete('1.0', END),quantPg_data.delete('1.0', END)]])
+        quantPg_clr=Button(quantPg,text='Clear',command=lambda:self.loadquantPg(quantPg))
         quantPg_clr.grid(row=6,column=0, padx=5, pady=5,sticky=W)
         
         quantPg_ent= Button(quantPg,text='Enter', command=lambda:self.runPQ(quantPg_std,quantPg_data))
         quantPg_ent.grid(row=6,column=1, padx=5, pady=5,sticky=E)
 
+    def loadcredPg(self, credPg):
         ##########################Credits#################################        
         cred = Text(credPg,wrap=WORD)
         cred.insert(END, 'The Integrated Sciences Group is dedicated to the development of free, open-source tools for a range of scientific research. We ship large toolkits with user inteferfaces in order to make the application of our tools as seamless as possible. We are currently working to improve our current tools and to build new ones!\n\nDevelopers: Yein Christina Park, Eric Sun, and Yi Chen.\n\nVisit our website at integratedsciences.org.\n\nQuestions? Concerns? Email us at support@integratedsciences.org.\n\nMany thanks to Jimmy Thai and Siavash Zamirpour.\n\n\nCopyright 2017 Integrated Sciences\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \'Software\'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \'AS IS\', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.')
@@ -116,15 +130,6 @@ class Example(Frame):
         yScrollCredits.grid(row=0,column=1, pady=5,sticky=E+N+S)
         yScrollCredits.config(command=cred.yview)
         cred.config(state=DISABLED,yscrollcommand=yScrollCredits.set)
-
-        #############################Compile notebook############
-
-        ntbk.add(mainPg, compound=LEFT, text='Welcome',padding=5)
-        ntbk.add(quantPg,text='ProtQuant', padding=5)
-        ntbk.add(credPg,text='Credits', padding=5)        
-        
-        ntbk.pack(fill=BOTH)
-        self.pack(fill=BOTH,expand=True)
 
     def getDir(self, tBox):
         ftypes=[('CSV files', '*.csv'),('TSV files','*.tsv')]
