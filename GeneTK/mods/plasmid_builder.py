@@ -10,8 +10,32 @@ import mods.saveOutput as saveOutput
 def plasmid_builder (plsmds, mrkrs,restriction_sites):
 
     mrkrs=mrkrs.split()
+
+    # Changes all to upper case (so user can input case insensitive)
+    plsmds = plsmds.upper()
+
+    mrkrs_upper = []
+    for marker in mrkrs:
+        mrkrs_upper.append(marker.upper())
+    mrkrs = mrkrs_upper
+
+    #ERROR HANDLING
+    # Only capital A,T,C,G
+    for nuc in plsmds:
+        if nuc not in "ATCG":
+            raise Exception(
+                'Plasmid sequence must only contain A, T, C, or G!'
+                )
+
+    for marker in mrkrs:
+        # Only capital A,T,C,G
+        for nuc in marker:
+            if nuc not in "ATCG":
+                raise Exception(
+                    'Marker sequences must only contain A, T, C, or G!'
+                    )
     
-# Parsing biolabs restriction sites
+    # Parsing biolabs restriction sites
     restriction_enzymes = restriction_sites.values.T.tolist()
     restriction_enzymes = restriction_enzymes[0]
     restriction_sites  = restriction_sites.values.tolist()
