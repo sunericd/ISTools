@@ -164,6 +164,12 @@ def primer_pair(fwd_final, rv_final, started, ended):
 
 ##############################################Primer Design Function
 def primer_design(primer_type, sequence_input, started, ended, primer_length = [20, 19, 21, 18, 22], temp_range= [4, 60], gc_range = [.4, .6]):
+    #primer_types should be 'r','fr', or 'f'. Also the default one should be 'fr'
+    #Start and end will be in one list like [start, end]
+    #primer length will be like [18, 22], so maybe you can do primer_length=list(range(primer_length[0],primer_length[1])) or something like that?
+    # temp range.. why's it 4 to 60?
+    #The inputs will be lists of strings, so could you do a input=[int(i) for i in input] to make them all integers? I think it'd be easier to do it here than over there..
+    
     if primer_type == 2:
         forward = primerfind(sequence_input, primer_length, temp_range, gc_range)
         if len(forward[0]) == 0:
