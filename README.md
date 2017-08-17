@@ -12,7 +12,10 @@ Aide for plasmid construction with plasmid backbones and genes/markers\
 Multi-use tool for calculating a wide array of useful information and properties regarding a given sequence\
 \
 -- MSM --\
-Mapper for finding motifs between multipl sequences\
+Mapper for finding motifs between multiple sequences\
+\
+-- PrimO --\
+Forward and reverse primer optimization for sequence amplification\
 \
 \
 MIT License, Copyright 2017 by Integrated Sciences Group
