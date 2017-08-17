@@ -51,7 +51,7 @@ def getGC(sequence):
     GC_num = 0
     for nuc in sequence:
         if nuc.upper() not in 'ATCG':
-            raise Exception('Please only input DNA sequences: ATCG!')
+            raise UserWarning('Please only input DNA sequences: ATCG!')
         # Finding number of G's and C's
         if nuc is 'G' or nuc is 'C':
             GC_num += 1

@@ -32,19 +32,19 @@ def digestSeq (plasmid_seqs, re_list,restriction_sites):
     # ERROR HANDLING
     # 30 well maximum
     if len(plasmid_seqs) > 30:
-        raise Exception(
+        raise UserWarning(
             'You have exceeded the 30 well maximum. Also, check to ensure that the only spaces are between sequences'
             )
     for plasmid_seq in plasmid_seqs:
         # Max ladder is 3KB
         if len(plasmid_seq) > 3000:
-            raise Exception(
+            raise UserWarning(
                 'Our gel cannot handle sequences larger than 3KB!'
                 )
         # Only capital A,T,C,G
         for nuc in plasmid_seq:
             if nuc not in "ATCG":
-                raise Exception(
+                raise UserWarning(
                     'Sequences must only contain A, T, C, or G!'
                     )
 
@@ -65,7 +65,7 @@ def digestSeq (plasmid_seqs, re_list,restriction_sites):
     # Matching restriction enzyme names ERROR
     for re in re_list:
         if re not in restriction_enzymes:
-            raise Exception(
+            raise UserWarning(
                 str(re) + ' is not in our list. Please check to make sure that the enzyme name matches the names in our Enzyme List.'
                 )
     

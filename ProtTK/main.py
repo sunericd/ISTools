@@ -149,8 +149,11 @@ class Example(Frame):
             datafile=datafile.strip()
             try:
                 pq.protQuant(stdfile,datafile)
-            except Exception as errormsg:
+            except UserWarning as errormsg:
                 messagebox.showerror('Error',errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error', 'Fill out all required fields!')
 

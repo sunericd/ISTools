@@ -14,12 +14,12 @@ def msm(filename, motif_length = 10, match_threshold = 3):
     try:
         motif_length  = int(motif_length)
     except:
-        raise Exception('Motif Length should be an integer!')
+        raise UserWarning('Motif Length should be an integer!')
     
     try:
         match_threshold  = int(match_threshold)
     except:
-        raise Exception('Match Threshold should be an integer!')
+        raise UserWarning('Match Threshold should be an integer!')
     
     
     gene_list = []
@@ -33,13 +33,13 @@ def msm(filename, motif_length = 10, match_threshold = 3):
             for line in csv.reader(file, delimiter=","):
                 gene_list.append(line)
         else:
-            raise Exception('Please use a tsv or csv file as input!')
+            raise UserWarning('Please use a tsv or csv file as input!')
                 
     sequences_list = []
     name_list = []
     
     if len(gene_list[1]) != 2:
-        raise Exception('For each line (gene), the first entry should be the NAME and the second entry should be its SEQEUNCE.')
+        raise UserWarning('For each line (gene), the first entry should be the NAME and the second entry should be its SEQEUNCE.')
 
     # Collects the name of the gene (column 1) and the sequence (Column 2)
     for gene in gene_list:  

@@ -23,7 +23,7 @@ def plasmid_builder (plsmds, mrkrs,restriction_sites):
     # Only capital A,T,C,G
     for nuc in plsmds:
         if nuc not in "ATCG":
-            raise Exception(
+            raise UserWarning(
                 'Plasmid sequence must only contain A, T, C, or G!'
                 )
 
@@ -31,7 +31,7 @@ def plasmid_builder (plsmds, mrkrs,restriction_sites):
         # Only capital A,T,C,G
         for nuc in marker:
             if nuc not in "ATCG":
-                raise Exception(
+                raise UserWarning(
                     'Marker sequences must only contain A, T, C, or G!'
                     )
     

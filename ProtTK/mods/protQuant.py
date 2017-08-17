@@ -13,8 +13,7 @@ def protQuant (standards_file, protein_file, N_mass=25, regression_style='Linear
     try:
         float_test = float(N_mass)
     except:
-        print ("Error: The 'N mass' needs to be an integer or decimal value!")
-        return
+        UserWarning("Error: The 'N mass' needs to be an integer or decimal value!")
     
     # Reading files
     standard_concs, standard_fluors = readStandards(standards_file)
@@ -33,8 +32,7 @@ def protQuant (standards_file, protein_file, N_mass=25, regression_style='Linear
         try:
             N_vol = float(N_mass)/prot_conc
         except:
-            print ("Error: Protein Concentration regresses to zero!")
-            return
+            raise UserWarning("Error: Protein Concentration regresses to zero!")
         N_vols.append(N_vol)
     
     out_text = 'Protein Concentrations: '+str(prot_concs)+'\n'
@@ -60,7 +58,7 @@ def readStandards(filename):
                     standard_fluors.append(line)
                     # Raises error if number of cols doesn't match
                     if len(standard_fluors[i-1]) != len(standard_concs):
-                        raise Exception('Please make sure that the input is rectangular.')
+                        raise UserWarning('Please make sure that the input is rectangular.')
                 i += 1
             
         elif '.csv' in filename:
@@ -73,10 +71,10 @@ def readStandards(filename):
                 else:
                     standard_fluors.append(line)
                     if len(standard_fluors[i-1]) != len(standard_concs):
-                        raise Exception('Please make the standard file rectangular.')
+                        raise UserWarning('Please make the standard file rectangular.')
                 i += 1
         else:
-            raise Exception('Please input a tsv or csv file for Standards!')
+            raise UserWarning('Please input a tsv or csv file for Standards!')
     
     return (standard_concs, standard_fluors)
 
@@ -92,10 +90,10 @@ def readProteins (filename):
             for line in reader(file, delimiter=","):
                 prot_fluors.append(line)
         else:
-            raise Exception('Please input a tsv or csv file for Proteins!')
+            raise UserWarning('Please input a tsv or csv file for Proteins!')
             
     if not all(len(prot_fluor) == len(prot_fluors[0]) for prot_fluor in prot_fluors):
-        raise Exception('Please make the protein file rectangular.')
+        raise UserWarning('Please make the protein file rectangular.')
     
     return (prot_fluors)
 
