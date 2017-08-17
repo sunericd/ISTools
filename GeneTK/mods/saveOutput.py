@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import os
 
 def saveData(out_text, appName):
@@ -45,20 +46,20 @@ def saveData(out_text, appName):
     sButton.pack(side=RIGHT,fill=Y,padx=5,pady=5)
 
 def writeFile(text,path,fname):
-    name=path.strip()+fname.strip()
-    try:
-        os.chmod('*', 0o755)
-        os.remove(name+".txt")
-    except OSError:
-        pass
+    if len(path.strip())>0 and len(fname.strip())>0:
+        name=path.strip()+fname.strip()
+        try:
+            os.chmod('*', 0o755)
+            os.remove(name+".txt")
+        except OSError:
+            pass
 
-    h=open(name.strip()+".txt","w")
-    h.write(text)
-    h.close()
-    saved=Toplevel()
-    saved.title("Save confirm")
-    saveLabel=Label(saved,text="Saved!",font=("Helvetica", 16))
-    saveLabel.pack(fill=BOTH)
+        h=open(name.strip()+".txt","w")
+        h.write(text)
+        h.close()
+        messagebox.showinfo('Save confirmation', 'Your file has been saved as '+name.strip()+'.txt')
+    else:
+        messagebox.showerror('Error', 'Please specify a file name and file path.')
 
 def getDir(box):
     box.configure(state=NORMAL)
