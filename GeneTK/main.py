@@ -1,3 +1,4 @@
+#8/17/17 Selecting RE for gelViz has searchbar and separate selected box.
 #8/16/17 Error handling!
 #8/15/17 Added GUI for primer design. Changed formatting from pack to grid.
 #07/13/2017 Tab view for tools. Additional changes to reflect structure from Exe Toolkit.
@@ -117,27 +118,54 @@ class Example(Frame):
         gelPg_geneBox.grid(row=1,column=0, sticky=E+W+S+N, columnspan=2,padx=5,pady=5)   
         
         #Restriction Enzyme list
-        gelPg_l2 = Label(gelPg, text='Restriction Enzyme(s)')
+        gelPg_l2 = Label(gelPg, text='Restriction Enzyme(s). Use Add and Remove to select your restriction enzymes.')
         gelPg_l2.grid(row=2,column=0,padx=5,pady=5,sticky=W)
 
+        #All available REs
         allREs=StringVar()
         allREs.set(self.getREs(reData))
-
         gelPg_reList = Listbox(gelPg,selectmode='multiple',listvariable=allREs) 
-        gelPg_reList.grid(row=3,column=0,sticky=W+S+N+E,columnspan=2,padx=5,pady=5)
+        gelPg_reList.grid(row=4,column=0,sticky=W+S+N+E,padx=5,pady=5)
 
+        #Searchbar
+        searchKW = StringVar()
+        searchKW.trace('w', lambda name, index, mode: self.update_list(searchKW, gelPg_reList, self.getREs(reData)))
+        searchBar = Entry(gelPg, textvariable=searchKW)
+        searchBar.grid(row=3, column=0, sticky=W+S+N+E, padx=5, pady=5)
+
+        #Scrollbar
         yScrollRE=Scrollbar(gelPg)
-        yScrollRE.grid(row=3,column=1,sticky=E+N+S,pady=5)
+        yScrollRE.grid(row=4,column=0,sticky=E+N+S,pady=5)
         yScrollRE.configure(command=gelPg_reList.yview)
 
         gelPg_reList.configure(yscrollcommand=yScrollRE.set)
+
+        #Selected REs
+        gelPg_l3 = Label(gelPg, text='Selected Restriction Enzymes')
+        gelPg_l3.grid(row=2,column=1,padx=5,pady=5,sticky=W+N+S)
+
+        gelPg_selectedRE = Listbox(gelPg,selectmode='multiple')
+        gelPg_selectedRE.grid(row=3,rowspan=2,column=1,sticky=W+S+N+E,padx=5,pady=5)
+
+        #Scrollbar
+        yScrollsel=Scrollbar(gelPg)
+        yScrollsel.grid(row=3, rowspan=2,column=1,sticky=E+N+S,pady=5)
+        yScrollsel.configure(command=gelPg_selectedRE.yview)
+
+        gelPg_selectedRE.configure(yscrollcommand=yScrollsel.set)
+
+        #RE lists interaction
+        addButton=Button(gelPg,text='Add', command = lambda: self.addREtolist(gelPg_reList,gelPg_selectedRE,reData))
+        removeButton = Button(gelPg, text='Remove', command= lambda: self.removeRE(gelPg_reList,gelPg_selectedRE,reData))
+        addButton.grid(row=5, column=0, sticky=E+N+S, pady=5,padx=5)
+        removeButton.grid(row=5, column=1, sticky=W+N+S, pady=5,padx=5)        
         
         #Navigation
         gelPg_clr=Button(gelPg,text='Clear',command=lambda:self.loadgelPg(gelPg, reData))
-        gelPg_clr.grid(row=4,column=0,sticky=W,padx=5,pady=5)
+        gelPg_clr.grid(row=5,column=0,sticky=W,padx=5,pady=5)
         
-        gelPg_ent= Button(gelPg,text='Enter', command=lambda:self.runGV(gelPg_geneBox,gelPg_reList.curselection(),reData))
-        gelPg_ent.grid(row=4,column=1,sticky=E,padx=5,pady=5)
+        gelPg_ent= Button(gelPg,text='Enter', command=lambda:self.runGV(gelPg_geneBox,gelPg_selectedRE.get(0,END),reData))
+        gelPg_ent.grid(row=5,column=1,sticky=E,padx=5,pady=5)
 
         #Upload Gene Sequence File Button.
         gelPg_upload=Button(gelPg,text='Upload Gene Sequence(s)', command=lambda: self.seqUpload(gelPg_geneBox,True))
@@ -249,7 +277,7 @@ class Example(Frame):
         primPg_l2 = Label(primPg, text='Start and end indices of sequence to amplify (Ex. 196-291)')
         primPg_l2.grid(row=2,column=0, padx=5, pady=5,sticky=W)
 
-        primPg_idx = Text(primPg, height=1, width=35)      
+        primPg_idx = Text(primPg, height=1, width=20)      
         primPg_idx.grid(row=3,column=0, padx=5, pady=5,sticky=E+W+S+N)
 
         primPg_l3 = Label(primPg, text='GC Content (Optional, default is 40-60%)')
@@ -264,7 +292,7 @@ class Example(Frame):
         primPg_tm = Text(primPg, height=1, width=40)    
         primPg_tm.grid(row=5,column=0, padx=5, pady=5,sticky=W+S+E+N)
 
-        primPg_l5 = Label(primPg, text='Primer length (Optional, default is 20. Range also acceptable (Ex. 18-22))')
+        primPg_l5 = Label(primPg, text='Primer length (Optional, default is 18-22)')
         primPg_l5.grid(row=4,column=1, padx=5, pady=5,sticky=W)
 
         primPg_len = Text(primPg, height=1, width=40)
@@ -296,6 +324,31 @@ class Example(Frame):
         re = reData.values.T.tolist()
         re = re[0]
         return re
+
+    def addREtolist(self,optionList,selectedList, reData):
+        re_idx=optionList.curselection()
+        allre = optionList.get(0,END)
+        for idx in re_idx:
+            selectedList.insert(END,allre[idx])
+
+    def removeRE(self, optionList, selectedList, reData):
+        re_idx = selectedList.curselection()
+        allre= self.getREs(reData)
+        adjust = 0
+        for idx in re_idx:
+            selectedList.delete(idx-adjust)
+            adjust=adjust+1
+
+
+    def update_list(self, searchKW, lbox, allREs):
+        search_term = searchKW.get()
+        lbox_list = allREs
+         
+        lbox.delete(0, END)
+     
+        for item in lbox_list:
+            if search_term.lower() in item.lower():
+                lbox.insert(END, item)
     
     def seqUpload(self,tBox, multiple):
         ftypes=[('Fasta files','*.fasta'),('Text files','*.txt')]        
@@ -332,17 +385,12 @@ class Example(Frame):
         tBox.configure(state=DISABLED)
     
     #Get info from text boxes to run gel.Viz.    
-    def runGV(self, geneBox,reIndex,reData):
+    def runGV(self, geneBox,selRE,reData):
         seq=geneBox.get('1.0',END)
         seq = str(seq).strip()
-        allre=self.getREs(reData)
-        re=''
-        for i in reIndex:
-            re=re+str(allre[i])+' '
-        re=re.strip()
-        if len(seq)>0 and len(re)>0:
+        if len(seq)>0 and len(selRE)>0:
             try:
-                gv.gel_visualize(seq,re,reData)
+                gv.gel_visualize(seq,selRE,reData)
             except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
             ''' except Exception as e:

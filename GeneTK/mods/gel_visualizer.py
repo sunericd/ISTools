@@ -22,7 +22,6 @@ def gel_visualize(plasmid_seqs, re_list, restriction_sites):
 
 def digestSeq (plasmid_seqs, re_list,restriction_sites):
     plasmid_seqs = plasmid_seqs.split()
-    re_list = re_list.split()
 
     # Changes all to upper case (so user can input case insensitive)
     plasmid_seqs_upper = []
