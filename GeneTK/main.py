@@ -343,8 +343,11 @@ class Example(Frame):
         if len(seq)>0 and len(re)>0:
             try:
                 gv.gel_visualize(seq,re,reData)
-            except Exception as errormsg:
+            except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error','Fill out all required fields!')
     
@@ -359,8 +362,11 @@ class Example(Frame):
         if len(seq)>0 and len(re)>0:
             try:
                 pb.plasmid_builder(seq, re,reData)
-            except Exception as errormsg:
+            except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error','Fill out all required fields!')            
 
@@ -371,8 +377,11 @@ class Example(Frame):
         if len(seq)>0:
             try:
                 sp.multSeqProp(seq, reData)
-            except Exception as errormsg:
+            except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error','Fill out all required fields!')
             seqBox.focus()
@@ -383,26 +392,17 @@ class Example(Frame):
             fname=fname.strip()
             motif=str(motifBox.get('1.0',END)).strip()
             thresh=str(threshBox.get('1.0',END)).strip()
-            if len(motif)>0 and len(thresh)>0:
-                try:
-                    msm.msm(fname,motif_length=motif,match_threshold=thresh)
-                except Exception as errormsg:
-                    messagebox.showerror('Error', errormsg)
-            elif len(motif)>0:
-                try:
-                    msm.msm(fname,motif_length=motif)
-                except Exception as errormsg:
-                    messagebox.showerror('Error', errormsg)
-            elif len(thresh)>0:
-                try:
-                    msm.msm(fname,match_threshold=thresh)
-                except Exception as errormsg:
-                    messagebox.showerror('Error', errormsg)
-            else:
-                try:
-                    msm.msm(fname)
-                except Exception as errormsg:
-                    messagebox.showerror('Error', errormsg)
+            if not len(motif)>0:
+                motif=int(10)
+            if not len(thresh)>0:
+                thresh=int(3)
+            try:
+                msm.msm(fname,motif_length=motif,match_threshold=thresh)
+            except UserWarning as errormsg:
+                messagebox.showerror('Error', errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error','Fill out all required fields!')            
 
@@ -420,18 +420,20 @@ class Example(Frame):
         length=lenBox.get('1.0',END)
         length=str(length).strip()
         if len(seq)>0 and len(seq_idx)>0:
-            if len(gc)>0 and len(tm)>0 and len(length)>0 and primType!='fr':
-                try:
-                    print('all 4')
-                    #primo.primer_design(seq, start, end, gc=gc, tm=tm, range=len_range, type=primType)
-                except Exception as errormsg:
-                    messagebox.showerror('Error', errormsg)
-            #What should I do? combinations get outta hand..
+            if not len(gc)>0:
+                gc='0.4-0.6'
+            if not len(tm)>0:
+                tm='42-46'
+            if not len(length)>0:
+                length='18-22'
             try:
-                print('none')
-                #primo.primer_design(seq, start, end)
-            except Exception as errormsg:
+                print('all 4')
+                #primo.primer_design(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), temp_range=tm.split('-'))
+            except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
+            ''' except Exception as e:
+                print(e)
+                messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
         else:
             messagebox.showerror('Error', 'Fill out all required fields!')
 
