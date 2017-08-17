@@ -286,7 +286,7 @@ class Example(Frame):
         primPg_gc = Text(primPg, height=1, width=40)    
         primPg_gc.grid(row=3,column=1, padx=5, pady=5,sticky=E+N+S+W)
 
-        primPg_l4 = Label(primPg, text='Melting Temperature (Optional, default is 42-46C)')
+        primPg_l4 = Label(primPg, text='Melting Temperature (Optional, default is 52-48C)')
         primPg_l4.grid(row=4,column=0, padx=5, pady=5,sticky=W)
 
         primPg_tm = Text(primPg, height=1, width=40)    
@@ -471,7 +471,7 @@ class Example(Frame):
             if not len(gc)>0:
                 gc='0.4-0.6'
             if not len(tm)>0:
-                tm='42-46'
+                tm='52-58'
             if not len(length)>0:
                 length='18-22'
             try:
