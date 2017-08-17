@@ -1,5 +1,7 @@
 import numpy as np
 
+#Finds top 5 reverse and/or forward primers for a given sequence.
+
 #########################Select type of primer to design
 ######## 1 = primer pair
 ######## 2 = forward primer

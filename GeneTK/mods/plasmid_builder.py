@@ -7,6 +7,8 @@ from graphics import *
 from PIL import Image as NewImage
 import mods.saveOutput as saveOutput
 
+#Generates one protocol for inserting each marker sequence in mrkrs in the plsmds. restriction_sites is a database of restriction enzymes and sites.
+
 def plasmid_builder (plsmds, mrkrs,restriction_sites):
 
     mrkrs=mrkrs.split()

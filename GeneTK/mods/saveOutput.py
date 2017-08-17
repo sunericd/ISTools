@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 import os
 
+#Allows users to save out_text to a desired file. appName is the title of the tk window.
+
 def saveData(out_text, appName):
     outPg=Toplevel()
     outPg.title(appName)

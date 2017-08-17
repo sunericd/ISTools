@@ -3,6 +3,8 @@ from tkinter import *
 import os
 import mods.saveOutput as saveOutput
 
+#Analyzes each sequence in sequences for GC, melting temperature, restriction sites, start/stop codons, exons. restriction_sites is a database of restriction enzymes and sites.
+
 #Runs SeqProp for multiple sequences.
 def multSeqProp(sequences, restriction_sites):
     sequences=sequences.split()

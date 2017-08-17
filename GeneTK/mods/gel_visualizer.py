@@ -5,6 +5,7 @@ from graphics import *
 from math import *
 from PIL import Image as NewImage
 
+#'Runs' the plasmid_seqs through a 'gel' with restriction enzymes from re_list. restriction_sites is a database of restriction enzymes.
 
 def gel_visualize(plasmid_seqs, re_list, restriction_sites):
     
