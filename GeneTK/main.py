@@ -268,7 +268,7 @@ class Example(Frame):
 
     def loadprimPg(self, primPg):
         #############################PrimerDesign##################################
-        primPg_l1 = Label(primPg, text='Sequence to amplify AND surrounding regions (DNA bases only)')
+        primPg_l1 = Label(primPg, text='One sequence to amplify AND surrounding regions (DNA bases only)')
         primPg_l1.grid(row=0,column=0, padx=5, pady=5,sticky=W)
         
         primPg_box = Text(primPg, height=10)
@@ -286,7 +286,7 @@ class Example(Frame):
         primPg_gc = Text(primPg, height=1, width=40)    
         primPg_gc.grid(row=3,column=1, padx=5, pady=5,sticky=E+N+S+W)
 
-        primPg_l4 = Label(primPg, text='Melting Temperature (Optional, default is 52-48C)')
+        primPg_l4 = Label(primPg, text='Melting Temperature (Optional, default is 52-58C)')
         primPg_l4.grid(row=4,column=0, padx=5, pady=5,sticky=W)
 
         primPg_tm = Text(primPg, height=1, width=40)    
@@ -463,27 +463,30 @@ class Example(Frame):
         seq_idx=str(seq_idx).strip()
         gc=gcBox.get('1.0',END)
         gc=str(gc).strip()
+        gc=gc.strip('%')
         tm=tmBox.get('1.0',END)
         tm=str(tm).strip()
+        tm=tm.strip('C')
         length=lenBox.get('1.0',END)
         length=str(length).strip()
-        if len(seq)>0 and len(seq_idx)>0:
+        if len(seq)>0 and len(seq_idx)>0 and seq_idx.find('-')!=-1:
             if not len(gc)>0:
-                gc='0.4-0.6'
+                gc='40-60'
             if not len(tm)>0:
                 tm='52-58'
             if not len(length)>0:
                 length='18-22'
             try:
-                print('all 4')
-                #primo.primer_design(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), temp_range=tm.split('-'))
+                primo.primer_design(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), Tm_range=tm.split('-'), GC_range=gc.split('-'))
             except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
             ''' except Exception as e:
                 print(e)
                 messagebox.showerror('Error', 'There was an unexpected error. Please reference the documentation (link) or contact us at support@integratedsciences.org.') '''
-        else:
+        elif seq_idx.find('-')>-1:
             messagebox.showerror('Error', 'Fill out all required fields!')
+        else:
+            messagebox.showerror('Error', 'Input a range for the start and end indices!')
 
 #Runs the program
 def main():

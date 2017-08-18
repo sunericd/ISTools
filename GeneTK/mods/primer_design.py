@@ -1,327 +1,368 @@
 import numpy as np
 
-#Finds top 5 reverse and/or forward primers for a given sequence.
+#Christina: Please change ALL "Exception"s or "print"s that you want to show to the user to "UserWarning"s!!!!
+#Christina: What is this function's last product? Please save this as a string, like you see in PlasmidBUILDR. This is what the user will see. then import mods.saveOutput into this file and use it to set up the saving process for users.
+#Don't make the overall function return stuff -- it won't go anywhere, we won't use it
 
-#########################Select type of primer to design
-######## 1 = primer pair
-######## 2 = forward primer
-######## 3 = reverse primer
+################For finding gc content, melting temp, and reverse complement
 
+#Approximate Melting Temperature based on Wallace Rule
+#only good for short oligos
+def gc_content(primer):
+    GC_num = 0
+    for nuc in primer:
+        if nuc not in "ATCGatcg":
+            raise Exception('Sequences must only contain A, T, C, or G!')
+        if nuc is 'G' or nuc is 'C' or nuc is 'g' or nuc is 'c': 
+            GC_num += 1
+            GC = round(float(GC_num)/float(len(primer)), 2)
+    return GC
 
-####Use primer design function. inputs are primer_type, sequence, start index, end, primer restrictions
-#####Input 0 for start and end indices for primer types 2 and 3
-#primer_design(primer_type, sequence, started, ended, primer_length, temp_range, gc_range)
+def melting_temp(primer):
+    GC_num = 0
+    for nuc in primer: #Christina: This is the second time so far this exception occurs, so maybe do the check in the primer_design function before running any of these smaller functions on the code?
+        if nuc not in "ATCGatcg":
+            raise Exception('Sequences must only contain A, T, C, or G!')
+        if nuc is 'G' or nuc is 'C' or nuc is 'g' or nuc is 'c': 
+            GC_num += 1
+            GC = round(float(GC_num)/float(len(primer)), 2)
+            Tm= 64.9 +41*(GC_num-16.4)/len(primer)
+            Tm=(round(Tm, 2))
+    return Tm
 
+def rv_comp(unreversed):
+    try:
+        complement = ''.join([{'A':'T','C':'G','G':'C','T':'A','a':'t','c':'g','g':'c','t':'a', '\n':'', ' ':''}[B] for B in list(unreversed)])
+    except:
+        assert False, "Make sure only A, T, C, or G!"
+    rv_comped = complement[::-1]
+    return rv_comped
 
-##########################################Test Sequences
-######################for primer pair
-#seq1 = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
-#started = 30
-#ended = 411
-######################for forward
-#seqf = 'TGGATTTCTGAGGAAAGAGGACTATACCCA'
-#started = 0
-#ended = 0
-######################for reverse
-#seqr = 'TGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
-#started = 0
-#ended = 0
-
-#sequence = seq1
-#primer_design(1, sequence, started, ended, primer_length, temp_range, gc_range)
-
-################################## Forward and Reverse Sequence Function
-def split_seq(split_sequence, started, ended):
-    #Error Handling
-    if int(started) > int(ended):
-        print("Error: start index is after than end index. Reorder indices so start is inputted before end index.")
-    elif int(started) > len(split_sequence):
-        print("Error: Start index is out of range of sequence input. Choose smaller start index.")
-    elif int(ended) > len(split_sequence):
-        print("Error: End index is out of range of sequence input. Choose smaller end index.")
-    elif int(ended) == int(started):
-        print("Error: Start and end indices are equal. No sequence is amplified.")
-    else:
-        fwd_seq = seq[0:started]
-        rv_seq = seq[ended-2:len(seq)]
-        return fwd_seq, rv_seq
-    #function returns fwd_seq and rv_seq
+###############################For storing data
+class primer_final(object):
+    def __init__(self, primer, gc, Tm, index):
+        self.all = primer, gc, Tm, index
+        self.primer = primer
+        self.gc = gc
+        self.Tm = Tm
+        self.index = index
+    def add_primer(self, new_primer):
+        self.primer.append(new_primer)
+    def add_gc(self, new_gc):
+        self.gc.append(new_gc)
+    def add_Tm(self, new_Tm):
+        self.Tm.append(new_Tm)
+    def add_index(self, new_index):
+        self.index.append(new_index)
 
 #################################Primer Find Function 
-def primerfind(sequence, length = [20, 19, 21, 18, 22], temperature = [40, 60], gcontent = [.4, .6]):
-    
+def primerfind(sequence, length = [20, 19, 21, 18, 22], temperature = [52, 65], gcontent = [.4, .6]):
+        
     #error handling for sequence inputs that are too short 
     if len(sequence) < min(length):
-        print("Error: Seqeunce input is shorter than primer. Input longer sequence for primer search.")
+        raise UserWarning("Error: Seqeunce input is shorter than primer. Input longer sequence for primer search.")
     
     else:
         #Initialize
-        primer=[] #primer sequences
-        gc=[] #gc content
-        temp=[] #melting temmperature
-        index=[] #index of the beginning of primer
+        f_primer_info = primer_final([],[],[],[])
 
         #identify start index
         start = len(sequence) - min(length) + 1
 
         #Flip through the sequence to find primers
         for i in range(start-1, 2, -1):
-
             #Separate into appropriate bp length sequences 
             for j in length: #flips through all possible ideal lengths 
                 seq = sequence[i:(i + j-1)] #identify sequences
-                GC_num = 0 #GC content 
-
-                #Calculate GC% content and Tm
-                #Approximate Melting Temperature based on Wallace Rule
-                #only good for short oligos
-                for nuc in seq:
-                    if nuc not in "ATCGatcg":
-                        raise Exception('Sequences must only contain A, a, T, t, C, c, or G, g!')
-                    if nuc is 'G' or nuc is 'C' or nuc is 'g' or nuc is 'c': 
-                        GC_num += 1
-                        GC = round(float(GC_num)/float(len(seq)), 2)
-                        Tm= 64.9 +41*(GC_num-16.4)/len(seq)
-                        Tm=(round(Tm, 2))        
+                GC = gc_content(seq)
+                Tm = melting_temp(seq)
 
                 #Filter out Tm and Content if not in range
                 if Tm >= min(temperature) and Tm <= max(temperature) and GC >= min(gcontent) and GC <= max(gcontent):
-                    primer.append(seq)
-                    gc.append(GC)
-                    temp.append(Tm)
-                    index.append(i)
+                    f_primer_info.add_primer(seq)
+                    f_primer_info.add_gc(GC)
+                    f_primer_info.add_Tm(Tm)
+                    f_primer_info.add_index(i+1)
                     break
-            
-        return primer, gc, temp, index
+        return f_primer_info
 ########### End of primer find function
 
-#####################################Reverse Complement Function
-def rv_comp(unrev, ended):
+def rv_primerfind(sequence, length = [20, 19, 21, 18, 22], temperature = [52, 65], gcontent = [.4, .6]):
     
-    rv_complement = []
-    rv_gc = unrev[1] 
-    rv_temp = unrev[2]
-    rv_index = np.add(unrev[3], ended)
+    rv = primerfind(sequence, length, temperature, gcontent)
     
-    for primer in unrev[0]:
-        try:
-            complement = ''.join([{'A':'T','C':'G','G':'C','T':'A','a':'t','c':'g','g':'c','t':'a', '\n':'', ' ':''}[B] for B in list(primer)])
-        except:
-            assert False, "Make sure only A, T, C, or G!"
-        rv_complement.append(complement[::-1])
+    unreversed = rv.primer
+    primers = []
     
-    #reverse list in all elements
-    rv_complement.reverse()    
-    rv_gc = rv_gc[::-1]
-    rv_temp = rv_temp[::-1]
-    rv_index = rv_index[::-1]
+    for primer in unreversed:
+        primers.append(rv_comp(primer))
     
-    #create reverse final list
-    rv_final = []
-    rv_final.append(rv_complement)
-    rv_final.append(rv_gc)
-    rv_final.append(rv_temp)
-    rv_final.append(rv_index)
-    return rv_final
-#########Returns reverse complement, gc, temp, and index of sequences    
+    primers.reverse
+    gc = rv.gc
+    Tm = rv.Tm
+    index = rv.index
+    
+    primers.reverse()
+    r_primer_info = primer_final(primers, gc[::-1], Tm[::-1], index[::-1])
+    return r_primer_info
+
+###############################For storing data
+class primerpairs(object):
+    def __init__(self, f_prim, f_Tm, f_ind, r_prim, r_Tm, r_ind, length):
+        self.all = f_prim, f_Tm, f_ind, r_prim, r_Tm, r_ind, length
+        self.f_prim = f_prim
+        self.f_Tm = f_Tm
+        self.f_ind = f_ind 
+        self.r_prim = r_prim 
+        self.r_Tm = r_Tm 
+        self.r_ind = r_ind
+        self.length = length
+    def add_f_prim(self, new_f_prim):
+        self.f_prim.append(new_f_prim)
+    def add_r_prim(self, new_r_prim):
+        self.r_prim.append(new_r_prim)
+    def add_f_Tm(self, new_f_Tm):
+        self.f_Tm.append(new_f_Tm)
+    def add_r_Tm(self, new_r_Tm):
+        self.r_Tm.append(new_r_Tm)
+    def add_f_ind(self, new_f_ind):
+        self.f_ind.append(new_f_ind)
+    def add_r_ind(self, new_r_ind):
+        self.r_ind.append(new_r_ind)
+    def add_length(self, new_length):
+        self.length.append(new_length)
+
+################################## Forward and Reverse Sequence Function
+def split_seq(split_sequence, started, ended):
+    #Error Handling
+    if int(started) > len(split_sequence):
+        print("Error: Start index is out of range of sequence input. Choose smaller start index.")
+    elif int(ended) > len(split_sequence):
+        print("Error: End index is out of range of sequence input. Choose smaller end index.")
+    elif int(ended) == int(started):
+        print("Error: Start and end indices are equal. No sequence is amplified.")
+    else:
+        fwd_seq = split_sequence[0:started]
+        rv_seq = split_sequence[ended-1:len(split_sequence)]
+        return fwd_seq, rv_seq
+    #function returns fwd_seq and rv_seq
 
 ###########################################Forward and Reverse Match Function
 #Tm should be +- 2 degrees celsius difference
 #optimize for the shortest sequence amplified
 
-def primer_pair(fwd_final, rv_final, started, ended):
+def primer_pair(f_primer_info, r_primer_info, ended):
     
-    fwd_primers = fwd_final[0]
-    fwd_gc = fwd_final[1]
-    fwd_temp = fwd_final[2]
-    fwd_index = fwd_final[3]
+    pair = primerpairs([], [], [], [], [], [], [])
     
-    rv_primers = rv_final[0]
-    rv_gc = rv_final[1]
-    rv_temp = rv_final[2]
-    rv_index = rv_final[3]
-    
-    primer_pair = []
-
-    for i in range(len(fwd_final[0])):
-        for j in range(15): 
-    #primer can only be paired with the reverse primer that is at most 15bp + amplified length. 
-    #if nothing fits, it moves to the next primer and pairs sequences
-        
-            diff = abs(fwd_temp[i] - rv_temp[j])
-            if diff<3:
-                seq_length = rv_index[j] - fwd_index[i] 
-                things = [fwd_primers[i], fwd_index[i], fwd_temp[i], rv_primers[j], rv_index[j], rv_temp[j], seq_length]                    
-                primer_pair.append(things)
+    for i in range(len(f_primer_info.primer)-1):
+        for j in range(len(r_primer_info.primer)-1):
+            diff = abs(f_primer_info.Tm[i] - r_primer_info.Tm[j])
+            if diff <= 3:
+                pair.add_f_prim(f_primer_info.primer[i])
+                pair.add_f_Tm(f_primer_info.Tm[i])
+                pair.add_f_ind(f_primer_info.index[i])
+                pair.add_r_prim(r_primer_info.primer[j])
+                pair.add_r_Tm(r_primer_info.Tm[j])
+                pair.add_r_ind(r_primer_info.index[j] + ended -2)
+                pair.add_length(r_primer_info.index[j] - f_primer_info.index[i] + ended -2 + len(r_primer_info.primer[j]))
                 break
-                #if tm of fwd 20bp primer and first reverse primer checked is good, then it moves on the the second primer
-                #this is so that not all sequences have similar fwd primers with only a few bp difference
-
-        if len(primer_pair)>=10:
-            #display the first 6 primer pair along with lengths and then stop. 
+            
+        if len(pair.f_prim)>=10:
+            #display the first 10 primer pair along with lengths and then stop. 
             break
             
-    return primer_pair
+    return pair
+    
 #primer_pair outputs include fwd primer info, rv primer info, and length of sequence
 
+def user_info(what):
+    if what == 'f':
+        print("Column 1: Forward primer sequence. "
+              "Column 2: GC content. "
+              "Column 3: Melting temprature. "
+              "Column 4: start index of primer.")
+    elif what == 'r':
+        print("Column 1: Reverse primer sequence. "
+              "Column 2: GC content. "
+              "Column 3: Melting temprature. "
+              "Column 4: start index of primer.")
+
 ##############################################Primer Design Function
-def primer_design(primer_type, sequence_input, started, ended, primer_length = [20, 19, 21, 18, 22], temp_range= [4, 60], gc_range = [.4, .6]):
-    #primer_types should be 'r','fr', or 'f'. Also the default one should be 'fr'
-    #Start and end will be in one list like [start, end]
-    #primer length will be like [18, 22], so maybe you can do primer_length=list(range(primer_length[0],primer_length[1])) or something like that?
-    # temp range.. why's it 4 to 60?
-    #The inputs will be lists of strings, so could you do a input=[int(i) for i in input] to make them all integers? I think it'd be easier to do it here than over there..
+def primer_design(primer_type, sequence_input, indices = [0, 0] , primer_length = [18, 22], Tm_range= [52, 58], GC_range = [40, 60]):
     
-    if primer_type == 2:
+    temp_range = [float(Tm_range[0]), float(Tm_range[1])]   
+    gc_range = [float(GC_range[0])/float(100), float(GC_range[1])/float(100)] 
+    primer_length = list(range(int(primer_length[0]), int(primer_length[1]) + 1))
+    
+    if primer_type == 'f':
+    
         forward = primerfind(sequence_input, primer_length, temp_range, gc_range)
-        if len(forward[0]) == 0:
+        if len(forward.primer) == 0:
             print("Error: No forward primers found. Extend input sequence upstream for primer search.")
         else:
-            print("Column 1: Forward primer sequence. "
-                  "Column 2: GC content. "
-                  "Column 3: Melting temprature. "
-                  "Column 4: start index of primer.")
-            print(forward)
+            user_info('f') 
+            return forward.all
 
-    elif primer_type == 3:
-        rev = primerfind(seqr, primer_length, temp_range, gc_range)
-        reverse = rv_comp(rev, ended)
-        if len(reverse[0]) == 0:
+    elif primer_type == 'r':
+        rev = rv_primerfind(sequence_input, primer_length, temp_range, gc_range)
+        if len(rev.primer) == 0:
             print("Error: No forward primers found. Extend input sequence upstream for primer search.")
         else:
-            print("Column 1: Reverse primer sequence. "
-                  "Column 2: GC content. "
-                  "Column 3: Melting temprature. "
-                  "Column 4: start index of primer.")
-            rv_index = reverse[3]
-
-            rv_final = []
-            rv_final.append(reverse[0])
-            rv_final.append(reverse[1])
-            rv_final.append(reverse[2])
-            rv_final.append(rv_index)
-            print(rv_final)
+            user_info('r')
+            return rev.all
     
-    elif primer_type == 1:
+    else:
+        started = min(int(indices[0]), int(indices[1]))
+        ended = max(int(indices[0]), int(indices[1]))
         splitted = split_seq(sequence_input, started, ended)
         fwd_seq = splitted[0]
         rv_seq = splitted[1]
+        print(fwd_seq)
+        print(rv_seq)
         
         #Error handling if sequence unable to be split
+        #Still return reverse sequences if forward sequence unable to be split
         if len(fwd_seq) < 18:
-            print("Error: Sequence cannot be split to identify forward primers. Extend sequence upstream of amplification and check start index.")
+            print("Error: Cannot identify forward primers. Extend sequence upstream of amplification and check start index.")
             if len(rv_seq) > 18:
-                rev = primerfind(sequence_input, primer_length, temp_range, gc_range)
-                reverse = rv_comp(rev, ended)
-                if len(reverse[0]) == 0:
-                    print("Error: No reverse primers found. Extend input sequence donstream for primer search.")
+                rev = rv_primerfind(rv_seq, primer_length, temp_range, gc_range)
+                if len(rev.primer) == 0:
+                    print("Error: No forward primers found. Extend input sequence upstream for primer search.")
                 else:
-                    print("Column 1: Reverse primer sequence. "
-                          "Column 2: GC content. "
-                          "Column 3: Melting temprature. "
-                          "Column 4: start index of primer.")
-                    rv_index = reverse[3]
-                    rv_final = []
-                    rv_final.append(reverse[0])
-                    rv_final.append(reverse[1])
-                    rv_final.append(reverse[2])
-                    rv_final.append(rv_index)
-                    print(rv_final)
-
+                    user_info('r')
+                    return rev.all
+                    
+        #Still return forward sequences if reverse sequence unable to be split
         elif len(rv_seq) < 18:
-            print("Error: Sequence cannot be split to identify reverse sequences. Check reverse indices.")
-            forward = primerfind(sequence_input, primer_length, temp_range, gc_range)
-            print("Column 1: Forward primer sequence. "
-                  "Column 2: GC content. "
-                  "Column 3: Melting temprature. "
-                  "Column 4: start index of primer.")
-            print(forward)
+            print("Error: Cannot identify reverse primers. Extend sequence downstream of amplification and check end index.")
+            forward = primerfind(fwd_seq, primer_length, temp_range, gc_range)
+            if len(forward.primer) == 0:
+                print("Error: No forward primers found. Extend input sequence upstream for primer search.")
+            else:
+                user_info('f')
+                return forward.all
         
         #Continue if sequence can be split properly
         else:
             #forward primer
-            fwd_final = primerfind(fwd_seq, primer_length, temp_range, gc_range)
-            fwd_primers = fwd_final[0]
+            fwd = primerfind(fwd_seq, primer_length, temp_range, gc_range)
 
             #Error handling if no forward sequences found. Still return reverse sequences
-            if len(fwd_primers) == 0:
+            if len(fwd.primer) == 0:
                 print("Error: No forward primers found. Extend input sequence upstream for primer search.")
-                reverse = rv_comp(primerfind(rv_seq, primer_length, temp_range, gc_range), ended)
-                if len(reverse[0]) == 0:
+                rv = rv_primerfind(rv_seq, primer_length, temp_range, gc_range)
+                if len(rv.primer) == 0:
                     print("Error: No reverse primers found. Extend input sequence downstream for primer search.")
                 else:
-                    rv_primers = reverse[0]
-                    rv_gc = reverse[1]
-                    rv_temp = reverse[2]
-                    rv_index = reverse[3]
-
-                    rv_final = []
-                    rv_final.append(rv_primers)
-                    rv_final.append(rv_gc)
-                    rv_final.append(rv_temp)
-                    rv_final.append(rv_index)
-                    print("Column 1: Reverse primer sequence. "
-                          "Column 2: GC content. "
-                          "Column 3: Melting temprature. "
-                          "Column 4: start index of primer.")
-                    print(rv_final)
+                    user_info('r')
+                    return rv.all
             
             #Coninue to find reverse sequences if forward ones are found. 
             else:
                 #reverse primer
-                rev = primerfind(rv_seq, primer_length, temp_range, gc_range)
-                rv = rv_comp(rev, ended)
-                rv_primers = rv[0]
+                rv = rv_primerfind(rv_seq, primer_length, temp_range, gc_range)
 
                 #Error handling if no reverse primer found. Still return forward sequence
-                if len(rv_primers) == 0:
-                    print("Error: No reverse primers found. Extend input sequence downstream for primer search.")
-                    print("Column 1: Forward primer sequence. "
-                          "Column 2: GC content. "
-                          "Column 3: Melting temprature. "
-                          "Column 4: start index of primer.")
-                    print(fwd_final)
+                if len(rv.primer) == 0:
+                    print("Error: No Reverse primers found. Extend input sequence downstream for primer search.")
+                    print("Forward primers still found. Listed below. ")
+                    user_info('f')
+                    return fwd.all
                 
                 #Coninue to primer pairing if forward and reverse primers found
                 else:
-                    #Define variables for primer_pair function
-                    fwd_gc = fwd_final[1]
-                    fwd_temp = fwd_final[2]
-                    fwd_index = fwd_final[3]
-                    rv_gc = rv[1]
-                    rv_temp = rv[2]
-                    rv_index = np.add(rv[3], ended)
-                    rv_final = []
-                    rv_final.append(rv_primers)
-                    rv_final.append(rv_gc)
-                    rv_final.append(rv_temp)
-                    rv_final.append(rv_index)
-
-                    #primer pair
-                    amplified = primer_pair(fwd_final, rv_final, started, ended)
-
+                    #Find primer pairs
+                    amplified = primer_pair(fwd, rv, ended)
+                    
                     #Error Handling if no primer pair found. Still prints forward and reverse primer list
-                    if len(amplified[0]) == 0:
-                        print("Error: No primer pair found. Extend sequences upstream and downstream for further primer search.")
+                    if len(amplified.f_prim) == 0:
+                        print("Error: No primer pair found. Extend sequence upstream and downstream for further primer search.")
                         print("Forward and reverse sequences still displayed. Select primers at own discretion.")
-                        print("Column 1: Forward primer sequence. "
-                              "Column 2: GC content. "
-                              "Column 3: Melting temprature. "
-                              "Column 4: start index of primer.")
-                        print(fwd_final)
-                        print("Column 1: Reverse primer sequence. "
-                              "Column 2: GC content. "
-                              "Column 3: Melting temprature. "
-                              "Column 4: start index of primer.")
-                        print(rv_final)
+                        user_info('f')
+                        print(fwd.all)
+                        user_info('r')
+                        return rv.all
 
                     else:
                         print("Column 1-3: Forward primer sequence, primer start index, melting temperature. " 
                               "Column 4-6: Reverse primer sequence, primer start index, melting temperature. "
                               "Column 7: Length of amplified sequence. Use Gel.Viz to visualize outcome on a gel.")
-                        print(amplified)
-    
+                        return amplified.all
     #Error Handling for invalid primer type input
-    else:
-        print("Error: Primer type is invalid. Select appropriate primer type.")
+    
+######For testing
+#seqf = 'TGGATTTCTGAGGAAAGAGGACTATACCCA'
+#print(rv_comp(seqf))
+#m = primerfind(seqf)
 
+#new = []
+#n = rv_comp(seqf)
+#new.append(seqf)
+#new.append(n)
+#print(new)
+#g = primerfind(seqf)
+#print(g.all)
+
+#v = rv_primerfind(seqf)
+#print(v.all)
+
+seq1 = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
+#started = 30
+#ended = 411
+#seq = seq1[410:len(seq1)]
+
+#print(primer_design('r', seq))
+
+seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
+seqf = 'ATTTCTGAGGAAAGAGGACTATACCCATTA'
+
+print(primer_design('f', seqf))
+print(primer_design('r', seqr))
+print(primer_design('fr', seq1, [30, 411]))
+
+
+#def prim_match(f_primer_info, r_primer_info):
+ 
+    #if len(f_primer_info.primer) < len(r_primer_info.primer):
+    #    first = f_primer_info
+    #    second = r_primer_info
+    #elif len(f_primer_info.primer) == len(r_primer_info.primer):
+    #    first = f_primer_info
+    #    second = r_primer_info
+    #elif len(f_primer_info.primer) > len(r_primer_info.primer):
+    #    second = f_primer_info
+    #    first = r_primer_info
+   # for i in range(len(f_primer_info.Tm)):
+   #     
+    #    r_prim = []
+    #    r_Tm = []
+    #    r_ind = []
+    #    length = []
+    #    for j in range(len(r_primer_info.Tm)-1): 
+    #primer can only be paired with the reverse primer that is at most 15bp + amplified length. 
+    #if nothing fits, it moves to the next primer and pairs sequences
+        
+     #       diff = abs(f_primer_info.Tm[i] - r_primer_info.Tm[j])
+     #       if diff<3:
+     #           pair.add_f_prim(f_primer_info.primer[i])
+     #           pair.add_f_Tm(f_primer_info.Tm[i])
+     #           pair.add_f_ind(f_primer_info.index[i])
+     #           while len(r_prim) <= 3:
+     #               r_prim.append(r_primer_info.primer[j])
+     #               r_Tm.append(r_primer_info.Tm[j])
+     #               r_ind.append(r_primer_info.index[j] + ended -2)
+     #               length.append(r_primer_info.index[j] - f_primer_info.index[i] + ended -2 + len(r_primer_info.primer[j]))
+     #           break 
+                   
+                    #if tm of fwd 20bp primer and first reverse primer checked is good, then it moves on the the second primer
+                    #this is so that not all sequences have similar fwd primers with only a few bp difference                    
+
+      #  pair.add_r_prim(r_prim)
+      #  pair.add_r_Tm(r_Tm)
+      #  pair.add_r_ind(r_ind)
+      #  pair.add_length(length)
+
+       # if len(pair.r_ind)>=10:
+       #     #display the first 10 primer pair along with lengths and then stop. 
+       #     break
