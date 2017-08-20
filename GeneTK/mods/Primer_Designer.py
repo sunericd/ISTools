@@ -1,14 +1,6 @@
-
-# coding: utf-8
-
-# In[70]:
-
 import numpy as np
 import os
-import saveOutput as saveOutput
-
-
-# In[71]:
+import mods.saveOutput as saveOutput
 
 ################For finding gc content, melting temp, and reverse complement
 
@@ -40,9 +32,6 @@ def rv_comp(unreversed):
     rv_comped = complement[::-1]
     return rv_comped
 
-
-# In[72]:
-
 ###############################For storing data
 class primer_final(object):
     def __init__(self, primer, gc, Tm, index):
@@ -59,9 +48,6 @@ class primer_final(object):
         self.Tm.append(new_Tm)
     def add_index(self, new_index):
         self.index.append(new_index)
-
-
-# In[73]:
 
 #################################Primer Find Function 
 def primerfind(sequence, length, temperature, gcontent):
@@ -99,9 +85,6 @@ def primerfind(sequence, length, temperature, gcontent):
         return f_primer_info
 ########### End of primer find function
 
-
-# In[74]:
-
 def rv_primerfind(sequence, length, temperature, gcontent):
     
     rv = primerfind(sequence, length, temperature, gcontent)
@@ -120,9 +103,6 @@ def rv_primerfind(sequence, length, temperature, gcontent):
     primers.reverse()
     r_primer_info = primer_final(primers, gc[::-1], Tm[::-1], index[::-1])
     return r_primer_info
-
-
-# In[52]:
 
 ###############################For storing data
 class primerpairs(object):
@@ -150,9 +130,6 @@ class primerpairs(object):
     def add_length(self, new_length):
         self.length.append(new_length)
 
-
-# In[53]:
-
 ################################## Forward and Reverse Sequence Function
 def split_seq(split_sequence, started, ended):
     #Error Handling
@@ -167,9 +144,6 @@ def split_seq(split_sequence, started, ended):
         rv_seq = split_sequence[ended-1:len(split_sequence)]
         return fwd_seq, rv_seq
     #function returns fwd_seq and rv_seq
-
-
-# In[63]:
 
 ###########################################Forward and Reverse Match Function
 #Tm should be +- 2 degrees celsius difference
@@ -201,9 +175,6 @@ def primer_pair(f_primer_info, r_primer_info, ended, product_range):
     
 #primer_pair outputs include fwd primer info, rv primer info, and length of sequence
 
-
-# In[55]:
-
 def user_info(what):
     if what == 'f':
         return ("List 1: Forward primer sequence. "
@@ -216,21 +187,16 @@ def user_info(what):
                "List 3: Melting temprature. "
                "List 4: start index of primer.")
 
-
-# In[83]:
-
 ##############################################Primer Design Function
-def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_range = [300, 400], primer_length = [18, 22], temp_range= [52, 65], gc_range = [.4, .6]):
+def primer_designer(primer_type, sequence_input, indices = [0, 0], primer_length = [18, 22], temp_range= [52, 65], gc_range = [.4, .6], product_range = [300, 400]):
     #primer_types should be 'r','fr', or 'f'. Also the default one should be 'fr'
-    #Start and end will be in one list like [start, end]
-    #primer length will be like [18, 22], so maybe you can do primer_length=list(range(primer_length[0],primer_length[1])) or something like that?
-    # temp range.. why's it 4 to 60?
-    #The inputs will be lists of strings, so could you do a input=[int(i) for i in input] to make them all integers? I think it'd be easier to do it here than over there..
     
     temp_range = [float(temp_range[0]), float(temp_range[1])]   
-    gc_range = [float(gc_range[0]), float(gc_range[1])] 
+    gc_range = [float(gc_range[0])/100, float(gc_range[1])/100] 
     primer_length = list(range(int(primer_length[0]), int(primer_length[1]) + 1))
-    
+    product_range = [float(product_range[0]), float(product_range[1])] 
+
+
     if primer_type == 'f':
     
         forward = primerfind(sequence_input, primer_length, temp_range, gc_range)
@@ -244,7 +210,7 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
     elif primer_type == 'r':
         rev = rv_primerfind(sequence_input, primer_length, temp_range, gc_range)
         if len(rev.primer) == 0:
-            raise UerWarning("Error: No forward primers found. Extend input sequence upstream for primer search.")
+            raise UserWarning("Error: No forward primers found. Extend input sequence upstream for primer search.")
         else:
             print(rev.all)
             out_text = [user_info('r'), str(rev.primer), str(rev.gc), str(rev.Tm), str(rev.index)]
@@ -332,10 +298,6 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
                         saveOutput.saveData(out_text, "Primer Designer Analysis ")
     #Error Handling for invalid primer type input
     
-
-
-# In[84]:
-
 ######For testing
 #seqf = 'TGGATTTCTGAGGAAAGAGGACTATACCCA'
 #print(rv_comp(seqf))
@@ -356,15 +318,15 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
 #started = 30
 #ended = 411
 #seq = seq1[410:len(seq1)]
-
+''' 
 seq1='CTGGGGTGTCATTTCCCTACTGAAAGAACCAAGATTCTTGGTGAAATGAATGACTCAGCTCTGAAGAATGAAAAGAATGTGGTAAAGTCACAACATCTTGTCATACCAGATGGTAAGGAAGATATTAGAGACTAGTATATTAAGTTCAGAGACAAATTGAGAAGTCCAGAGACTGTCAATACCTGGGGCAGTAGCTTACTGGTTAAGTGTGCGCACTGCTGTTGCTGAGCACCTGAGTGTGGTTCTCAGCACATAGCTCAACTTATAACTCAAGGTCCAAGGGGGAATTTATTGCTGTCCCCTCCAAAGGTATTTGTGTTCATGTGAACATACCAACACAGACACATGTACAATTTAAAATAATGAAAATAAAATGTAAAACATAAAATTAAATTCTGATAAAAGCATAGTAATTGTATTGGGCTGAAGCACATTAAATATGTTCACACTAGTGAATTTATAAAGGGGGGGATATAAGAAACCAACTATTGTTTTTAAATTATAAAACATATCTTTTTATTATAACTGTAATAGCAAATACAGGAACTATTCTGTTGAATAGATAGCACAAAAATAAGCACCAAAATGAGTGTGATTAAAATTGGAGAGCTCTGAATAAAATTAAAACTAGTGTCAATATTCTGGCCATGATGAGTACAGCTGTTTTCAAAGACATTACTCTCTCCCCGGGAAGGAATTTTAGCAACAGGCTTCCACTTTGTGCTTCAAGTTAAACTTGCAAAACAAAGAAGCCAGGACCTGAATTTGAGAAATAATGTGTGTCATTTGTCTTTCTGTCCCTGAGTTGCCTCACTTGGCAAAACTTTGTTTCAACAAAACTCTTTAAAACAAGCATGTCAAGGCTAGCTCATGATGCATCATGGTGACTAGCTAACAATATGTAATAACCATCATGGCACTGAGAATGATGTTGCTGGTAGTTACTGTGGTGCCTATTGAGATGAAAATG'
 #print(primer_design('r', seq))
 
 seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
 seqf = 'ATTTCTGAGGAAAGAGGACTATACCCATTA'
+''' '''
 seqa = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
 
-print(primer_designer('fr', seqa, [30,411], [300, 500], [18,22] ))
-print(primer_designer('f', seqf))
-print(primer_designer('r', seqr))
-
+print(primer_designer('fr', seqa, indices=[30,411],primer_length= [18,22], product_range=[300, 500])) '''
+''' print(primer_designer('f', seqf))
+print(primer_designer('r', seqr)) '''

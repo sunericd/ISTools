@@ -15,7 +15,7 @@ import mods.plasmid_builder as pb
 import pandas as pd
 import mods.seqprop as sp
 import mods.MSM as msm
-import mods.primer_design as primo
+import mods.primer_designer as primo
 
 class Example(Frame):   
   
@@ -298,7 +298,7 @@ class Example(Frame):
         primPg_len = Text(primPg, height=1, width=40)
         primPg_len.grid(row=5,column=1, padx=5, pady=5,sticky=E+W+S+N)
 
-        primPg_l6 = Label(primPg, text='Product length (Optional, default is 100-1000))')
+        primPg_l6 = Label(primPg, text='Product length (Optional, default is 300-400))')
         primPg_l6.grid(row=6,column=0, padx=5, pady=5,sticky=W)
 
         primPg_prod = Text(primPg, height=1, width=40)
@@ -485,9 +485,9 @@ class Example(Frame):
             if not len(length)>0:
                 length='18-22'
             if not len(prodlen)>0:
-                prodlen='100-1000'
+                prodlen='300-400'
             try:
-                primo.primer_designer(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), Tm_range=tm.split('-'), GC_range=gc.split('-')) #add prodlen too.
+                primo.primer_designer(primType.strip(), seq, indices=seq_idx.split('-'), primer_length=length.split('-'), temp_range=tm.split('-'), gc_range=gc.split('-'), product_range=prodlen.split('-'))
             except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
             ''' except Exception as e:
