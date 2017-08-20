@@ -278,10 +278,10 @@ class Example(Frame):
         primPg_l2.grid(row=2,column=0, padx=5, pady=5,sticky=W)
 
         primPg_idx = Text(primPg, height=1, width=20)      
-        primPg_idx.grid(row=3,column=0, padx=5, pady=5,sticky=E+W+S+N)
+        primPg_idx.grid(row=2,column=1, padx=5, pady=5,sticky=E+W+S+N)
 
         primPg_l3 = Label(primPg, text='GC Content (Optional, default is 40-60%)')
-        primPg_l3.grid(row=2,column=1, padx=5, pady=5,sticky=W)
+        primPg_l3.grid(row=3,column=0, padx=5, pady=5,sticky=W)
 
         primPg_gc = Text(primPg, height=1, width=40)    
         primPg_gc.grid(row=3,column=1, padx=5, pady=5,sticky=E+N+S+W)
@@ -290,13 +290,19 @@ class Example(Frame):
         primPg_l4.grid(row=4,column=0, padx=5, pady=5,sticky=W)
 
         primPg_tm = Text(primPg, height=1, width=40)    
-        primPg_tm.grid(row=5,column=0, padx=5, pady=5,sticky=W+S+E+N)
+        primPg_tm.grid(row=4,column=1, padx=5, pady=5,sticky=W+S+E+N)
 
         primPg_l5 = Label(primPg, text='Primer length (Optional, default is 18-22)')
-        primPg_l5.grid(row=4,column=1, padx=5, pady=5,sticky=W)
+        primPg_l5.grid(row=5,column=0, padx=5, pady=5,sticky=W)
 
         primPg_len = Text(primPg, height=1, width=40)
         primPg_len.grid(row=5,column=1, padx=5, pady=5,sticky=E+W+S+N)
+
+        primPg_l6 = Label(primPg, text='Product length (Optional, default is 100-1000))')
+        primPg_l6.grid(row=6,column=0, padx=5, pady=5,sticky=W)
+
+        primPg_prod = Text(primPg, height=1, width=40)
+        primPg_prod.grid(row=6,column=1, padx=5, pady=5,sticky=E+W+S+N)
 
         choice=StringVar()
 
@@ -304,9 +310,9 @@ class Example(Frame):
         primPg_r = Radiobutton(primPg,text='Reverse primer only', variable=choice, value='r')
         primPg_fr = Radiobutton(primPg,text='Both forward and reverse primers (Default)', variable=choice, value='fr')
 
-        primPg_f.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=W+N+S)
-        primPg_r.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=N+S)
-        primPg_fr.grid(row=6,column=0, columnspan=2,padx=5,pady=5,sticky=E+N+S)
+        primPg_f.grid(row=7,column=0, columnspan=2,padx=5,pady=5,sticky=W+N+S)
+        primPg_r.grid(row=7,column=0, columnspan=2,padx=5,pady=5,sticky=N+S)
+        primPg_fr.grid(row=7,column=0, columnspan=2,padx=5,pady=5,sticky=E+N+S)
         primPg_fr.invoke()
                 
         #Navigation        
@@ -315,10 +321,10 @@ class Example(Frame):
         
         primPg_fr.invoke()
         primPg_clr=Button(primPg,text='Clear',command=lambda: self.loadprimPg(primPg))
-        primPg_clr.grid(row=7,column=0, padx=5, pady=5,sticky=W)
+        primPg_clr.grid(row=8,column=0, padx=5, pady=5,sticky=W)
         
-        primPg_ent= Button(primPg,text='Enter', command=lambda:self.runPrim(primPg_box, primPg_idx, primPg_gc, primPg_tm, primPg_len, choice.get()))
-        primPg_ent.grid(row=7,column=1, padx=5, pady=5,sticky=E)    
+        primPg_ent= Button(primPg,text='Enter', command=lambda:self.runPrim(primPg_box, primPg_idx, primPg_gc, primPg_tm, primPg_len, primPg_prod, choice.get()))
+        primPg_ent.grid(row=8,column=1, padx=5, pady=5,sticky=E)    
 
     def getREs(self,reData):
         re = reData.values.T.tolist()
@@ -455,7 +461,7 @@ class Example(Frame):
             messagebox.showerror('Error','Fill out all required fields!')            
 
     #Get info from text boxes to run Primer Design    
-    def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox, primType):
+    def runPrim(self,seqBox, idx, gcBox, tmBox, lenBox, prodBox, primType):
         seq=seqBox.get('1.0',END)
         seq=str(seq).strip()
         #seq_idx will be a string. First value is start, last value is end. Separated by '-'
@@ -469,6 +475,8 @@ class Example(Frame):
         tm=tm.strip('C')
         length=lenBox.get('1.0',END)
         length=str(length).strip()
+        prodlen=prodBox.get('1.0',END)
+        prodlen=str(prodlen).strip()
         if len(seq)>0 and len(seq_idx)>0 and seq_idx.find('-')!=-1:
             if not len(gc)>0:
                 gc='40-60'
@@ -476,8 +484,10 @@ class Example(Frame):
                 tm='52-58'
             if not len(length)>0:
                 length='18-22'
+            if not len(prodlen)>0:
+                prodlen='100-1000'
             try:
-                primo.primer_design(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), Tm_range=tm.split('-'), GC_range=gc.split('-'))
+                primo.primer_designer(primType.strip(), seq, seq_idx.split('-'), primer_length=length.split('-'), Tm_range=tm.split('-'), GC_range=gc.split('-')) #add prodlen too.
             except UserWarning as errormsg:
                 messagebox.showerror('Error', errormsg)
             ''' except Exception as e:
