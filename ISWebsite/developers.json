@@ -1,6 +1,6 @@
 {
   "developers": [
-    {"name":"Yein Christina Park", "im": "images/christina.jpg", "desc": "Christina is studying Chemistry and Physics and History and Literature at Harvard College. As a part of the Hunter Lab at Harvard, she studies RNA interference deficient phenotypes in C. elegans."},
+    {"name":"Yein Christina Park", "im": "images/christina.jpg", "desc": "Christina is studying Chemistry and Physics and History and Literature at Harvard College. As a part of the Hunter Lab at Harvard, she studies RNA interference deficient C. elegans strains."},
     {"name":"Eric Sun", "im": "images/eric.jpg", "desc": "Eric is an undergraduate at Harvard College likely concentrating in Chemical and Physical Biology with a master's in Applied Mathematics. He hails from Pueblo, Colorado and has a neat box turtle named Tooty."},
     {"name":"Yi H Chen", "im": "images/yi.jpg", "desc": "Yi an undergraduate at Harvard College, class of 2020 studying Chemical and Physical Biology. She is currently working at the Murray Lab studying genetic instability in the cell cycle, using S. cerevisiae as a model. She is from NYC."}    
   ]
