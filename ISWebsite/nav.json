@@ -5,6 +5,7 @@
     {"url": "gelViz.html", "title": "gel.Viz", "id": "gv"},
     {"url": "msm.html", "title": "MSM", "id": "msm"},
     {"url": "plasBUILDR.html", "title": "Plasmid BUILDR", "id": "pb"},
+    {"url": "primdes.html", "title": "Primer Designer", "id": "pd"},
     {"url": "seqprop.html", "title": "SeqProp", "id": "sp"},    
     {"url": "contact.html", "title": "Contact Us", "id": "contact"}
   ]
