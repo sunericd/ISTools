@@ -1,14 +1,6 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import numpy as np
 import os
-import saveOutput as saveOutput
-
-
-# In[2]:
+import mods.saveOutput as saveOutput
 
 ################For finding gc content, melting temp, and reverse complement
 
@@ -40,9 +32,6 @@ def rv_comp(unreversed):
     rv_comped = complement[::-1]
     return rv_comped
 
-
-# In[92]:
-
 ###############################For storing data
 class primer_final(object):
     def __init__(self, primer, gc, Tm, index):
@@ -59,9 +48,6 @@ class primer_final(object):
         self.Tm.append(new_Tm)
     def add_index(self, new_index):
         self.index.append(new_index)
-
-
-# In[93]:
 
 #################################Primer Find Function 
 def primerfind(sequence, length, temperature, gcontent):
@@ -99,9 +85,6 @@ def primerfind(sequence, length, temperature, gcontent):
         return f_primer_info
 ########### End of primer find function
 
-
-# In[94]:
-
 def rv_primerfind(sequence, length, temperature, gcontent):
     
     rv = primerfind(sequence, length, temperature, gcontent)
@@ -120,9 +103,6 @@ def rv_primerfind(sequence, length, temperature, gcontent):
     primers.reverse()
     r_primer_info = primer_final(primers, gc[::-1], Tm[::-1], index[::-1])
     return r_primer_info
-
-
-# In[95]:
 
 ###############################For storing data
 class primerpairs(object):
@@ -150,9 +130,6 @@ class primerpairs(object):
     def add_length(self, new_length):
         self.length.append(new_length)
 
-
-# In[96]:
-
 ################################## Forward and Reverse Sequence Function
 def split_seq(split_sequence, started, ended):
     #Error Handling
@@ -167,9 +144,6 @@ def split_seq(split_sequence, started, ended):
         rv_seq = split_sequence[ended-1:len(split_sequence)]
         return fwd_seq, rv_seq
     #function returns fwd_seq and rv_seq
-
-
-# In[97]:
 
 ###########################################Forward and Reverse Match Function
 #Tm should be +- 2 degrees celsius difference
@@ -200,9 +174,6 @@ def primer_pair(f_primer_info, r_primer_info, ended, product_range):
     return pair
     
 #primer_pair outputs include fwd primer info, rv primer info, and length of sequence
-
-
-# In[98]:
 
 #########For saving outputs
 def getFwdFile(primer, gc, tm, index):
@@ -273,11 +244,7 @@ def getPairFile(fwd_primer, fwd_tm, fwd_ind, rv_primer, rv_tm, rv_ind, length):
         out_text=out_text+("%s\n" % item)
 
     return (out_text)
-    
-
-
-# In[107]:
-
+   
 ##############################################Primer Design Function
 def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_range = [300, 400], primer_length = [18, 22], temp_range= [52, 65], gc_range = [40, 60]):
     #primer_types should be 'r','fr', or 'f'. Also the default one should be 'fr'
@@ -388,10 +355,6 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
                         out_text = getPairFile(amplified.f_prim, amplified.f_ind, amplified.f_Tm, amplified.r_prim, amplified.r_ind, amplified.r_Tm, amplified.length)
                         saveOutput.saveData(out_text, "Primer Designer Analysis ")
     #Error Handling for invalid primer type input
-    
-
-
-# In[108]:
 
 ######For testing
 #seqf = 'TGGATTTCTGAGGAAAGAGGACTATACCCA'
@@ -417,7 +380,7 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
 #seq1='CTGGGGTGTCATTTCCCTACTGAAAGAACCAAGATTCTTGGTGAAATGAATGACTCAGCTCTGAAGAATGAAAAGAATGTGGTAAAGTCACAACATCTTGTCATACCAGATGGTAAGGAAGATATTAGAGACTAGTATATTAAGTTCAGAGACAAATTGAGAAGTCCAGAGACTGTCAATACCTGGGGCAGTAGCTTACTGGTTAAGTGTGCGCACTGCTGTTGCTGAGCACCTGAGTGTGGTTCTCAGCACATAGCTCAACTTATAACTCAAGGTCCAAGGGGGAATTTATTGCTGTCCCCTCCAAAGGTATTTGTGTTCATGTGAACATACCAACACAGACACATGTACAATTTAAAATAATGAAAATAAAATGTAAAACATAAAATTAAATTCTGATAAAAGCATAGTAATTGTATTGGGCTGAAGCACATTAAATATGTTCACACTAGTGAATTTATAAAGGGGGGGATATAAGAAACCAACTATTGTTTTTAAATTATAAAACATATCTTTTTATTATAACTGTAATAGCAAATACAGGAACTATTCTGTTGAATAGATAGCACAAAAATAAGCACCAAAATGAGTGTGATTAAAATTGGAGAGCTCTGAATAAAATTAAAACTAGTGTCAATATTCTGGCCATGATGAGTACAGCTGTTTTCAAAGACATTACTCTCTCCCCGGGAAGGAATTTTAGCAACAGGCTTCCACTTTGTGCTTCAAGTTAAACTTGCAAAACAAAGAAGCCAGGACCTGAATTTGAGAAATAATGTGTGTCATTTGTCTTTCTGTCCCTGAGTTGCCTCACTTGGCAAAACTTTGTTTCAACAAAACTCTTTAAAACAAGCATGTCAAGGCTAGCTCATGATGCATCATGGTGACTAGCTAACAATATGTAATAACCATCATGGCACTGAGAATGATGTTGCTGGTAGTTACTGTGGTGCCTATTGAGATGAAAATG'
 #print(primer_design('r', seq))
 
-seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
+''' seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
 seqf = 'ATTTCTGAGGAAAGAGGACTATACCCATTA'
 seqa = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
 
@@ -425,3 +388,4 @@ print(primer_designer('fr', seqa, [30,411], [300, 500], [18,22] ))
 print(primer_designer('f', seqf))
 print(primer_designer('r', seqr))
 
+ '''
