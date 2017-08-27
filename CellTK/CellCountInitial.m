@@ -6,10 +6,13 @@ function [num_cells] = CellCountInitial(directory_path, extension, N)
     % Finds the files in the current directory that share the
     % directory and extension.
     imagenames = dir(fullfile(directory_path, extension));
-
     
     % Finds and reads the image
-    filename = imagenames(1).name;
+    try
+        filename = imagenames(1).name;
+    catch
+        exception('No images detected with specified extension!')
+    end
     img = imread(fullfile(directory_path, filename));
 
     % Turns RGB to BW
@@ -43,7 +46,7 @@ function [num_cells] = CellCountInitial(directory_path, extension, N)
     erod = imerode(dilate, se23);
 
     % Finding the centers
-    centers = regionprops(erod, 'Centroid')
+    centers = regionprops(erod, 'Centroid');
     num_cells = length(centers);
     
     % Plotting centeres on initial image...
