@@ -11,8 +11,10 @@ def gc_content(primer):
     for nuc in primer:
         if nuc is 'G' or nuc is 'C' or nuc is 'g' or nuc is 'c': 
             GC_num += 1
-            GC = round(float(GC_num)/float(len(primer)), 2)
-    return GC
+            gc = round(float(GC_num)/float(len(primer)), 2)
+        else:
+            gc = 0
+    return gc
 
 def melting_temp(primer):
     GC_num = 0
@@ -22,6 +24,8 @@ def melting_temp(primer):
             GC = round(float(GC_num)/float(len(primer)), 2)
             Tm= 64.9 +41*(GC_num-16.4)/len(primer)
             Tm=(round(Tm, 2))
+        else:
+            Tm = 0 
     return Tm
 
 def rv_comp(unreversed):
@@ -65,7 +69,10 @@ def primerfind(sequence, length, temperature, gcontent):
         f_primer_info = primer_final([],[],[],[])
 
         #identify start index
-        start = len(sequence) - min(length) + 1
+        start = int(int(len(sequence)) - int(min(length)) + 1)
+        
+     
+        print(type(length))
 
         #Flip through the sequence to find primers
         for i in range(start-1, 2, -1):
@@ -253,9 +260,11 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
     # temp range.. why's it 4 to 60?
     #The inputs will be lists of strings, so could you do a input=[int(i) for i in input] to make them all integers? I think it'd be easier to do it here than over there..
     
+    indices = [float(indices[0]), float(indices[1])]   
     temp_range = [float(temp_range[0]), float(temp_range[1])]   
     gc_range = [float(gc_range[0])/100, float(gc_range[1])/100] 
     primer_length = list(range(int(primer_length[0]), int(primer_length[1]) + 1))
+    product_range = [float(product_range[0]), float(product_range[1])] 
     
     if primer_type == 'f':
     
@@ -351,8 +360,7 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
                                           "Forward and reverse sequences still displayed. Select primers at own discretion.")               
                     else:
                         print(amplified.all)
-                        info ="List 1-3: Forward primer sequence, primer start index, melting temperature. List 4-6: Reverse primer sequence, primer start index, melting temperature. List 7: Length of amplified sequence. Use Gel.Viz to visualize outcome on a gel."
-                        out_text = getPairFile(amplified.f_prim, amplified.f_ind, amplified.f_Tm, amplified.r_prim, amplified.r_ind, amplified.r_Tm, amplified.length)
+                        out_text = getPairFile(amplified.f_prim, amplified.f_Tm, amplified.f_ind, amplified.r_prim, amplified.r_Tm, amplified.r_ind, amplified.length)
                         saveOutput.saveData(out_text, "Primer Designer Analysis ")
     #Error Handling for invalid primer type input
 
@@ -380,12 +388,12 @@ def primer_designer(primer_type, sequence_input, indices = [0, 0] , product_rang
 #seq1='CTGGGGTGTCATTTCCCTACTGAAAGAACCAAGATTCTTGGTGAAATGAATGACTCAGCTCTGAAGAATGAAAAGAATGTGGTAAAGTCACAACATCTTGTCATACCAGATGGTAAGGAAGATATTAGAGACTAGTATATTAAGTTCAGAGACAAATTGAGAAGTCCAGAGACTGTCAATACCTGGGGCAGTAGCTTACTGGTTAAGTGTGCGCACTGCTGTTGCTGAGCACCTGAGTGTGGTTCTCAGCACATAGCTCAACTTATAACTCAAGGTCCAAGGGGGAATTTATTGCTGTCCCCTCCAAAGGTATTTGTGTTCATGTGAACATACCAACACAGACACATGTACAATTTAAAATAATGAAAATAAAATGTAAAACATAAAATTAAATTCTGATAAAAGCATAGTAATTGTATTGGGCTGAAGCACATTAAATATGTTCACACTAGTGAATTTATAAAGGGGGGGATATAAGAAACCAACTATTGTTTTTAAATTATAAAACATATCTTTTTATTATAACTGTAATAGCAAATACAGGAACTATTCTGTTGAATAGATAGCACAAAAATAAGCACCAAAATGAGTGTGATTAAAATTGGAGAGCTCTGAATAAAATTAAAACTAGTGTCAATATTCTGGCCATGATGAGTACAGCTGTTTTCAAAGACATTACTCTCTCCCCGGGAAGGAATTTTAGCAACAGGCTTCCACTTTGTGCTTCAAGTTAAACTTGCAAAACAAAGAAGCCAGGACCTGAATTTGAGAAATAATGTGTGTCATTTGTCTTTCTGTCCCTGAGTTGCCTCACTTGGCAAAACTTTGTTTCAACAAAACTCTTTAAAACAAGCATGTCAAGGCTAGCTCATGATGCATCATGGTGACTAGCTAACAATATGTAATAACCATCATGGCACTGAGAATGATGTTGCTGGTAGTTACTGTGGTGCCTATTGAGATGAAAATG'
 #print(primer_design('r', seq))
 
-''' seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
-seqf = 'ATTTCTGAGGAAAGAGGACTATACCCATTA'
-seqa = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
+#''' seqr = 'TCATGTCCTAATTTGCCCTTGCTCTTGCA'
+#seqf = 'ATTTCTGAGGAAAGAGGACTATACCCATTA'
+#seqa = 'ATTTCTGAGGAAAGAGGACTATACCCATTAGGAAACGAATTGCCCGAGTAGTCTCCTCTGCCGACTTAAACCAACCTTTTTCTATTTCTCTTTTCTTTTCTCCCTCTTTTTTCTCTGTACTAGCATCCAAAAGCAAGCATCCATCCGAGTCCCAGTCGCAATCTCACATCTCCAATTTAACGTATCCATTGCATTTCCTCATTCGGTTTAACTCCTCTGCATTTCTTTTCTGACCCATAGCATTTCTTACATTCCATTGCATCTCCCTTTTACTCTCGTTCAAGACACTGATTTGATACGCTTTCTGTACGATGGCCATATTGAAGGATACCATAATTAGATACGCTAATGCAAGGTATGCTACCGCTAGTGGCACTTCCACCGCCACTGCCGCCTCTGTCAGCGCTGCCTCATGTCCTAATTTGCCCTTGCTCTTGCA'
 
-print(primer_designer('fr', seqa, [30,411], [300, 500], [18,22] ))
-print(primer_designer('f', seqf))
-print(primer_designer('r', seqr))
+#print(primer_designer('fr', seqa, [30,411], [300, 500], [18,22] ))
+#print(primer_designer('f', seqf))
+#print(primer_designer('r', seqr))
 
- '''
+# '''
