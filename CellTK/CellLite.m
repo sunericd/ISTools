@@ -1,4 +1,4 @@
-function [cell_score] = CellLite(dir_path1, dir_path2, extension, N)
+function [cell_score] = CellLite(dir_path1, dir_path2, extension1, extension2, N)
 
 % dirpath_1 and dirpath_2 are directory paths ending with '/' and have
 % images ordered by comparison (have same named components)
@@ -10,8 +10,8 @@ cell_score = [];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % 1 = dapi, 2 = tunel --> does not have to be a dapi or tunel image
-dapi_imagenames = dir(fullfile(dir_path1, extension));
-tunel_imagenames = dir(fullfile(dir_path2, extension));
+dapi_imagenames = dir(fullfile(dir_path1, extension1));
+tunel_imagenames = dir(fullfile(dir_path2, extension2));
 
 length(dapi_imagenames)
 
