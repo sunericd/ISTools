@@ -1,5 +1,5 @@
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\edsun\\Desktop\\IntegratedSciences\\ISTools\\ISToolkit'],
+             pathex=['C:\\Users\\edsun\\Desktop\\IntegratedSciences\\ISTools\\GeneTK'],
              datas = [('data/restriction_sites2.csv', 'Data'), ('data/logo.gif', 'Data')],
              hiddenimports=[],
              hookspath=None,
@@ -12,8 +12,8 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='ISgeneTK.exe',
+          name='GeneTK.exe',
           debug=False,
           strip=None,
           upx=True,
-          console=False , icon='C:\\Users\\edsun\\Desktop\\IntegratedSciences\\ISTools\\ISToolkit\\data\\logo.ico')
+          console=False , icon='C:\\Users\\edsun\\Desktop\\IntegratedSciences\\ISTools\\GeneTK\\data\\logo.ico')
